@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardListOverviewCtrl">
+   <children>
+      <Button layoutX="474.0" layoutY="347.0" mnemonicParsing="false" onAction="#refresh" text="REFRESH" />
+      <HBox fx:id="listContainer" layoutX="56.0" layoutY="61.0" prefHeight="235.0" prefWidth="335.0" />
+      <TextField fx:id="newListTextField" layoutX="22.0" layoutY="321.0" promptText="List Title" />
+      <Button layoutX="22.0" layoutY="347.0" mnemonicParsing="false" onAction="#addNewList" text="Add new list" />
+      <TextField fx:id="newCardIDForList" layoutX="198.0" layoutY="296.0" promptText="List ID" />
+      <TextField fx:id="newCardTextField" layoutX="198.0" layoutY="321.0" promptText="Card title" />
+      <Button layoutX="198.0" layoutY="347.0" mnemonicParsing="false" onAction="#addNewCard" text="Add new card" />
+   </children>
+</AnchorPane>

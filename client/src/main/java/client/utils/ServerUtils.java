@@ -17,15 +17,17 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
+//import java.io.BufferedReader;
+//import java.io.IOException;
+//import java.io.InputStreamReader;
+//import java.net.URL;
 import java.util.List;
 
+import commons.Card;
+import commons.CardList;
 import org.glassfish.jersey.client.ClientConfig;
 
-import commons.Quote;
+//import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -34,29 +36,61 @@ public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
 
-    public void getQuotesTheHardWay() throws IOException {
-        var url = new URL("http://localhost:8080/api/quotes");
-        var is = url.openConnection().getInputStream();
-        var br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
+    public List<CardList> getCardLists() {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/lists")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<CardList>>() {});
     }
 
-    public List<Quote> getQuotes() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Quote>>() {});
+    public CardList addCardList(CardList list) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/lists")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(list, APPLICATION_JSON), CardList.class);
     }
 
-    public Quote addQuote(Quote quote) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+    public Card addCard(Card card) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/cards")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
+
+    public List<Card> getCardsForList(CardList list) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/lists/" + list.id + "/cards")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<Card>>() {});
+    }
+
+//    public void getQuotesTheHardWay() throws IOException {
+//        var url = new URL("http://localhost:8080/api/quotes");
+//        var is = url.openConnection().getInputStream();
+//        var br = new BufferedReader(new InputStreamReader(is));
+//        String line;
+//        while ((line = br.readLine()) != null) {
+//            System.out.println(line);
+//        }
+//    }
+//
+//    public List<Quote> getQuotes() {
+//        return ClientBuilder.newClient(new ClientConfig()) //
+//                .target(SERVER).path("api/quotes") //
+//                .request(APPLICATION_JSON) //
+//                .accept(APPLICATION_JSON) //
+//                .get(new GenericType<List<Quote>>() {});
+//    }
+//
+//    public Quote addQuote(Quote quote) {
+//        return ClientBuilder.newClient(new ClientConfig()) //
+//                .target(SERVER).path("api/quotes") //
+//                .request(APPLICATION_JSON) //
+//                .accept(APPLICATION_JSON) //
+//                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+//    }
 }
