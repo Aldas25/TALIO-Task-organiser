@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+//import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -24,34 +25,45 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
+    private CardListOverviewCtrl listOverviewCtrl;
+    private Scene listOverviewScene;
 
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
+//    private QuoteOverviewCtrl overviewCtrl;
+//    private Scene overview;
+//
+//    private AddQuoteCtrl addCtrl;
+//    private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+    public void initialize(Stage primaryStage, Pair<CardListOverviewCtrl, Parent> listOverview) {
         this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
+//        this.overviewCtrl = overview.getKey();
+//        this.overview = new Scene(overview.getValue());
+//
+//        this.addCtrl = add.getKey();
+//        this.add = new Scene(add.getValue());
 
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
+        this.listOverviewCtrl = listOverview.getKey();
+        this.listOverviewScene = new Scene(listOverview.getValue());
 
-        showOverview();
+        showListOverview();
         primaryStage.show();
     }
 
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
+    public void showListOverview() {
+        primaryStage.setTitle("Card lists: overview");
+        primaryStage.setScene(listOverviewScene);
+        listOverviewCtrl.refresh();
     }
 
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
-    }
+//    public void showOverview() {
+//        primaryStage.setTitle("Quotes: Overview");
+//        primaryStage.setScene(overview);
+//        overviewCtrl.refresh();
+//    }
+//
+//    public void showAdd() {
+//        primaryStage.setTitle("Quotes: Adding Quote");
+//        primaryStage.setScene(add);
+//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+//    }
 }
