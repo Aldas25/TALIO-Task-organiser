@@ -43,6 +43,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 //import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import static com.google.inject.Guice.createInjector;
@@ -108,6 +109,14 @@ public class CardListOverviewCtrl implements Initializable {
             AnchorPane node = (AnchorPane) FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
             Text text = (Text) node.getChildren().get(0);  //retrieving text from a copy of the file ListTemplate
             text.setText(cardList.title);                  //setting title to new node
+
+            for (Card card : server.getCardsForList(cardList)) {
+                AnchorPane cardNode = (AnchorPane) FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
+                VBox cardBox = (VBox) node.getChildren().get(1);
+                Text cardText = (Text) cardNode.getChildren().get(0);
+                cardText.setText(card.title);
+                cardBox.getChildren().add(cardNode);
+            }
 
             listContainer.getChildren().add(node);          //adding node to children of listContainer
         }
