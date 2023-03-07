@@ -21,6 +21,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.IOException;
+
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -34,7 +36,7 @@ public class MainCtrl {
 //    private AddQuoteCtrl addCtrl;
 //    private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<CardListOverviewCtrl, Parent> listOverview) {
+    public void initialize(Stage primaryStage, Pair<CardListOverviewCtrl, Parent> listOverview) throws IOException {
         this.primaryStage = primaryStage;
 //        this.overviewCtrl = overview.getKey();
 //        this.overview = new Scene(overview.getValue());
@@ -49,7 +51,7 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-    public void showListOverview() {
+    public void showListOverview() throws IOException {
         primaryStage.setTitle("Card lists: overview");
         primaryStage.setScene(listOverviewScene);
         listOverviewCtrl.refresh();

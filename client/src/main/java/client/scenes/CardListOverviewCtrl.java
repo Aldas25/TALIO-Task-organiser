@@ -15,13 +15,20 @@
  */
 package client.scenes;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import client.MyFXML;
+import client.MyModule;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
+import com.google.inject.Injector;
 import commons.Card;
 import commons.CardList;
 //import commons.Quote;
@@ -29,19 +36,29 @@ import commons.CardList;
 //import javafx.collections.FXCollections;
 //import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 //import javafx.scene.control.TableColumn;
 //import javafx.scene.control.TableView;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 //import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import static com.google.inject.Guice.createInjector;
+
+
 public class CardListOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
+    private static final Injector INJECTOR = createInjector(new MyModule());
+    private static final MyFXML FXML = new MyFXML(INJECTOR);
+
 
     @FXML
     private HBox listContainer;
@@ -80,40 +97,37 @@ public class CardListOverviewCtrl implements Initializable {
 //        mainCtrl.showAdd();
 //    }
 
-    public void refresh() {
-//        var quotes = server.getQuotes();
-//        data = FXCollections.observableList(quotes);
-//        table.setItems(data);
+    public void refresh() throws IOException {
+
+
 
         listContainer.getChildren().clear();
+        listContainer.setSpacing(4);            //spacing between lists
 
         List<CardList> allLists = server.getCardLists();
 
         for (CardList cardList : allLists) {
-            VBox list = new VBox();
 
-            String titleText = "< List [" + cardList.id +
-                    "] \"" + cardList.title + "\" >    ";
-            Text titleTextComponent = new Text(titleText);
-            list.getChildren().add(titleTextComponent);
+            AnchorPane node = (AnchorPane) FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
+            Text text = (Text) node.getChildren().get(0);  //retrieving text from a copy of the file ListTemplate
+            text.setText(cardList.title);                  //setting title to new node
 
-            for (Card card : server.getCardsForList(cardList)) {
-                String cardText = "Card ["+ card.id + "] \"" + card.title + "\"";
-                Text cardComponent = new Text(cardText);
-                list.getChildren().add(cardComponent);
-            }
-
-            listContainer.getChildren().add(list);
+            listContainer.getChildren().add(node);          //adding node to children of listContainer
         }
     }
 
-    public void addNewList() {
+    public void addNewList() throws IOException {
         CardList list = new CardList(newListTextField.getText());
         server.addCardList(list);
         refresh();
     }
 
-    public void addNewCard() {
+    private URL getLocation(String... parts) {
+        var path = Path.of("", parts).toString();
+        return MyFXML.class.getClassLoader().getResource(path);
+    }
+
+    public void addNewCard() throws IOException {
         CardList selectedList = null;
         for (CardList list : server.getCardLists()) {
             if (list.id == Long.parseLong(newCardIDForList.getText()))
