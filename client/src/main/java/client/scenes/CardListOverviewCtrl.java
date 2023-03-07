@@ -15,9 +15,8 @@
  */
 package client.scenes;
 
-import java.io.File;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
@@ -40,12 +39,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 //import javafx.scene.control.TableColumn;
 //import javafx.scene.control.TableView;
-import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 //import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import static com.google.inject.Guice.createInjector;
