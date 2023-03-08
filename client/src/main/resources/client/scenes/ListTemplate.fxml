@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="234.0" prefWidth="57.0" style="-fx-background-color: #dfcfbe; -fx-background-radius: 6; -fx-border-color: black; -fx-border-width: 3; -fx-border-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ListTemplateCtrl">
+<AnchorPane prefHeight="229.0" prefWidth="192.0" style="-fx-background-color: #DAD7CD; -fx-background-radius: 6; -fx-border-color: #588157; -fx-border-width: 3; -fx-border-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ListTemplateCtrl">
    <children>
-      <Text layoutY="49.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Banana" textAlignment="CENTER" wrappingWidth="138.4000000000001">
+      <Text fill="#344e41" layoutX="6.0" layoutY="32.0" stroke="#3a5a40" strokeType="OUTSIDE" strokeWidth="0.0" text="Banana" textAlignment="CENTER" wrappingWidth="194.0">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
+      <VBox layoutX="3.0" layoutY="41.0" prefHeight="186.0" prefWidth="200.0" />
    </children>
 </AnchorPane>
