@@ -29,6 +29,10 @@ public class CardList {
         // for object mapper
     }
 
+    public void setTitle(String title){
+        this.title = title;
+    }
+
     public CardList(String title) {
         this.title = title;
     }

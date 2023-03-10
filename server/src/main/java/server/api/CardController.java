@@ -5,12 +5,7 @@ import java.util.Random;
 
 //import commons.CardList;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import commons.Card;
 import server.database.CardListRepository;
@@ -63,5 +58,30 @@ public class CardController {
         var lists = repo.findAll();
         var idx = random.nextInt((int) repo.count());
         return ResponseEntity.ok(lists.get(idx));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteCard(@PathVariable("id") long id){
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        repo.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Card> updateCardTitle(@PathVariable("id") long id, @RequestBody Card card){
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Card cardFromRepo = repo.findById(id).get();
+        cardFromRepo.setTitle(card.title);
+        cardFromRepo.setCardListId(card.cardListId);
+        Card saved = repo.save(cardFromRepo);
+
+        return ResponseEntity.ok(saved);
+
     }
 }
