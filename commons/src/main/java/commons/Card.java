@@ -35,6 +35,14 @@ public class Card {
         this.title = title;
     }
 
+    public void setTitle(String title){
+        this.title = title;
+    }
+
+    public void setCardListId(long id){
+        this.cardListId = id;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
