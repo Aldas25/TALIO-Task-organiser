@@ -127,7 +127,9 @@ public class TestCardRepository implements CardRepository {
     }
 
     @Override
-    public <S extends Card, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Card, R> R findBy(
+            Example<S> example,
+            Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 
@@ -137,7 +139,7 @@ public class TestCardRepository implements CardRepository {
     @Override
     public <S extends Card> S save(S entity) {
         call("save");
-        entity.id = (long) cards.size();
+        entity.id = cards.size();
         cards.add(entity);
         return entity;
     }

@@ -30,7 +30,10 @@ public class MainCtrl {
     private CardListOverviewCtrl listOverviewCtrl;
     private Scene listOverviewScene;
 
-    public void initialize(Stage primaryStage, Pair<CardListOverviewCtrl, Parent> listOverview) throws IOException {
+    public void initialize(
+            Stage primaryStage,
+            Pair<CardListOverviewCtrl, Parent> listOverview
+    ) throws IOException {
         this.primaryStage = primaryStage;
 
         this.listOverviewCtrl = listOverview.getKey();

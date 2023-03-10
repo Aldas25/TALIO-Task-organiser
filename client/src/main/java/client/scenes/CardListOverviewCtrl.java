@@ -55,7 +55,6 @@ public class CardListOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     private static final Injector INJECTOR = createInjector(new MyModule());
-    private static final MyFXML FXML = new MyFXML(INJECTOR);
 
 
     @FXML
@@ -87,24 +86,30 @@ public class CardListOverviewCtrl implements Initializable {
 
         for (CardList cardList : allLists) {
 
-            AnchorPane listNode = (AnchorPane) FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
+            AnchorPane listNode =
+                    FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
 
-            Text text = (Text) listNode.getChildren().get(0);  // retrieving text from a copy of the file ListTemplate
+            // retrieving text from a copy of the file ListTemplate
+            Text text = (Text) listNode.getChildren().get(0);
             text.setText(cardList.title);                  // setting title to new node
 
             for (Card card : server.getCardsForList(cardList)) {
 
-                AnchorPane cardNode = (AnchorPane) FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
+                AnchorPane cardNode =
+                        FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
 
-                Text cardText = (Text) cardNode.getChildren().get(0); // retrieve name of the Card from the Text Box
+                // retrieve name of the Card from the Text Box
+                Text cardText = (Text) cardNode.getChildren().get(0);
                 cardText.setText(card.title); // set the name of the Card
 
-                VBox listBox = (VBox) listNode.getChildren().get(1); // each list contains a Vertical Box with all its Cards
+                // each list contains a Vertical Box with all its Cards
+                VBox listBox = (VBox) listNode.getChildren().get(1);
                 listBox.setSpacing(10); // set spacing between the cards within a list
                 listBox.getChildren().add(cardNode); // add this card to the children of the VBox
             }
 
-            listContainer.getChildren().add(listNode);          // adding node to children of listContainer
+            // adding node to children of listContainer
+            listContainer.getChildren().add(listNode);
         }
     }
 
@@ -128,6 +133,8 @@ public class CardListOverviewCtrl implements Initializable {
         }
 
         System.out.println("SELECTED LIST: " + selectedList);
+
+        if (selectedList == null) return;
 
         Card card = new Card(selectedList.id, newCardTextField.getText());
         server.addCard(card);

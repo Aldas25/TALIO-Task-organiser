@@ -60,7 +60,10 @@ public class CardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Card> updateCardTitle(@PathVariable("id") long id, @RequestBody Card card){
+    public ResponseEntity<Card> updateCardTitle(
+            @PathVariable("id") long id,
+            @RequestBody Card card
+    ){
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
