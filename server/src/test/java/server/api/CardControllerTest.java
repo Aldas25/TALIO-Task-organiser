@@ -3,21 +3,21 @@ package server.api;
 import commons.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.ResponseEntity;
+
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public class CardControllerTest {
-    public int nextInt;
+
     private TestCardRepository cardRepo;
     private CardController sut;
-    private TestCardListRepository cardListRepo;
 
     @BeforeEach
     public void setup() {
         cardRepo = new TestCardRepository();
-        cardListRepo = new TestCardListRepository();
+        TestCardListRepository cardListRepo = new TestCardListRepository();
         sut = new CardController(cardRepo, cardListRepo);
     }
 
@@ -33,7 +33,8 @@ public class CardControllerTest {
     }
 /*
     Note that few tests below will fail in the future because we will implement a functionality that
-    does not let a card to be added to the list which does not exist (this happens either by entering a non-existent
+    does not let a card be added to the list which does not exist (this
+    happens either by entering a non-existent
     list's id or leaving it empty)
  */
     @Test
@@ -41,9 +42,9 @@ public class CardControllerTest {
         sut.add(new Card(1L,"c1"));
 
         var lists = cardRepo.findAll();
-        var actual = ResponseEntity.ok(lists.get(0));
+        var actual = lists.get(0);
 
-        assertEquals("c1", actual.getBody().title);
+        assertEquals("c1", actual.title);
     }
     @Test
     public void cannotGetByInvalidId() {
@@ -63,7 +64,7 @@ public class CardControllerTest {
         sut.add(c);
         var actual = sut.getById(c.id);
 
-        assertEquals("c1", actual.getBody().title);
+        assertEquals("c1", Objects.requireNonNull(actual.getBody()).title);
     }
     @Test
     public void getAllCards() {

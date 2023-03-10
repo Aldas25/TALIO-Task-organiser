@@ -26,7 +26,7 @@ public class Card {
     public String title;
 
     @SuppressWarnings("unused")
-    private Card() {
+    protected Card() {
         // for object mappers
     }
 

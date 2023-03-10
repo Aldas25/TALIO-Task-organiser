@@ -4,23 +4,22 @@ import commons.Card;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public class CardListControllerTest {
-    private TestCardRepository cardRepo;
     private TestCardListRepository cardListRepo;
     private CardController cardCtrl;
     private CardListController sut;
 
     @BeforeEach
     public void setup() {
-        cardRepo = new TestCardRepository();
+        TestCardRepository cardRepo = new TestCardRepository();
         cardListRepo = new TestCardListRepository();
         cardCtrl = new CardController(cardRepo, cardListRepo);
         sut = new CardListController(cardListRepo, cardRepo);
@@ -41,9 +40,9 @@ public class CardListControllerTest {
         sut.add(new CardList("l1"));
 
         var lists = cardListRepo.findAll();
-        var actual = ResponseEntity.ok(lists.get(0));
 
-        assertEquals("l1", actual.getBody().title);
+        assertEquals(1, lists.size());
+        assertEquals("l1", lists.get(0).title);
     }
     @Test
     public void cannotGetByInvalidId() {
@@ -63,14 +62,17 @@ public class CardListControllerTest {
         sut.add(l);
         var actual = sut.getById(l.id);
 
-        assertEquals("l1", actual.getBody().title);
+        assertEquals("l1", Objects.requireNonNull(actual.getBody()).title);
     }
     @Test
     public void getAllCardLists() {
-        sut.add(new CardList("l1"));
-        var actual = cardListRepo.findAll();
+        CardList cardList = new CardList("l1");
+        List<CardList> expected = List.of(cardList);
 
-        assertTrue(actual.equals(sut.getAll()));
+        sut.add(new CardList("l1"));
+
+        assertEquals(expected, sut.getAll());
+        assertEquals(expected, cardListRepo.findAll());
     }
     @Test
     public void cannotGetCardsFromInvalidList() {
@@ -92,7 +94,7 @@ public class CardListControllerTest {
         cardCtrl.add(c);
         var cardList = sut.getCardsForList(l.id);
 
-        assertEquals(Arrays.asList(c), cardList.getBody());
+        assertEquals(List.of(c), cardList.getBody());
     }
     @Test
     public void databaseIsUsed() {

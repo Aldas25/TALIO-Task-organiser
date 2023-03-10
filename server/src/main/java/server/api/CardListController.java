@@ -74,7 +74,10 @@ public class CardListController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CardList> updateListTitle(@PathVariable("id") long id, @RequestBody CardList list){
+    public ResponseEntity<CardList> updateListTitle(
+            @PathVariable("id") long id,
+            @RequestBody CardList list
+    ){
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }

@@ -25,7 +25,7 @@ public class CardList {
 //    public List<Card> cards;
 
     @SuppressWarnings("unused")
-    public CardList() {
+    protected CardList() {
         // for object mapper
     }
 

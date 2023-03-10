@@ -88,9 +88,9 @@ public class TestCardListRepository implements CardListRepository {
 
     @Override
     public Optional<CardList> findById(Long aLong) {
-        for(int i=0; i<cardLists.size(); i++){
-            if(cardLists.get(i).id == aLong){
-                return Optional.of(cardLists.get(i));
+        for (CardList cardList : cardLists) {
+            if (cardList.id == aLong) {
+                return Optional.of(cardList);
             }
         }
         return Optional.empty();
@@ -175,7 +175,9 @@ public class TestCardListRepository implements CardListRepository {
     }
 
     @Override
-    public <S extends CardList, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends CardList, R> R findBy(
+            Example<S> example,
+            Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 }
