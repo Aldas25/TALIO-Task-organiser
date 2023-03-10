@@ -97,30 +97,34 @@ public class CardListOverviewCtrl implements Initializable {
 
     public void refresh() throws IOException {
 
-
-
         listContainer.getChildren().clear();
-        listContainer.setSpacing(4);            //spacing between lists
+        listContainer.setSpacing(5);            //spacing between lists
 
         List<CardList> allLists = server.getCardLists();
 
         for (CardList cardList : allLists) {
 
-            AnchorPane node = (AnchorPane) FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
-            Text text = (Text) node.getChildren().get(0);  //retrieving text from a copy of the file ListTemplate
-            text.setText(cardList.title);                  //setting title to new node
+            AnchorPane listNode = (AnchorPane) FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
+
+            Text text = (Text) listNode.getChildren().get(0);  // retrieving text from a copy of the file ListTemplate
+            text.setText(cardList.title);                  // setting title to new node
 
             for (Card card : server.getCardsForList(cardList)) {
+
                 AnchorPane cardNode = (AnchorPane) FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
-                VBox cardBox = (VBox) node.getChildren().get(1);
-                Text cardText = (Text) cardNode.getChildren().get(0);
-                cardText.setText(card.title);
-                cardBox.getChildren().add(cardNode);
+
+                Text cardText = (Text) cardNode.getChildren().get(0); // retrieve name of the Card from the Text Box
+                cardText.setText(card.title); // set the name of the Card
+
+                VBox listBox = (VBox) listNode.getChildren().get(1); // each list contains a Vertical Box with all its Cards
+                listBox.setSpacing(10); // set spacing between the cards within a list
+                listBox.getChildren().add(cardNode); // add this card to the children of the VBox
             }
 
-            listContainer.getChildren().add(node);          //adding node to children of listContainer
+            listContainer.getChildren().add(listNode);          // adding node to children of listContainer
         }
     }
+
 
     public void addNewList() throws IOException {
         CardList list = new CardList(newListTextField.getText());

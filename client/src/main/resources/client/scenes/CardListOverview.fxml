@@ -5,14 +5,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardListOverviewCtrl">
+
+<AnchorPane prefHeight="639.0" prefWidth="746.0" style="-fx-background-color: #EAE8E3;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardListOverviewCtrl">
    <children>
-      <Button layoutX="474.0" layoutY="347.0" mnemonicParsing="false" onAction="#refresh" text="REFRESH" />
-      <HBox fx:id="listContainer" layoutX="56.0" layoutY="61.0" prefHeight="235.0" prefWidth="335.0" />
-      <TextField fx:id="newListTextField" layoutX="22.0" layoutY="321.0" promptText="List Title" />
-      <Button layoutX="22.0" layoutY="347.0" mnemonicParsing="false" onAction="#addNewList" text="Add new list" />
-      <TextField fx:id="newCardIDForList" layoutX="198.0" layoutY="296.0" promptText="List ID" />
-      <TextField fx:id="newCardTextField" layoutX="198.0" layoutY="321.0" promptText="Card title" />
-      <Button layoutX="198.0" layoutY="347.0" mnemonicParsing="false" onAction="#addNewCard" text="Add new card" />
+      <Button layoutX="653.0" layoutY="600.0" mnemonicParsing="false" onAction="#refresh" style="-fx-background-color: A3B18A; -fx-border-color: #506040; -fx-border-radius: 4.3; -fx-border-width: 1.2;" text="Refresh" textFill="#414833" />
+      <HBox fx:id="listContainer" layoutX="23.0" layoutY="28.0" prefHeight="481.0" prefWidth="701.0" />
+      <Button layoutX="23.0" layoutY="600.0" mnemonicParsing="false" onAction="#addNewList" style="-fx-background-color: #A3B18A; -fx-border-color: #506040; -fx-border-radius: 4.3; -fx-border-width: 1.2;" text="Add new list" textFill="#414833" />
+      <TextField fx:id="newListTextField" layoutX="23.0" layoutY="568.0" promptText="List Title" style="-fx-background-color: #FCFCFB; -fx-border-color: #DAD7CD; -fx-border-radius: 3; -fx-border-width: 1;" />
+      <TextField fx:id="newCardIDForList" layoutX="197.0" layoutY="535.0" promptText="List ID" style="-fx-background-color: #FCFCFB; -fx-border-color: #DAD7CD; -fx-border-width: 1; -fx-border-radius: 3;" />
+      <TextField fx:id="newCardTextField" layoutX="197.0" layoutY="568.0" promptText="Card title" style="-fx-background-color: #FCFCFB; -fx-border-color: #DAD7CD; -fx-border-radius: 3; -fx-border-width: 1;" />
+      <Button layoutX="197.0" layoutY="600.0" mnemonicParsing="false" onAction="#addNewCard" style="-fx-background-color: A3B18A; -fx-border-color: #506040; -fx-border-radius: 4.3; -fx-border-width: 1.2;" text="Add new card" textFill="#414833" />
    </children>
 </AnchorPane>

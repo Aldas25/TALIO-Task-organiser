@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="39.0" prefWidth="213.0" style="-fx-background-color: #A3B18A; -fx-border-radius: 6; -fx-border-width: 3; -fx-border-color: #DAD7CD; -fx-background-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardTemplateCtrl">
+<AnchorPane prefHeight="39.0" prefWidth="210.0" style="-fx-background-color: #AAB793; -fx-background-radius: 3;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardTemplateCtrl">
    <children>
-      <Text fill="#334d40" layoutX="6.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BLAH" textAlignment="CENTER" wrappingWidth="202.63671875">
+      <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#414833" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BLAH" textAlignment="CENTER" wrappingWidth="210.0">
          <font>
             <Font size="20.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
       </Text>
    </children>
 </AnchorPane>
