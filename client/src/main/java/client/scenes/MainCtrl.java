@@ -30,19 +30,8 @@ public class MainCtrl {
     private CardListOverviewCtrl listOverviewCtrl;
     private Scene listOverviewScene;
 
-//    private QuoteOverviewCtrl overviewCtrl;
-//    private Scene overview;
-//
-//    private AddQuoteCtrl addCtrl;
-//    private Scene add;
-
     public void initialize(Stage primaryStage, Pair<CardListOverviewCtrl, Parent> listOverview) throws IOException {
         this.primaryStage = primaryStage;
-//        this.overviewCtrl = overview.getKey();
-//        this.overview = new Scene(overview.getValue());
-//
-//        this.addCtrl = add.getKey();
-//        this.add = new Scene(add.getValue());
 
         this.listOverviewCtrl = listOverview.getKey();
         this.listOverviewScene = new Scene(listOverview.getValue());
@@ -56,16 +45,4 @@ public class MainCtrl {
         primaryStage.setScene(listOverviewScene);
         listOverviewCtrl.refresh();
     }
-
-//    public void showOverview() {
-//        primaryStage.setTitle("Quotes: Overview");
-//        primaryStage.setScene(overview);
-//        overviewCtrl.refresh();
-//    }
-//
-//    public void showAdd() {
-//        primaryStage.setTitle("Quotes: Adding Quote");
-//        primaryStage.setScene(add);
-//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
-//    }
 }

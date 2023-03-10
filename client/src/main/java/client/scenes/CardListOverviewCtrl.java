@@ -67,17 +67,6 @@ public class CardListOverviewCtrl implements Initializable {
     @FXML
     private TextField newCardTextField;
 
-//    private ObservableList<Quote> data;
-
-//    @FXML
-//    private TableView<Quote> table;
-//    @FXML
-//    private TableColumn<Quote, String> colFirstName;
-//    @FXML
-//    private TableColumn<Quote, String> colLastName;
-//    @FXML
-//    private TableColumn<Quote, String> colQuote;
-
     @Inject
     public CardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
@@ -86,14 +75,8 @@ public class CardListOverviewCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        colFirstName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.firstName));
-//        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
-//        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
-    }
 
-//    public void addQuote() {
-//        mainCtrl.showAdd();
-//    }
+    }
 
     public void refresh() throws IOException {
 

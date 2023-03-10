@@ -1,8 +1,6 @@
 package server.api;
 
 import java.util.List;
-//import java.util.Objects;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import commons.Card;
@@ -17,12 +15,10 @@ import server.database.CardRepository;
 @RequestMapping("/api/lists")
 public class CardListController {
 
-    private final Random random;
     private final CardListRepository repo;
     private final CardRepository cardRepo;
 
-    public CardListController(Random random, CardListRepository repo, CardRepository cardRepo) {
-        this.random = random;
+    public CardListController(CardListRepository repo, CardRepository cardRepo) {
         this.repo = repo;
         this.cardRepo = cardRepo;
     }
@@ -65,13 +61,6 @@ public class CardListController {
 
     private static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
-    }
-
-    @GetMapping("rnd")
-    public ResponseEntity<CardList> getRandom() {
-        var lists = repo.findAll();
-        var idx = random.nextInt((int) repo.count());
-        return ResponseEntity.ok(lists.get(idx));
     }
 
     @DeleteMapping("/{id}")
