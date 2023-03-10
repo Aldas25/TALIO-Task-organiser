@@ -1,9 +1,7 @@
 package server.api;
 
 import java.util.List;
-import java.util.Random;
 
-//import commons.CardList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,12 +13,10 @@ import server.database.CardRepository;
 @RequestMapping("/api/cards")
 public class CardController {
 
-    private final Random random;
     private final CardRepository repo;
     private final CardListRepository listRepo;
 
-    public CardController(Random random, CardRepository repo, CardListRepository listRepo) {
-        this.random = random;
+    public CardController(CardRepository repo, CardListRepository listRepo) {
         this.repo = repo;
         this.listRepo = listRepo;
     }
@@ -51,13 +47,6 @@ public class CardController {
 
     private static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
-    }
-
-    @GetMapping("rnd")
-    public ResponseEntity<Card> getRandom() {
-        var lists = repo.findAll();
-        var idx = random.nextInt((int) repo.count());
-        return ResponseEntity.ok(lists.get(idx));
     }
 
     @DeleteMapping("/{id}")

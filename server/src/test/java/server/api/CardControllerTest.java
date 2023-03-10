@@ -5,25 +5,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public class CardControllerTest {
     public int nextInt;
-    private MyRandom random;
     private TestCardRepository cardRepo;
     private CardController sut;
     private TestCardListRepository cardListRepo;
 
     @BeforeEach
     public void setup() {
-        random = new CardControllerTest.MyRandom();
         cardRepo = new TestCardRepository();
         cardListRepo = new TestCardListRepository();
-        sut = new CardController(random, cardRepo, cardListRepo);
+        sut = new CardController(cardRepo, cardListRepo);
     }
 
     @Test
@@ -75,7 +70,7 @@ public class CardControllerTest {
         sut.add(new Card(1L,"c1"));
         var actual = cardRepo.findAll();
 
-        assertTrue(actual.equals(sut.getAll()));
+        assertEquals(actual, sut.getAll());
     }
 
     @Test
@@ -83,15 +78,5 @@ public class CardControllerTest {
         sut.add(new Card(1L,"c1"));
         boolean actual = cardRepo.calledMethods.contains("save");
         assertTrue(actual);
-    }
-
-    @SuppressWarnings("serial")
-    public class MyRandom extends Random {
-        public boolean wasCalled = false;
-        @Override
-        public int nextInt(int bound) {
-            wasCalled = true;
-            return nextInt;
-        }
     }
 }

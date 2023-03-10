@@ -7,15 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public class CardListControllerTest {
-    public int nextInt;
-    private MyRandom random;
     private TestCardRepository cardRepo;
     private TestCardListRepository cardListRepo;
     private CardController cardCtrl;
@@ -23,11 +20,10 @@ public class CardListControllerTest {
 
     @BeforeEach
     public void setup() {
-        random = new CardListControllerTest.MyRandom();
         cardRepo = new TestCardRepository();
         cardListRepo = new TestCardListRepository();
-        cardCtrl = new CardController(random, cardRepo, cardListRepo);
-        sut = new CardListController(random, cardListRepo, cardRepo);
+        cardCtrl = new CardController(cardRepo, cardListRepo);
+        sut = new CardListController(cardListRepo, cardRepo);
     }
     @Test
     public void cannotAddNullCardList() {
@@ -103,15 +99,5 @@ public class CardListControllerTest {
         sut.add(new CardList("l1"));
         boolean actual = cardListRepo.calledMethods.contains("save");
         assertTrue(actual);
-    }
-
-    @SuppressWarnings("serial")
-    public class MyRandom extends Random {
-        public boolean wasCalled = false;
-        @Override
-        public int nextInt(int bound) {
-            wasCalled = true;
-            return nextInt;
-        }
     }
 }
