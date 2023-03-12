@@ -20,41 +20,26 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import client.MyFXML;
-import client.MyModule;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
-import com.google.inject.Injector;
 import commons.Card;
 import commons.CardList;
-//import commons.Quote;
-//import javafx.beans.property.SimpleStringProperty;
-//import javafx.collections.FXCollections;
-//import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-//import javafx.scene.control.TableColumn;
-//import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-//import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import static com.google.inject.Guice.createInjector;
 
-
-public class CardListOverviewCtrl implements Initializable {
+public class CardListOverviewCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
-    private static final Injector INJECTOR = createInjector(new MyModule());
 
 
     @FXML
@@ -72,12 +57,7 @@ public class CardListOverviewCtrl implements Initializable {
         this.mainCtrl = mainCtrl;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
-    public void refresh() throws IOException {
+    public void refresh() {
 
         listContainer.getChildren().clear();
         listContainer.setSpacing(5);            //spacing between lists
@@ -86,8 +66,12 @@ public class CardListOverviewCtrl implements Initializable {
 
         for (CardList cardList : allLists) {
 
-            AnchorPane listNode =
-                    FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
+            AnchorPane listNode;
+            try {
+                listNode = FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             // retrieving text from a copy of the file ListTemplate
             Text text = (Text) listNode.getChildren().get(0);
@@ -95,8 +79,13 @@ public class CardListOverviewCtrl implements Initializable {
 
             for (Card card : server.getCardsForList(cardList)) {
 
-                AnchorPane cardNode =
-                        FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
+                AnchorPane cardNode;
+                try {
+                    cardNode =
+                            FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
                 // retrieve name of the Card from the Text Box
                 Text cardText = (Text) cardNode.getChildren().get(0);
@@ -114,7 +103,7 @@ public class CardListOverviewCtrl implements Initializable {
     }
 
 
-    public void addNewList() throws IOException {
+    public void addNewList() {
         CardList list = new CardList(newListTextField.getText());
         server.addCardList(list);
         refresh();
@@ -125,7 +114,7 @@ public class CardListOverviewCtrl implements Initializable {
         return MyFXML.class.getClassLoader().getResource(path);
     }
 
-    public void addNewCard() throws IOException {
+    public void addNewCard() {
         CardList selectedList = null;
         for (CardList list : server.getCardLists()) {
             if (list.id == Long.parseLong(newCardIDForList.getText()))
@@ -140,5 +129,9 @@ public class CardListOverviewCtrl implements Initializable {
         server.addCard(card);
 
         refresh();
+    }
+
+    public void disconnectFromServer() {
+        mainCtrl.disconnectFromServer();
     }
 }

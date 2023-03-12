@@ -27,11 +27,28 @@ import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
+    private String server = null;
+
+    public void setServer(String server) {
+        this.server = server;
+        System.out.println("Server set to: " + server);
+    }
+
+    public boolean isServerOk() {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(server).path("status")
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(Boolean.class);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     public List<CardList> getCardLists() {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/lists")
+                .target(server).path("api/lists")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<CardList>>() {});
@@ -39,7 +56,7 @@ public class ServerUtils {
 
     public CardList addCardList(CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/lists")
+                .target(server).path("api/lists")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(list, APPLICATION_JSON), CardList.class);
@@ -47,7 +64,7 @@ public class ServerUtils {
 
     public Card addCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/cards")
+                .target(server).path("api/cards")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -55,7 +72,7 @@ public class ServerUtils {
 
     public List<Card> getCardsForList(CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/lists/" + list.id + "/cards")
+                .target(server).path("api/lists/" + list.id + "/cards")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<Card>>() {});

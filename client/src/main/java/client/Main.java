@@ -17,9 +17,8 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import java.io.IOException;
-
 import client.scenes.CardListOverviewCtrl;
+import client.scenes.ServerLoginCtrl;
 import com.google.inject.Injector;
 
 import client.scenes.MainCtrl;
@@ -36,12 +35,16 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         var listOverview = FXML.load(
                 CardListOverviewCtrl.class, "client", "scenes", "CardListOverview.fxml"
         );
+        var serverLogin = FXML.load(
+                ServerLoginCtrl.class, "client", "scenes", "ServerLogin.fxml"
+        );
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, listOverview);
+
+        mainCtrl.initialize(primaryStage, listOverview, serverLogin);
     }
 }
