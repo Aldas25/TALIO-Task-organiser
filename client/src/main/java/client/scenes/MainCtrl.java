@@ -15,37 +15,61 @@
  */
 package client.scenes;
 
-//import commons.Card;
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.io.IOException;
-
 public class MainCtrl {
+
+    private final ServerUtils server;
 
     private Stage primaryStage;
 
     private CardListOverviewCtrl listOverviewCtrl;
     private Scene listOverviewScene;
 
+    private ServerLoginCtrl serverLoginCtrl;
+    private Scene serverLoginScene;
+
+    @Inject
+    public MainCtrl(ServerUtils server) {
+        this.server = server;
+    }
+
     public void initialize(
             Stage primaryStage,
-            Pair<CardListOverviewCtrl, Parent> listOverview
-    ) throws IOException {
+            Pair<CardListOverviewCtrl, Parent> listOverview,
+            Pair<ServerLoginCtrl, Parent> serverLogin
+    ) {
         this.primaryStage = primaryStage;
 
         this.listOverviewCtrl = listOverview.getKey();
         this.listOverviewScene = new Scene(listOverview.getValue());
 
-        showListOverview();
+        this.serverLoginCtrl = serverLogin.getKey();
+        this.serverLoginScene = new Scene(serverLogin.getValue());
+
+        showServerLogin();
         primaryStage.show();
     }
 
-    public void showListOverview() throws IOException {
+    public void showListOverview() {
         primaryStage.setTitle("Card lists: overview");
         primaryStage.setScene(listOverviewScene);
         listOverviewCtrl.refresh();
+    }
+
+    public void showServerLogin() {
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(serverLoginScene);
+        serverLoginCtrl.refresh();
+    }
+
+    public void disconnectFromServer() {
+        server.setServer(null);
+        showServerLogin();
     }
 }

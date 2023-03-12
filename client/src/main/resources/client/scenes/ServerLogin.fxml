@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ServerLoginCtrl">
+   <children>
+      <Text layoutX="233.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to TALIO" />
+      <Text layoutX="144.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server URL:" />
+      <TextField fx:id="serverURLTextField" layoutX="214.0" layoutY="143.0" text="http://localhost:8080/" />
+      <Button layoutX="257.0" layoutY="219.0" mnemonicParsing="false" onAction="#connectToServer" text="Connect to server" />
+      <Label fx:id="warningLabel" layoutX="229.0" layoutY="278.0" text="Warning Label" visible="false" />
+   </children>
+</AnchorPane>

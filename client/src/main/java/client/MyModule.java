@@ -17,6 +17,8 @@ package client;
 
 import client.scenes.CardListOverviewCtrl;
 import client.scenes.MainCtrl;
+import client.scenes.ServerLoginCtrl;
+import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -25,7 +27,9 @@ public class MyModule implements Module {
 
     @Override
     public void configure(Binder binder) {
+        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CardListOverviewCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(ServerLoginCtrl.class).in(Scopes.SINGLETON);
     }
 }

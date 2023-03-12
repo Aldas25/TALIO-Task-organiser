@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <ScrollPane style="-fx-background-color: #EAE8E3;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardListOverviewCtrl">
    <content>
       <VBox style="-fx-background-color: #EAE8E3;">
@@ -21,6 +20,7 @@
                   <TextField fx:id="newCardIDForList" layoutX="203.0" layoutY="22.0" promptText="List ID" style="-fx-background-color: #FCFCFB; -fx-border-color: #DAD7CD; -fx-border-width: 1; -fx-border-radius: 3;" />
                   <TextField fx:id="newCardTextField" layoutX="203.0" layoutY="55.0" promptText="Card title" style="-fx-background-color: #FCFCFB; -fx-border-color: #DAD7CD; -fx-border-radius: 3; -fx-border-width: 1;" />
                   <Button layoutX="203.0" layoutY="87.0" mnemonicParsing="false" onAction="#addNewCard" style="-fx-background-color: A3B18A; -fx-border-color: #506040; -fx-border-radius: 4.3; -fx-border-width: 1.2;" text="Add new card" textFill="#414833" />
+                  <Button layoutX="436.0" layoutY="88.0" mnemonicParsing="false" onAction="#disconnectFromServer" text="Disconnect from server" />
                </children>
             </AnchorPane>
          </children>

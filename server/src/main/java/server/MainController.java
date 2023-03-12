@@ -7,11 +7,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/")
-public class SomeController {
+public class MainController {
 
     @GetMapping("/")
     @ResponseBody
     public String index() {
         return "Hello world!";
+    }
+
+    @GetMapping("/status")
+    @ResponseBody
+    public boolean ok() {
+        return true;
     }
 }
