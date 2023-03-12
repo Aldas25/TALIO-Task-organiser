@@ -21,6 +21,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 
+import client.Main;
 import client.MyFXML;
 import com.google.inject.Inject;
 
@@ -29,27 +30,21 @@ import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
 
 public class CardListOverviewCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-
     @FXML
     private HBox listContainer;
     @FXML
-    private TextField newListTextField;
-    @FXML
-    private TextField newCardIDForList;
-    @FXML
-    private TextField newCardTextField;
+    private Button addListButton;
 
     @Inject
     public CardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -58,7 +53,6 @@ public class CardListOverviewCtrl {
     }
 
     public void refresh() {
-
         listContainer.getChildren().clear();
         listContainer.setSpacing(5);            //spacing between lists
 
@@ -66,16 +60,21 @@ public class CardListOverviewCtrl {
 
         for (CardList cardList : allLists) {
 
-            AnchorPane listNode;
-            try {
-                listNode = FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            var listTemplate =
+                    Main.load(ListTemplateCtrl.class, "client", "scenes", "ListTemplate.fxml");
+
+            ListTemplateCtrl listTemplateCtrl = listTemplate.getKey();
+            AnchorPane listNode = (AnchorPane) listTemplate.getValue();
+            listTemplateCtrl.setList(cardList);
 
             // retrieving text from a copy of the file ListTemplate
             Text text = (Text) listNode.getChildren().get(0);
             text.setText(cardList.title);                  // setting title to new node
+
+            // each list contains a Vertical Box with all its Cards
+            VBox listBox = (VBox) listNode.getChildren().get(1);
+            listBox.getChildren().clear();
+            listBox.setSpacing(10); // set spacing between the cards within a list
 
             for (Card card : server.getCardsForList(cardList)) {
 
@@ -91,20 +90,21 @@ public class CardListOverviewCtrl {
                 Text cardText = (Text) cardNode.getChildren().get(0);
                 cardText.setText(card.title); // set the name of the Card
 
-                // each list contains a Vertical Box with all its Cards
-                VBox listBox = (VBox) listNode.getChildren().get(1);
-                listBox.setSpacing(10); // set spacing between the cards within a list
                 listBox.getChildren().add(cardNode); // add this card to the children of the VBox
             }
+
+            // adding "new list" button
+            listBox.getChildren().add(listTemplateCtrl.getAddCardButton());
 
             // adding node to children of listContainer
             listContainer.getChildren().add(listNode);
         }
+
+        listContainer.getChildren().add(addListButton);
     }
 
-
     public void addNewList() {
-        CardList list = new CardList(newListTextField.getText());
+        CardList list = new CardList("New list");
         server.addCardList(list);
         refresh();
     }
@@ -114,24 +114,8 @@ public class CardListOverviewCtrl {
         return MyFXML.class.getClassLoader().getResource(path);
     }
 
-    public void addNewCard() {
-        CardList selectedList = null;
-        for (CardList list : server.getCardLists()) {
-            if (list.id == Long.parseLong(newCardIDForList.getText()))
-                selectedList = list;
-        }
-
-        System.out.println("SELECTED LIST: " + selectedList);
-
-        if (selectedList == null) return;
-
-        Card card = new Card(selectedList.id, newCardTextField.getText());
-        server.addCard(card);
-
-        refresh();
-    }
-
     public void disconnectFromServer() {
         mainCtrl.disconnectFromServer();
     }
+
 }

@@ -2,28 +2,19 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <ScrollPane style="-fx-background-color: #EAE8E3;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardListOverviewCtrl">
-   <content>
-      <VBox style="-fx-background-color: #EAE8E3;">
-         <children>
-            <HBox fx:id="listContainer" prefHeight="487.0" prefWidth="653.0" VBox.vgrow="ALWAYS" />
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="746.0" VBox.vgrow="ALWAYS">
+    <content>
+        <VBox style="-fx-background-color: #EAE8E3;">
+            <children>
+                  <Button mnemonicParsing="false" onAction="#disconnectFromServer" text="Disconnect from server" />
+                <HBox fx:id="listContainer" prefHeight="487.0" prefWidth="653.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button layoutX="659.0" layoutY="87.0" mnemonicParsing="false" onAction="#refresh" style="-fx-background-color: A3B18A; -fx-border-color: #506040; -fx-border-radius: 4.3; -fx-border-width: 1.2;" text="Refresh" textFill="#414833" />
-                  <Button layoutX="29.0" layoutY="87.0" mnemonicParsing="false" onAction="#addNewList" style="-fx-background-color: #A3B18A; -fx-border-color: #506040; -fx-border-radius: 4.3; -fx-border-width: 1.2;" text="Add new list" textFill="#414833" />
-                  <TextField fx:id="newListTextField" layoutX="29.0" layoutY="55.0" promptText="List Title" style="-fx-background-color: #FCFCFB; -fx-border-color: #DAD7CD; -fx-border-radius: 3; -fx-border-width: 1;" />
-                  <TextField fx:id="newCardIDForList" layoutX="203.0" layoutY="22.0" promptText="List ID" style="-fx-background-color: #FCFCFB; -fx-border-color: #DAD7CD; -fx-border-width: 1; -fx-border-radius: 3;" />
-                  <TextField fx:id="newCardTextField" layoutX="203.0" layoutY="55.0" promptText="Card title" style="-fx-background-color: #FCFCFB; -fx-border-color: #DAD7CD; -fx-border-radius: 3; -fx-border-width: 1;" />
-                  <Button layoutX="203.0" layoutY="87.0" mnemonicParsing="false" onAction="#addNewCard" style="-fx-background-color: A3B18A; -fx-border-color: #506040; -fx-border-radius: 4.3; -fx-border-width: 1.2;" text="Add new card" textFill="#414833" />
-                  <Button layoutX="436.0" layoutY="88.0" mnemonicParsing="false" onAction="#disconnectFromServer" text="Disconnect from server" />
-               </children>
-            </AnchorPane>
-         </children>
-      </VBox>
-   </content>
+                  <Button fx:id="addListButton" mnemonicParsing="false" onAction="#addNewList" text="+" />
+               </children></HBox>
+            </children>
+        </VBox>
+    </content>
 </ScrollPane>

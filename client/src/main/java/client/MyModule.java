@@ -15,6 +15,7 @@
  */
 package client;
 
+import client.scenes.AddCardCtrl;
 import client.scenes.CardListOverviewCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.ServerLoginCtrl;
@@ -30,6 +31,7 @@ public class MyModule implements Module {
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CardListOverviewCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AddCardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ServerLoginCtrl.class).in(Scopes.SINGLETON);
     }
 }

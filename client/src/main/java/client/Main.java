@@ -17,13 +17,16 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
+import client.scenes.AddCardCtrl;
 import client.scenes.CardListOverviewCtrl;
 import client.scenes.ServerLoginCtrl;
 import com.google.inject.Injector;
 
 import client.scenes.MainCtrl;
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 public class Main extends Application {
 
@@ -36,15 +39,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        var listOverview = FXML.load(
+        var listOverview = load(
                 CardListOverviewCtrl.class, "client", "scenes", "CardListOverview.fxml"
         );
-        var serverLogin = FXML.load(
+        var addCard = load(
+                AddCardCtrl.class, "client", "scenes", "AddCard.fxml"
+        );
+        var serverLogin = load(
                 ServerLoginCtrl.class, "client", "scenes", "ServerLogin.fxml"
         );
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        mainCtrl.initialize(primaryStage, listOverview, addCard, serverLogin);
+    }
 
-        mainCtrl.initialize(primaryStage, listOverview, serverLogin);
+    public static <T> Pair<T, Parent> load(Class<T> c, String... parts) {
+        return FXML.load(c, parts);
     }
 }
