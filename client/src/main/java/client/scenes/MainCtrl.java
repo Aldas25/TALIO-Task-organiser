@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.CardList;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.scene.Parent;
@@ -31,6 +32,9 @@ public class MainCtrl {
     private CardListOverviewCtrl listOverviewCtrl;
     private Scene listOverviewScene;
 
+    private AddCardCtrl addCardCtrl;
+    private Scene addCardScene;
+
     private ServerLoginCtrl serverLoginCtrl;
     private Scene serverLoginScene;
 
@@ -42,12 +46,16 @@ public class MainCtrl {
     public void initialize(
             Stage primaryStage,
             Pair<CardListOverviewCtrl, Parent> listOverview,
+            Pair<AddCardCtrl, Parent> addCard,
             Pair<ServerLoginCtrl, Parent> serverLogin
     ) {
         this.primaryStage = primaryStage;
 
         this.listOverviewCtrl = listOverview.getKey();
         this.listOverviewScene = new Scene(listOverview.getValue());
+
+        this.addCardCtrl = addCard.getKey();
+        this.addCardScene = new Scene(addCard.getValue());
 
         this.serverLoginCtrl = serverLogin.getKey();
         this.serverLoginScene = new Scene(serverLogin.getValue());
@@ -60,6 +68,12 @@ public class MainCtrl {
         primaryStage.setTitle("Card lists: overview");
         primaryStage.setScene(listOverviewScene);
         listOverviewCtrl.refresh();
+    }
+
+    public void showAddCard(CardList list) {
+        primaryStage.setTitle("Add new card");
+        primaryStage.setScene(addCardScene);
+        addCardCtrl.setList(list);
     }
 
     public void showServerLogin() {
