@@ -25,6 +25,7 @@ import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -62,8 +63,8 @@ public class CardListOverviewCtrl {
             listTemplateCtrl.setList(cardList);
 
             // retrieving text from a copy of the file ListTemplate
-            Text text = (Text) listNode.getChildren().get(0);
-            text.setText(cardList.title);                  // setting title to new node
+            TextField textField = (TextField) listNode.getChildren().get(0);
+            textField.setText(cardList.title);                  // setting title to new node
 
             // each list contains a Vertical Box with all its Cards
             VBox listBox = (VBox) listNode.getChildren().get(1);

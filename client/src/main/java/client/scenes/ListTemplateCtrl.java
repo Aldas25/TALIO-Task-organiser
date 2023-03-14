@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -14,9 +16,9 @@ public class ListTemplateCtrl {
 
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
-
     private CardList list;
-
+    @FXML
+    private TextField updateListNameField;
     @FXML
     private AnchorPane listAnchorPane;
     @FXML
@@ -30,6 +32,11 @@ public class ListTemplateCtrl {
 
     public void setList(CardList list) {
         this.list = list;
+    }
+    @FXML
+    void updateCardListTitle(KeyEvent event) {
+        list.setTitle(updateListNameField.getText());
+        server.updateCardListTitle(list);
     }
 
     public void addCard() {

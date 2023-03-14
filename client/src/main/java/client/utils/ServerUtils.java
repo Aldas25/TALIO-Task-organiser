@@ -62,6 +62,14 @@ public class ServerUtils {
                 .post(Entity.entity(list, APPLICATION_JSON), CardList.class);
     }
 
+    public CardList updateCardListTitle(CardList list) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/lists/" + list.id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(list, APPLICATION_JSON), CardList.class);
+    }
+
     public Card addCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/cards")
