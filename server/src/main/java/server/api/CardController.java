@@ -60,7 +60,7 @@ public class CardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Card> updateCardTitle(
+    public ResponseEntity<Card> updateCard(
             @PathVariable("id") long id,
             @RequestBody Card card
     ){

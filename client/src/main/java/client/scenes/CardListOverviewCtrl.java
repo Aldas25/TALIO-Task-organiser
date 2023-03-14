@@ -15,21 +15,15 @@
  */
 package client.scenes;
 
-
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Path;
 import java.util.List;
 
 import client.Main;
-import client.MyFXML;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
 import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -78,13 +72,13 @@ public class CardListOverviewCtrl {
 
             for (Card card : server.getCardsForList(cardList)) {
 
-                AnchorPane cardNode;
-                try {
-                    cardNode =
-                            FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                var cardTemplate =
+                        Main.load(CardTemplateCtrl.class, "client", "scenes", "CardTemplate.fxml");
+
+                CardTemplateCtrl cardTemplateCtrl = cardTemplate.getKey();
+                AnchorPane cardNode = (AnchorPane) cardTemplate.getValue();
+                cardTemplateCtrl.setCard(card);
+                cardTemplateCtrl.setCurrentListCtrl(listTemplateCtrl);
 
                 // retrieve name of the Card from the Text Box
                 Text cardText = (Text) cardNode.getChildren().get(0);
@@ -109,13 +103,7 @@ public class CardListOverviewCtrl {
         refresh();
     }
 
-    private URL getLocation(String... parts) {
-        var path = Path.of("", parts).toString();
-        return MyFXML.class.getClassLoader().getResource(path);
-    }
-
     public void disconnectFromServer() {
         mainCtrl.disconnectFromServer();
     }
-
 }
