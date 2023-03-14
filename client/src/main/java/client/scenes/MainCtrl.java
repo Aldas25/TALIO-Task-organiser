@@ -38,6 +38,9 @@ public class MainCtrl {
     private ServerLoginCtrl serverLoginCtrl;
     private Scene serverLoginScene;
 
+    private CardTemplateCtrl draggableCardCtrl;
+    private ListTemplateCtrl currentDraggedOverListCtrl;
+
     @Inject
     public MainCtrl(ServerUtils server) {
         this.server = server;
@@ -85,5 +88,21 @@ public class MainCtrl {
     public void disconnectFromServer() {
         server.setServer(null);
         showServerLogin();
+    }
+
+    public CardTemplateCtrl getDraggableCardCtrl() {
+        return draggableCardCtrl;
+    }
+
+    public void setDraggableCardCtrl(CardTemplateCtrl cardCtrl) {
+        this.draggableCardCtrl = cardCtrl;
+    }
+
+    public ListTemplateCtrl getCurrentDraggedOverListCtrl() {
+        return currentDraggedOverListCtrl;
+    }
+
+    public void setCurrentDraggedOverListCtrl(ListTemplateCtrl ctrl) {
+        this.currentDraggedOverListCtrl = ctrl;
     }
 }

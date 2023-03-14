@@ -77,4 +77,15 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<Card>>() {});
     }
+
+    public Card moveCardToList(Card card, CardList list) {
+        Card newCard = new Card(list.id, card.title);
+        if (card.cardListId == list.id) // card is already in the list
+            return card;
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/cards/" + card.id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(newCard, APPLICATION_JSON), Card.class);
+    }
 }
