@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.Card;
 import commons.CardList;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
@@ -77,6 +78,15 @@ public class MainCtrl {
         primaryStage.setTitle("Add new card");
         primaryStage.setScene(addCardScene);
         addCardCtrl.setList(list);
+        addCardCtrl.refresh();
+    }
+
+    public void showUpdateCard(CardList list, Card card) {
+        primaryStage.setTitle("Edit a card");
+        primaryStage.setScene(addCardScene);
+        addCardCtrl.setList(list);
+        addCardCtrl.setCard(card);
+        addCardCtrl.refresh();
     }
 
     public void showServerLogin() {

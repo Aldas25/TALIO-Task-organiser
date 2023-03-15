@@ -33,6 +33,10 @@ public class ListTemplateCtrl {
     public void setList(CardList list) {
         this.list = list;
     }
+
+    public CardList getList(){
+        return list;
+    }
     @FXML
     void updateCardListTitle(KeyEvent event) {
         list.setTitle(updateListNameField.getText());
