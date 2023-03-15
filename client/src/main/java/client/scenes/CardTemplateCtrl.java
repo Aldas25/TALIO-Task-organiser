@@ -3,6 +3,7 @@ package client.scenes;
 import com.google.inject.Inject;
 import commons.Card;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 
@@ -15,6 +16,8 @@ public class CardTemplateCtrl {
 
     @FXML
     private AnchorPane cardAnchorPane;
+    @FXML
+    private Button editCardButton;
 
     @Inject
     public CardTemplateCtrl(MainCtrl mainCtrl) {
@@ -117,5 +120,8 @@ public class CardTemplateCtrl {
 
         event.consume();
     }
-
+    @FXML
+    public void editCard(){
+        mainCtrl.showUpdateCard(currentListCtrl.getList(), card);
+    }
 }
