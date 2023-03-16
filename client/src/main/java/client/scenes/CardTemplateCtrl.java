@@ -1,27 +1,26 @@
 package client.scenes;
 
+import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 
 public class CardTemplateCtrl {
 
     private final MainCtrl mainCtrl;
-
+    private final ServerUtils server;
     private Card card;
     private ListTemplateCtrl currentListCtrl;
 
     @FXML
     private AnchorPane cardAnchorPane;
-    @FXML
-    private Button editCardButton;
 
     @Inject
-    public CardTemplateCtrl(MainCtrl mainCtrl) {
+    public CardTemplateCtrl(MainCtrl mainCtrl, ServerUtils server) {
         this.mainCtrl = mainCtrl;
+        this.server = server;
     }
 
     public void setCard(Card card) {
@@ -120,8 +119,12 @@ public class CardTemplateCtrl {
 
         event.consume();
     }
-    @FXML
     public void editCard(){
         mainCtrl.showUpdateCard(currentListCtrl.getList(), card);
+    }
+    public void removeCard(){
+        server.removeCard(card);
+        // refresh
+        mainCtrl.showListOverview();
     }
 }

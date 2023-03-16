@@ -20,6 +20,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.util.List;
 import commons.Card;
 import commons.CardList;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -69,7 +70,13 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(list, APPLICATION_JSON), CardList.class);
     }
-
+    public Response removeCardList(CardList list) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/lists/" + list.id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
+    }
     public Card addCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/cards")
@@ -84,7 +91,13 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
-
+    public Response removeCard(Card card) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("/api/cards/" + card.id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
+    }
     public List<Card> getCardsForList(CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/lists/" + list.id + "/cards")

@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -37,10 +38,15 @@ public class ListTemplateCtrl {
     public CardList getList(){
         return list;
     }
-    @FXML
-    void updateCardListTitle(KeyEvent event) {
+    public void updateCardListTitle(KeyEvent event) {
         list.setTitle(updateListNameField.getText());
         server.updateCardListTitle(list);
+    }
+    public void removeCardList(MouseEvent event) {
+        server.removeCardList(list);
+
+        // refresh
+        mainCtrl.showListOverview();
     }
 
     public void addCard() {
