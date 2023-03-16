@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -16,6 +17,11 @@
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </Text>
-      <Button fx:id="editCardButton" layoutX="166.0" layoutY="7.0" mnemonicParsing="false" onAction="#editCard" text="edit" />
+      <Button layoutX="146.0" layoutY="6.0" mnemonicParsing="false" onAction="#editCard" text="edit" textFill="#716f6f" />
+      <Label alignment="CENTER" layoutX="183.0" layoutY="6.0" onMousePressed="#removeCard" prefHeight="26.0" prefWidth="25.0" text="x" textFill="#716f6f">
+         <font>
+            <Font name="Arial Nova Light" size="17.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
