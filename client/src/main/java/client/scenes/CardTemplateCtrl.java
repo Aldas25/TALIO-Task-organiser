@@ -4,10 +4,21 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 
-public class CardTemplateCtrl {
+import client.utils.ServerUtils;
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+
+public class CardTemplateCtrl implements Initializable {
 
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
@@ -16,11 +27,22 @@ public class CardTemplateCtrl {
 
     @FXML
     private AnchorPane cardAnchorPane;
+    @FXML
+    private Button editCardButton;
+    @FXML
+    private ImageView trashBImageView;
 
     @Inject
     public CardTemplateCtrl(MainCtrl mainCtrl, ServerUtils server) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+    }
+
+    @Override
+    public void initialize (URL url, ResourceBundle resourceBundle) {
+        File trashBFile = new File ("client/src/main/java/client/images/trashcan2.png");
+        Image trashBImage = new Image (trashBFile.toURI().toString());
+        trashBImageView.setImage(trashBImage);
     }
 
     public void setCard(Card card) {
@@ -50,7 +72,7 @@ public class CardTemplateCtrl {
      */
     public void onDragDetected(MouseEvent event) {
         // firstly change color of card (visual aid for the user)
-        cardAnchorPane.setStyle("-fx-background-color: #F4FDB4");
+        cardAnchorPane.setStyle("-fx-background-color: #BFC6D9");
 
         Dragboard db = cardAnchorPane.startDragAndDrop(TransferMode.ANY);
         mainCtrl.setDraggableCardCtrl(this);
@@ -79,7 +101,7 @@ public class CardTemplateCtrl {
             mainCtrl.showListOverview();
         } else {
             // reset card color
-            cardAnchorPane.setStyle("-fx-background-color: #AAB793");
+            cardAnchorPane.setStyle("-fx-background-color: #D1DAE6");
         }
 
         event.consume();

@@ -39,6 +39,9 @@ public class MainCtrl {
     private ServerLoginCtrl serverLoginCtrl;
     private Scene serverLoginScene;
 
+    private ServerSignUpCtrl serverSignUpCtrl;
+    private Scene serverSignUpScene;
+
     private CardTemplateCtrl draggableCardCtrl;
     private ListTemplateCtrl currentDraggedOverListCtrl;
 
@@ -51,7 +54,8 @@ public class MainCtrl {
             Stage primaryStage,
             Pair<CardListOverviewCtrl, Parent> listOverview,
             Pair<AddCardCtrl, Parent> addCard,
-            Pair<ServerLoginCtrl, Parent> serverLogin
+            Pair<ServerLoginCtrl, Parent> serverLogin,
+            Pair<ServerSignUpCtrl, Parent> serverSignUp
     ) {
         this.primaryStage = primaryStage;
 
@@ -63,6 +67,9 @@ public class MainCtrl {
 
         this.serverLoginCtrl = serverLogin.getKey();
         this.serverLoginScene = new Scene(serverLogin.getValue());
+
+        this.serverSignUpCtrl = serverSignUp.getKey();
+        this.serverSignUpScene = new Scene(serverSignUp.getValue());
 
         showServerLogin();
         primaryStage.show();
@@ -91,8 +98,15 @@ public class MainCtrl {
 
     public void showServerLogin() {
         primaryStage.setTitle("Login");
+        // primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(serverLoginScene);
-        serverLoginCtrl.refresh();
+        // serverLoginCtrl.refresh();
+    }
+
+    public void showServerSignUp() {
+        primaryStage.setTitle("Sign Up");
+        // primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.setScene(serverSignUpScene);
     }
 
     public void disconnectFromServer() {

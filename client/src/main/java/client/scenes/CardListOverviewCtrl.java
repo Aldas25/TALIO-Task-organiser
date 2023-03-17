@@ -40,6 +40,8 @@ public class CardListOverviewCtrl {
     private HBox listContainer;
     @FXML
     private Button addListButton;
+    @FXML
+    private VBox content;
 
     @Inject
     public CardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -48,13 +50,12 @@ public class CardListOverviewCtrl {
     }
 
     public void refresh() {
+        content.setSpacing(20); //set the distance between button and the lists themselves
         listContainer.getChildren().clear();
         listContainer.setSpacing(5);            //spacing between lists
 
         List<CardList> allLists = server.getCardLists();
-
         for (CardList cardList : allLists) {
-
             var listTemplate =
                     Main.load(ListTemplateCtrl.class, "client", "scenes", "ListTemplate.fxml");
 
