@@ -17,12 +17,9 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.scenes.AddCardCtrl;
-import client.scenes.CardListOverviewCtrl;
-import client.scenes.ServerLoginCtrl;
+import client.scenes.*;
 import com.google.inject.Injector;
 
-import client.scenes.MainCtrl;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -48,9 +45,12 @@ public class Main extends Application {
         var serverLogin = load(
                 ServerLoginCtrl.class, "client", "scenes", "ServerLogin.fxml"
         );
+        var serverSignUp = load (
+                ServerSignUpCtrl.class, "client", "scenes", "ServerSignUp.fxml"
+        );
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, listOverview, addCard, serverLogin);
+        mainCtrl.initialize(primaryStage, listOverview, addCard, serverLogin, serverSignUp);
     }
 
     public static <T> Pair<T, Parent> load(Class<T> c, String... parts) {

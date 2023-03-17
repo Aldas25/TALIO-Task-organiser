@@ -4,8 +4,12 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.CardList;
 import javafx.fxml.FXML;
+
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
@@ -13,7 +17,11 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class ListTemplateCtrl {
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class ListTemplateCtrl implements Initializable {
 
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
@@ -24,11 +32,20 @@ public class ListTemplateCtrl {
     private AnchorPane listAnchorPane;
     @FXML
     private Button addCardButton;
+    @FXML
+    private ImageView trashAImageView;
 
     @Inject
     public ListTemplateCtrl(MainCtrl mainCtrl, ServerUtils server) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+    }
+
+    @Override
+    public void initialize (URL url, ResourceBundle resourceBundle) {
+        File trashAFile = new File ("client/src/main/java/client/images/trashcan1.png");
+        Image trashAImage = new Image (trashAFile.toURI().toString());
+        trashAImageView.setImage(trashAImage);
     }
 
     public void setList(CardList list) {
@@ -38,6 +55,7 @@ public class ListTemplateCtrl {
     public CardList getList(){
         return list;
     }
+
     public void updateCardListTitle(KeyEvent event) {
         list.setTitle(updateListNameField.getText());
         server.updateCardListTitle(list);
@@ -74,7 +92,8 @@ public class ListTemplateCtrl {
         // check if there is a card being dragged
         if (mainCtrl.getDraggableCardCtrl() != null) {
             // change color of anchor pane
-            listAnchorPane.setStyle("-fx-background-color: #F4CDB4");
+            listAnchorPane.setStyle("-fx-background-color: #E6E8F0");
+            updateListNameField.setStyle("-fx-background-color: #E6E8F0");
         }
         event.consume();
     }
@@ -87,7 +106,8 @@ public class ListTemplateCtrl {
      * @param event mouse event containing the information
      */
     public void onDragExited(DragEvent event) {
-        listAnchorPane.setStyle("-fx-background-color: #C4CDB4");
+        listAnchorPane.setStyle("-fx-background-color: #6D85A8");
+        updateListNameField.setStyle("-fx-background-color:  #6D85A8");
         event.consume();
     }
 
@@ -205,4 +225,10 @@ public class ListTemplateCtrl {
         childrenList.add(position, cardAnchorPane);
     }
 
+    public void removeCardListCtrl(MouseEvent event) {
+        server.removeCardList(list);
+
+        // refresh
+        mainCtrl.showListOverview();
+    }
 }

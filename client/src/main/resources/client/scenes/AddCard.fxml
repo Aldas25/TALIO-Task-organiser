@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddCardCtrl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ecece7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddCardCtrl">
    <children>
-      <TextField fx:id="cardTitleTextField" layoutX="226.0" layoutY="121.0" promptText="Enter the card's title" />
-      <Button layoutX="279.0" layoutY="214.0" mnemonicParsing="false" onAction="#addOrUpdateCard" text="OK" />
+      <TextField fx:id="cardTitleTextField" layoutX="228.0" layoutY="175.0" promptText="Enter the card's title" style="-fx-text-fill: #626C88; -fx-prompt-text-fill: #BCC2DC;">
+         <font>
+            <Font size="13.0" />
+         </font></TextField>
+      <Button layoutX="284.0" layoutY="215.0" mnemonicParsing="false" onAction="#addOrUpdateCard" style="-fx-background-color: d1dae6;" text="OK" textFill="#3c4867">
+         <font>
+            <Font size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
    </children>
 </AnchorPane>
