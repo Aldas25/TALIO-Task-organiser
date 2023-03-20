@@ -58,8 +58,8 @@ public class AddCardCtrl {
     }
 
     public void addCard() {
-        Card card = new Card(list.id, cardTitleTextField.getText());
-        server.addCard(card);
+        Card card = new Card(cardTitleTextField.getText());
+        server.addCard(card,list);
     }
 
     public void updateCard() {

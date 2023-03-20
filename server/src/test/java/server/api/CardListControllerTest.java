@@ -90,8 +90,8 @@ public class CardListControllerTest {
     public void getCardsFromOneList() {
         CardList l = new CardList("l1");
         sut.add(l);
-        Card c = new Card(l.id,"c1");
-        cardCtrl.add(c);
+        Card c = new Card("c1");
+        sut.addCard(l.id,c);
         var cardList = sut.getCardsForList(l.id);
 
         assertEquals(List.of(c), cardList.getBody());
@@ -102,4 +102,34 @@ public class CardListControllerTest {
         boolean actual = cardListRepo.calledMethods.contains("save");
         assertTrue(actual);
     }
+
+    @Test
+    public void cannotAddCardWithNullTitle() {
+        CardList l = new CardList("l1");
+        sut.add(l);
+        var actual = sut.addCard(l.id,new Card(null));
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void cannotAddCardWithEmptyTitle() {
+        CardList l = new CardList("l1");
+        sut.add(l);
+        var actual = sut.addCard(l.id,new Card( ""));
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void addOneCard() {
+        CardList l = new CardList("l1");
+        sut.add(l);
+        sut.addCard(l.id,new Card("c1"));
+
+        var lists = cardListRepo.findAll();
+        var listWithCard = lists.get(0);
+        var actual = listWithCard.cards.get(0);
+
+        assertEquals("c1", actual.title);
+    }
+
 }

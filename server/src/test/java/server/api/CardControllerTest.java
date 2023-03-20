@@ -1,8 +1,10 @@
 package server.api;
 
 import commons.Card;
+import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 import java.util.Objects;
 
@@ -13,39 +15,24 @@ public class CardControllerTest {
 
     private TestCardRepository cardRepo;
     private CardController sut;
+    private CardListController listCtrl;
 
     @BeforeEach
     public void setup() {
         cardRepo = new TestCardRepository();
         TestCardListRepository cardListRepo = new TestCardListRepository();
         sut = new CardController(cardRepo, cardListRepo);
+        listCtrl = new CardListController(cardListRepo, cardRepo);
     }
 
-    @Test
-    public void cannotAddCardWithNullTitle() {
-        var actual = sut.add(new Card(0L, null));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
-    @Test
-    public void cannotAddCardWithEmptyTitle() {
-        var actual = sut.add(new Card(0L, ""));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
+
 /*
     Note that few tests below will fail in the future because we will implement a functionality that
     does not let a card be added to the list which does not exist (this
     happens either by entering a non-existent
     list's id or leaving it empty)
  */
-    @Test
-    public void addOneCard() {
-        sut.add(new Card(1L,"c1"));
 
-        var lists = cardRepo.findAll();
-        var actual = lists.get(0);
-
-        assertEquals("c1", actual.title);
-    }
     @Test
     public void cannotGetByInvalidId() {
         var actual = sut.getById(-1L);
@@ -60,15 +47,19 @@ public class CardControllerTest {
     }
     @Test
     public void getById() {
-        Card c = new Card(1L, "c1");
-        sut.add(c);
-        var actual = sut.getById(c.id);
+        CardList l = new CardList("l1");
+        listCtrl.add(l);
+        Card card = new Card("c1");
+        listCtrl.addCard(l.id,card);
+        var actual = sut.getById(card.id);
 
         assertEquals("c1", Objects.requireNonNull(actual.getBody()).title);
     }
     @Test
     public void getAllCards() {
-        sut.add(new Card(1L,"c1"));
+        CardList l = new CardList("l1");
+        listCtrl.add(l);
+        listCtrl.addCard(l.id,new Card("c1"));
         var actual = cardRepo.findAll();
 
         assertEquals(actual, sut.getAll());
@@ -76,7 +67,9 @@ public class CardControllerTest {
 
     @Test
     public void databaseIsUsed() {
-        sut.add(new Card(1L,"c1"));
+        CardList l = new CardList("l1");
+        listCtrl.add(l);
+        listCtrl.addCard(l.id,new Card("c1"));
         boolean actual = cardRepo.calledMethods.contains("save");
         assertTrue(actual);
     }

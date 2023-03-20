@@ -1,7 +1,7 @@
 package server.api;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import commons.Card;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +41,8 @@ public class CardListController {
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
-        List<Card> cards = cardRepo.findAll().stream()
-                .filter(card -> card.cardListId == id)
-                .collect(Collectors.toList());
-//        List<Card> cards = Objects.requireNonNull(getById(id).getBody()).cards;
+        CardList list = repo.findById(id).get();
+        List<Card> cards = list.cards;
         return ResponseEntity.ok(cards);
     }
 
@@ -57,6 +55,23 @@ public class CardListController {
 
         CardList saved = repo.save(list);
         return ResponseEntity.ok(saved);
+    }
+
+    @PostMapping("/{id}/cards")
+    public ResponseEntity<Card> addCard(@PathVariable("id") long id, @RequestBody Card card){
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        if(isNullOrEmpty(card.title)){
+            return ResponseEntity.badRequest().build();
+        }
+
+        Card saved = cardRepo.save(card);
+        CardList list = repo.findById(id).get();
+        list.cards.add(saved);
+        repo.save(list);
+
+        return ResponseEntity.ok(card);
     }
 
     private static boolean isNullOrEmpty(String s) {
@@ -82,8 +97,8 @@ public class CardListController {
             return ResponseEntity.badRequest().build();
         }
 
-        CardList listFromRepo = repo.getById(id);
-        listFromRepo.setTitle(list.title);
+        CardList listFromRepo = repo.findById(id).get();
+        listFromRepo.title = list.title;
         CardList saved = repo.save(listFromRepo);
 
         return ResponseEntity.ok(saved);
