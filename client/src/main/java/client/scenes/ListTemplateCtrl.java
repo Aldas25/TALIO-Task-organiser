@@ -43,7 +43,7 @@ public class ListTemplateCtrl implements Initializable {
 
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
-        File trashAFile = new File ("client/src/main/java/client/images/trashcan1.png");
+        File trashAFile = new File ("client/src/main/java/client/images/list/trashcan1.png");
         Image trashAImage = new Image (trashAFile.toURI().toString());
         trashAImageView.setImage(trashAImage);
     }

@@ -40,7 +40,7 @@ public class CardTemplateCtrl implements Initializable {
 
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
-        File trashBFile = new File ("client/src/main/java/client/images/trashcan2.png");
+        File trashBFile = new File ("client/src/main/java/client/images/card/trashcan2.png");
         Image trashBImage = new Image (trashBFile.toURI().toString());
         trashBImageView.setImage(trashBImage);
     }

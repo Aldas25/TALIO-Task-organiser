@@ -27,7 +27,7 @@
          </cursor></Button>
       <ImageView fx:id="trashBImageView" fitHeight="20.0" fitWidth="28.0" layoutX="257.0" layoutY="14.0" onMouseClicked="#removeCard" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/trashcan2.png" />
+            <Image url="@../../../java/client/images/card/trashcan2.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

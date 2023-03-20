@@ -56,7 +56,7 @@ public class ServerSignUpCtrl implements Initializable {
      */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
-        File userIconFile = new File ("client/src/main/java/client/images/user_icon.png");
+        File userIconFile = new File ("client/src/main/java/client/images/sign-up/user_icon.png");
         Image userIcon = new Image (userIconFile.toURI().toString());
         userIconImageView.setImage(userIcon);
     }

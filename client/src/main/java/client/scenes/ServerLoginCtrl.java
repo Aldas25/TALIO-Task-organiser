@@ -57,11 +57,11 @@ public class ServerLoginCtrl implements Initializable {
      */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
-        File logoFile = new File ("client/src/main/java/client/images/talio_logo.png");
+        File logoFile = new File ("client/src/main/java/client/images/log-in/talio_logo.png");
         Image logoImage = new Image (logoFile.toURI().toString());
         logoImageView.setImage(logoImage);
 
-        File lockFile = new File ("client/src/main/java/client/images/lock.png");
+        File lockFile = new File ("client/src/main/java/client/images/log-in/lock.png");
         Image lockImage = new Image (lockFile.toURI().toString());
         lockImageView.setImage(lockImage);
     }
