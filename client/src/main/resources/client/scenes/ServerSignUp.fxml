@@ -16,7 +16,7 @@
          <children>
             <ImageView fx:id="userIconImageView" fitHeight="65.0" fitWidth="81.0" layoutX="21.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../java/client/images/user_icon.png" />
+                  <Image url="@../../../java/client/images/sign-up/user_icon.png" />
                </image>
             </ImageView>
             <Label layoutX="118.0" layoutY="31.0" text="User Registration" textFill="#ecece7">

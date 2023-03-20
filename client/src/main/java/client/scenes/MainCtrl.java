@@ -19,12 +19,16 @@ import commons.Card;
 import commons.CardList;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-public class MainCtrl {
+public class MainCtrl implements EventHandler<KeyEvent>{
 
     private final ServerUtils server;
 
@@ -45,6 +49,9 @@ public class MainCtrl {
     private CardTemplateCtrl draggableCardCtrl;
     private ListTemplateCtrl currentDraggedOverListCtrl;
 
+    private HelpScreenCtrl helpScreenCtrl;
+    private Scene helpScreenScene;
+
     @Inject
     public MainCtrl(ServerUtils server) {
         this.server = server;
@@ -55,7 +62,8 @@ public class MainCtrl {
             Pair<CardListOverviewCtrl, Parent> listOverview,
             Pair<AddCardCtrl, Parent> addCard,
             Pair<ServerLoginCtrl, Parent> serverLogin,
-            Pair<ServerSignUpCtrl, Parent> serverSignUp
+            Pair<ServerSignUpCtrl, Parent> serverSignUp,
+            Pair<HelpScreenCtrl, Parent> helpScreen
     ) {
         this.primaryStage = primaryStage;
 
@@ -71,8 +79,24 @@ public class MainCtrl {
         this.serverSignUpCtrl = serverSignUp.getKey();
         this.serverSignUpScene = new Scene(serverSignUp.getValue());
 
+        this.helpScreenCtrl = helpScreen.getKey();
+        this.helpScreenScene = new Scene(helpScreen.getValue());
+
+        setKeyShortcuts();
         showServerLogin();
         primaryStage.show();
+    }
+
+    /**
+     * Every time a key is pressed, go to the handle method
+     *      and determine which shortcut it corresponds to.
+     *
+     * As a note, certain shortcuts only correspond to certain Scenes.
+     * All Scenes that should have shortcuts should be represented within this method.
+     */
+    public void setKeyShortcuts() {
+        listOverviewScene.setOnKeyPressed(this);
+        addCardScene.setOnKeyPressed(this);
     }
 
     public void showListOverview() {
@@ -98,14 +122,12 @@ public class MainCtrl {
 
     public void showServerLogin() {
         primaryStage.setTitle("Login");
-        // primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(serverLoginScene);
         // serverLoginCtrl.refresh();
     }
 
     public void showServerSignUp() {
         primaryStage.setTitle("Sign Up");
-        // primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(serverSignUpScene);
     }
 
@@ -128,5 +150,38 @@ public class MainCtrl {
 
     public void setCurrentDraggedOverListCtrl(ListTemplateCtrl ctrl) {
         this.currentDraggedOverListCtrl = ctrl;
+    }
+
+    /**
+     * Check which shortcut corresponds to the key combination
+     *      that has just been pressed.
+     *
+     * It overrides the handle method in the EventHandler interface.
+     *
+     * @param event the event which occurred
+     */
+    @Override
+    public void handle(KeyEvent event) {
+        KeyCombination questionMark = new KeyCharacterCombination("?");
+
+        if (questionMark.match(event)) {
+            showHelpScreen();
+        }
+    }
+
+    /**
+     * The method that deals specifically with the "?" shortcut.
+     *
+     * Creates a new pop-up that contains the Help Screen and stays open
+     *      until the user closes the window.
+     */
+    public void showHelpScreen() {
+        Stage popUpHelpStage = new Stage();
+        popUpHelpStage.setScene(helpScreenScene);
+
+        popUpHelpStage.setTitle("Help Screen");
+        popUpHelpStage.initModality(Modality.APPLICATION_MODAL);
+
+        popUpHelpStage.showAndWait();
     }
 }

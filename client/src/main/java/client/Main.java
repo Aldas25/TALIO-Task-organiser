@@ -48,9 +48,13 @@ public class Main extends Application {
         var serverSignUp = load (
                 ServerSignUpCtrl.class, "client", "scenes", "ServerSignUp.fxml"
         );
+        var helpScreen = load (
+                HelpScreenCtrl.class, "client", "scenes", "HelpScreen.fxml"
+        );
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, listOverview, addCard, serverLogin, serverSignUp);
+        mainCtrl.initialize(primaryStage, listOverview, addCard, serverLogin, serverSignUp,
+                            helpScreen);
     }
 
     public static <T> Pair<T, Parent> load(Class<T> c, String... parts) {
