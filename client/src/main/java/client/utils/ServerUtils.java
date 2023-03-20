@@ -70,6 +70,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(list, APPLICATION_JSON), CardList.class);
     }
+
     public Response removeCardList(CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/lists/" + list.id)
@@ -77,9 +78,9 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .delete();
     }
-    public Card addCard(Card card) {
+    public Card addCard(Card card, CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/cards")
+                .target(server).path("api/lists/" + list.id + "/cards")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -106,14 +107,12 @@ public class ServerUtils {
                 .get(new GenericType<List<Card>>() {});
     }
 
-    public Card moveCardToList(Card card, CardList list) {
-        Card newCard = new Card(list.id, card.title);
-        if (card.cardListId == list.id) // card is already in the list
-            return card;
+    public Card moveCardToList(Card card, CardList list, int newPos) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/cards/" + card.id)
+                .target(server).path("api/cards/" + card.id + "/list/" + list.id + "/" + newPos)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .put(Entity.entity(newCard, APPLICATION_JSON), Card.class);
+                .put(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
+
 }

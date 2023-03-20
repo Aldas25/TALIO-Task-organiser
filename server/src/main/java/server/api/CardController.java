@@ -2,6 +2,8 @@ package server.api;
 
 import java.util.List;
 
+import commons.CardList;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,16 +36,6 @@ public class CardController {
         return ResponseEntity.ok(repo.findById(id).get());
     }
 
-    @PostMapping(path = {"/", ""})
-    public ResponseEntity<Card> add(@RequestBody Card card) {
-
-        if (isNullOrEmpty(card.title)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Card saved = repo.save(card);
-        return ResponseEntity.ok(saved);
-    }
 
     private static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
@@ -60,7 +52,7 @@ public class CardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Card> updateCard(
+    public ResponseEntity<Card> updateCardTitle(
             @PathVariable("id") long id,
             @RequestBody Card card
     ){
@@ -69,11 +61,58 @@ public class CardController {
         }
 
         Card cardFromRepo = repo.findById(id).get();
-        cardFromRepo.setTitle(card.title);
-        cardFromRepo.setCardListId(card.cardListId);
+
+        var listResponse = getList(id);
+        if (listResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
+            return ResponseEntity.badRequest().build();
+
+        CardList list = listResponse.getBody();
+        list.cards.remove(cardFromRepo);
+        listRepo.save(list);
+
+        cardFromRepo.title = card.title;
         Card saved = repo.save(cardFromRepo);
 
-        return ResponseEntity.ok(saved);
+        list.cards.add(saved);
+        listRepo.save(list);
 
+        return ResponseEntity.ok(saved);
+    }
+
+    @PutMapping("/{id}/list/{listId}/{newPos}")
+    public ResponseEntity<Card> moveCard(
+            @PathVariable("id") long id,
+            @PathVariable("listId") long listId,
+            @PathVariable("newPos") int newPos
+    ){
+        Card card = repo.findById(id).get();
+        var listResponse = getList(id);
+        if (listResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
+            return ResponseEntity.badRequest().build();
+
+        CardList prevList = listResponse.getBody();
+        prevList.cards.remove(card);
+        listRepo.save(prevList);
+
+        CardList list = listRepo.findById(listId).get();
+        list.cards.add(newPos, card);
+        listRepo.save(list);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/list")
+    public ResponseEntity<CardList> getList(@PathVariable("id") long id){
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Card card = repo.findById(id).get();
+        for(CardList list : listRepo.findAll()){
+            if(list.cards.contains(card)){
+                return ResponseEntity.ok(list);
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -56,8 +56,9 @@ public class ListTemplateCtrl implements Initializable {
         return list;
     }
 
+
     public void updateCardListTitle(KeyEvent event) {
-        list.setTitle(updateListNameField.getText());
+        list.title = updateListNameField.getText();
         server.updateCardListTitle(list);
     }
     public void removeCardList(MouseEvent event) {
@@ -122,7 +123,7 @@ public class ListTemplateCtrl implements Initializable {
         boolean success = false;
 
         if (cardCtrl != null && cardCtrl.getCard() != null) {
-            server.moveCardToList(cardCtrl.getCard(), list);
+            mainCtrl.showListOverview();
             success = true;
         }
 
@@ -168,6 +169,7 @@ public class ListTemplateCtrl implements Initializable {
         int position = childrenList.size()-1; // insert before the end
                                               // the last item is "add card" button
         childrenList.add(position, cardAnchorPane);
+        server.moveCardToList(draggedCardCtrl.getCard(),list,position);
     }
 
     /**
@@ -223,6 +225,7 @@ public class ListTemplateCtrl implements Initializable {
         // insert card to this list
         // the last item is "add card" button
         childrenList.add(position, cardAnchorPane);
+        server.moveCardToList(draggedCardCtrl.getCard(),list,position);
     }
 
     public void removeCardListCtrl(MouseEvent event) {
