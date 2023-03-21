@@ -8,16 +8,18 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ecece7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddCardCtrl">
    <children>
-      <TextField fx:id="cardTitleTextField" layoutX="228.0" layoutY="175.0" promptText="Enter the card's title" style="-fx-text-fill: #626C88; -fx-prompt-text-fill: #BCC2DC;">
+      <TextField fx:id="cardTitleTextField" layoutX="221.0" layoutY="172.0" promptText="Enter the card's title" style="-fx-text-fill: #626C88; -fx-prompt-text-fill: #BCC2DC;">
          <font>
             <Font size="13.0" />
-         </font></TextField>
-      <Button layoutX="284.0" layoutY="215.0" mnemonicParsing="false" onAction="#addOrUpdateCard" style="-fx-background-color: d1dae6;" text="OK" textFill="#3c4867">
+         </font>
+      </TextField>
+      <Button layoutX="283.0" layoutY="215.0" mnemonicParsing="false" onAction="#addOrUpdateCard" style="-fx-background-color: d1dae6;" text="OK" textFill="#3c4867">
          <font>
             <Font size="13.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
-         </cursor></Button>
+         </cursor>
+      </Button>
    </children>
 </AnchorPane>

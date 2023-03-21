@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane style="-fx-background-color: #ecece7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardListOverviewCtrl">
+<ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: #ecece7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardListOverviewCtrl">
     <content>
         <VBox fx:id="content" style="-fx-background-color: #EAE8E3;">
             <children>
