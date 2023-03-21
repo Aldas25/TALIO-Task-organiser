@@ -60,22 +60,11 @@ public class CardController {
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
-
+        
         Card cardFromRepo = repo.findById(id).get();
-
-        var listResponse = getList(id);
-        if (listResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
-            return ResponseEntity.badRequest().build();
-
-        CardList list = listResponse.getBody();
-        list.cards.remove(cardFromRepo);
-        listRepo.save(list);
 
         cardFromRepo.title = card.title;
         Card saved = repo.save(cardFromRepo);
-
-        list.cards.add(saved);
-        listRepo.save(list);
 
         return ResponseEntity.ok(saved);
     }
