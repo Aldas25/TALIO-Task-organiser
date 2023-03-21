@@ -47,6 +47,7 @@ public class CardController {
             return ResponseEntity.badRequest().build();
         }
 
+        removeCardFromItsList(id);
         repo.deleteById(id);
         return ResponseEntity.ok().build();
     }
@@ -86,13 +87,7 @@ public class CardController {
             @PathVariable("newPos") int newPos
     ){
         Card card = repo.findById(id).get();
-        var listResponse = getList(id);
-        if (listResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
-            return ResponseEntity.badRequest().build();
-
-        CardList prevList = listResponse.getBody();
-        prevList.cards.remove(card);
-        listRepo.save(prevList);
+        removeCardFromItsList(id);
 
         CardList list = listRepo.findById(listId).get();
         list.cards.add(newPos, card);
@@ -114,5 +109,18 @@ public class CardController {
             }
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    private ResponseEntity removeCardFromItsList(long id) {
+        Card card = repo.findById(id).get();
+        var listResponse = getList(id);
+        if (listResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
+            return ResponseEntity.badRequest().build();
+
+        CardList prevList = listResponse.getBody();
+        prevList.cards.remove(card);
+        listRepo.save(prevList);
+
+        return ResponseEntity.ok().build();
     }
 }
