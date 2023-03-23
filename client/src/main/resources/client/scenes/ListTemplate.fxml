@@ -11,14 +11,14 @@
 
 <AnchorPane fx:id="listAnchorPane" onDragDropped="#onDragDropped" onDragEntered="#onDragEntered" onDragExited="#onDragExited" onDragOver="#onDragOver" prefHeight="459.0" prefWidth="290.0" style="-fx-background-color: #6D85A8;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ListTemplateCtrl">
    <children>
-      <TextField fx:id="updateListNameField" alignment="CENTER" layoutX="1.0" layoutY="24.0" onKeyTyped="#updateCardListTitle" prefHeight="51.0" prefWidth="290.0" promptText="Enter the list's title" style="-fx-background-color: #6D85A8; -fx-text-fill: #151928;">
+      <TextField fx:id="updateListNameField" alignment="CENTER" layoutX="1.0" layoutY="24.0" onKeyTyped="#updateCardListTitle" prefHeight="51.0" prefWidth="290.0" style="-fx-background-color: #6D85A8; -fx-text-fill: #151928;">
          <font>
             <Font size="24.0" />
          </font>
       </TextField>
-      <VBox layoutX="3.0" layoutY="88.0" prefHeight="373.0" prefWidth="290.0">
+      <VBox layoutX="1.0" layoutY="88.0" prefHeight="373.0" prefWidth="290.0">
          <children>
-            <Button fx:id="addCardButton" mnemonicParsing="false" onAction="#addCard" style="-fx-background-color: d1dae6;" text="+" textAlignment="CENTER" textFill="#3c4867">
+            <Button fx:id="addCardButton" mnemonicParsing="false" onAction="#addCard" onMouseEntered="#addCardButtonOnMouseEntered" onMouseExited="#addCardButtonOnMouseExited" style="-fx-background-color: d1dae6;" text="+" textAlignment="CENTER" textFill="#3c4867">
                <font>
                   <Font size="13.0" />
                </font>
@@ -26,9 +26,9 @@
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
          </children></VBox>
-      <ImageView fx:id="trashAImageView" fitHeight="28.0" fitWidth="26.0" layoutX="270.0" layoutY="7.0" onMouseClicked="#removeCardListCtrl" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="deleteImageView" fitHeight="28.0" fitWidth="26.0" layoutX="267.0" layoutY="7.0" onMouseClicked="#removeCardList" onMouseEntered="#deleteImageViewOnMouseEntered" onMouseExited="#deleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/list/trashcan1.png" />
+            <Image url="@../../../java/client/images/list/delete1.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

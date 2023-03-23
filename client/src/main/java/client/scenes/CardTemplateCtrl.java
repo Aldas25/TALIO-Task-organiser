@@ -30,7 +30,7 @@ public class CardTemplateCtrl implements Initializable {
     @FXML
     private Button editCardButton;
     @FXML
-    private ImageView trashBImageView;
+    private ImageView deleteImageView;
 
     @Inject
     public CardTemplateCtrl(MainCtrl mainCtrl, ServerUtils server) {
@@ -40,9 +40,13 @@ public class CardTemplateCtrl implements Initializable {
 
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
-        File trashBFile = new File ("client/src/main/java/client/images/card/trashcan2.png");
-        Image trashBImage = new Image (trashBFile.toURI().toString());
-        trashBImageView.setImage(trashBImage);
+        resetDeleteImageView();
+    }
+
+    public void resetDeleteImageView() {
+        File deleteFile = new File ("client/src/main/java/client/images/card/delete2.png");
+        Image deleteImage = new Image (deleteFile.toURI().toString());
+        deleteImageView.setImage(deleteImage);
     }
 
     public void setCard(Card card) {
@@ -74,6 +78,11 @@ public class CardTemplateCtrl implements Initializable {
         // firstly change color of card (visual aid for the user)
         cardAnchorPane.setStyle("-fx-background-color: #BFC6D9");
 
+        // secondly, change the background of the delete icon to match the new card color
+        File deleteFile = new File ("client/src/main/java/client/images/card/delete5.png");
+        Image deleteImage = new Image (deleteFile.toURI().toString());
+        deleteImageView.setImage(deleteImage);
+
         Dragboard db = cardAnchorPane.startDragAndDrop(TransferMode.ANY);
         mainCtrl.setDraggableCardCtrl(this);
         mainCtrl.setCurrentDraggedOverListCtrl(currentListCtrl);
@@ -102,6 +111,9 @@ public class CardTemplateCtrl implements Initializable {
         } else {
             // reset card color
             cardAnchorPane.setStyle("-fx-background-color: #D1DAE6");
+
+            // reset the background color of the delete icon
+            resetDeleteImageView();
         }
 
         event.consume();
@@ -144,9 +156,28 @@ public class CardTemplateCtrl implements Initializable {
     public void editCard(){
         mainCtrl.showUpdateCard(currentListCtrl.getList(), card);
     }
+
     public void removeCard(){
         server.removeCard(card);
         // refresh
         mainCtrl.showListOverview();
+    }
+
+    public void editCardButtonOnMouseEntered (MouseEvent event) {
+        editCardButton.setStyle("-fx-background-color: #b0bfd4; -fx-border-color: #3c4867");
+    }
+
+    public void editCardButtonOnMouseExited (MouseEvent event) {
+        editCardButton.setStyle("-fx-background-color: #7D88A6; -fx-border-color: #3c4867");
+    }
+
+    public void deleteImageViewOnMouseEntered (MouseEvent event) {
+        File deleteFile = new File ("client/src/main/java/client/images/card/delete4.png");
+        Image deleteImage = new Image (deleteFile.toURI().toString());
+        deleteImageView.setImage(deleteImage);
+    }
+
+    public void deleteImageViewOnMouseExited (MouseEvent event) {
+        resetDeleteImageView();
     }
 }

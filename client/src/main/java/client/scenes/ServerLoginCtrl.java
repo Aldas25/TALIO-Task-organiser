@@ -5,19 +5,22 @@ import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javafx.event.ActionEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 
 public class ServerLoginCtrl implements Initializable {
 
@@ -36,6 +39,12 @@ public class ServerLoginCtrl implements Initializable {
     private PasswordField enterPasswordField;
     @FXML
     private TextField serverURLTextField;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Button signupButton;
+
+    DropShadow shadow = new DropShadow(5.0, Color.color(0.185,0.199,0.217));
 
     @Inject
     public ServerLoginCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -66,6 +75,10 @@ public class ServerLoginCtrl implements Initializable {
         lockImageView.setImage(lockImage);
     }
 
+    public void openAdminScreen(){
+        mainCtrl.showBoardOverview();
+    }
+
     /**
      * Allow access to the CardListOverview
      */
@@ -73,15 +86,13 @@ public class ServerLoginCtrl implements Initializable {
         String serverURL = serverURLTextField.getText();
         server.setServer(serverURL);
         if (server.isServerOk()) {
+            loginMessageLabel.setText(null);
             mainCtrl.showListOverview();
         } else {
             loginMessageLabel.setText("Please type in a valid server address.");
         }
     }
 
-    public void openAdminScreen(){
-        mainCtrl.showBoardOverview();
-    }
 
     /**
      * Check if all fields have been completed
@@ -92,6 +103,8 @@ public class ServerLoginCtrl implements Initializable {
      */
     public void loginButtonOnAction (ActionEvent event) {
         if (!usernameTextField.getText().isBlank() && !enterPasswordField.getText().isBlank()) {
+            loginMessageLabel.setText(null);
+
             if(usernameTextField.getText().equals("admin") &&
                     enterPasswordField.getText().equals("admin")){
                 openAdminScreen();
@@ -99,14 +112,15 @@ public class ServerLoginCtrl implements Initializable {
             else{
                 connectToServer();
             }
-
         } else {
             loginMessageLabel.setText("Please enter a username and a password.");
         }
+
     }
 
+
     /**
-     * Go to the Sign-Up Scene
+     * Go to the Sign Up Scene
      *
      * @param event On button click
      */
@@ -114,5 +128,19 @@ public class ServerLoginCtrl implements Initializable {
         mainCtrl.showServerSignUp();
     }
 
+    public void loginButtonOnMouseEntered (MouseEvent event) {
+        loginButton.setStyle("-fx-background-color: #b0bfd4");
+    }
 
+    public void loginButtonOnMouseExited (MouseEvent event) {
+        loginButton.setStyle("-fx-background-color: #d1dae6");
+    }
+
+    public void signupButtonOnMouseEntered (MouseEvent event) {
+        signupButton.setStyle("-fx-background-color: #b0bfd4");
+    }
+
+    public void signupButtonOnMouseExited (MouseEvent event) {
+        signupButton.setStyle("-fx-background-color: #d1dae6");
+    }
 }

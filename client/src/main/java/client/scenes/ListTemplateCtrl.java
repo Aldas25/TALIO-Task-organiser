@@ -33,7 +33,7 @@ public class ListTemplateCtrl implements Initializable {
     @FXML
     private Button addCardButton;
     @FXML
-    private ImageView trashAImageView;
+    private ImageView deleteImageView;
 
     @Inject
     public ListTemplateCtrl(MainCtrl mainCtrl, ServerUtils server) {
@@ -43,9 +43,13 @@ public class ListTemplateCtrl implements Initializable {
 
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
-        File trashAFile = new File ("client/src/main/java/client/images/list/trashcan1.png");
-        Image trashAImage = new Image (trashAFile.toURI().toString());
-        trashAImageView.setImage(trashAImage);
+        resetDeleteImageView();
+    }
+
+    public void resetDeleteImageView() {
+        File deleteFile = new File ("client/src/main/java/client/images/list/delete1.png");
+        Image deleteImage = new Image (deleteFile.toURI().toString());
+        deleteImageView.setImage(deleteImage);
     }
 
     public void setList(CardList list) {
@@ -93,8 +97,13 @@ public class ListTemplateCtrl implements Initializable {
         // check if there is a card being dragged
         if (mainCtrl.getDraggableCardCtrl() != null) {
             // change color of anchor pane
-            listAnchorPane.setStyle("-fx-background-color: #E6E8F0");
-            updateListNameField.setStyle("-fx-background-color: #E6E8F0");
+            listAnchorPane.setStyle("-fx-background-color: #3c4867");
+            updateListNameField.setStyle("-fx-background-color: #3c4867; -fx-text-fill: #E6E8F0");
+
+            // change background color of the 'delete image'
+            File deleteFile = new File ("client/src/main/java/client/images/list/delete2.png");
+            Image deleteImage = new Image (deleteFile.toURI().toString());
+            deleteImageView.setImage(deleteImage);
         }
         event.consume();
     }
@@ -108,7 +117,9 @@ public class ListTemplateCtrl implements Initializable {
      */
     public void onDragExited(DragEvent event) {
         listAnchorPane.setStyle("-fx-background-color: #6D85A8");
-        updateListNameField.setStyle("-fx-background-color:  #6D85A8");
+        updateListNameField.setStyle("-fx-background-color:  #6D85A8; -fx-text-fill: #151928");
+        resetDeleteImageView();
+
         event.consume();
     }
 
@@ -167,7 +178,7 @@ public class ListTemplateCtrl implements Initializable {
         VBox currentVBox = (VBox) listAnchorPane.getChildren().get(1);
         var childrenList = currentVBox.getChildren();
         int position = childrenList.size()-1; // insert before the end
-                                              // the last item is "add card" button
+        // the last item is "add card" button
         childrenList.add(position, cardAnchorPane);
         server.moveCardToList(draggedCardCtrl.getCard(),list,position);
     }
@@ -228,10 +239,21 @@ public class ListTemplateCtrl implements Initializable {
         server.moveCardToList(draggedCardCtrl.getCard(),list,position);
     }
 
-    public void removeCardListCtrl(MouseEvent event) {
-        server.removeCardList(list);
+    public void addCardButtonOnMouseEntered (MouseEvent event) {
+        addCardButton.setStyle("-fx-background-color: #b0bfd4");
+    }
 
-        // refresh
-        mainCtrl.showListOverview();
+    public void addCardButtonOnMouseExited (MouseEvent event) {
+        addCardButton.setStyle("-fx-background-color: #d1dae6");
+    }
+
+    public void deleteImageViewOnMouseEntered (MouseEvent event) {
+        File deleteFile = new File ("client/src/main/java/client/images/list/delete3.png");
+        Image deleteImage = new Image (deleteFile.toURI().toString());
+        deleteImageView.setImage(deleteImage);
+    }
+
+    public void deleteImageViewOnMouseExited (MouseEvent event) {
+        resetDeleteImageView();
     }
 }

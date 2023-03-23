@@ -13,7 +13,7 @@
             <Font size="13.0" />
          </font>
       </TextField>
-      <Button layoutX="283.0" layoutY="215.0" mnemonicParsing="false" onAction="#addOrUpdateCard" style="-fx-background-color: d1dae6;" text="OK" textFill="#3c4867">
+      <Button fx:id="addCardButton" layoutX="283.0" layoutY="215.0" mnemonicParsing="false" onAction="#addOrUpdateCard" onMouseEntered="#addCardButtonOnMouseEntered" onMouseExited="#addCardButtonOnMouseExited" style="-fx-background-color: d1dae6;" text="OK" textFill="#3c4867">
          <font>
             <Font size="13.0" />
          </font>

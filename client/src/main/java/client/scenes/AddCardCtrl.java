@@ -5,7 +5,9 @@ import com.google.inject.Inject;
 import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 public class AddCardCtrl {
 
@@ -16,6 +18,8 @@ public class AddCardCtrl {
 
     @FXML
     private TextField cardTitleTextField;
+    @FXML
+    private Button addCardButton;
 
     @Inject
     public AddCardCtrl(MainCtrl mainCtrl, ServerUtils server) {
@@ -68,4 +72,11 @@ public class AddCardCtrl {
         currentCard = null;
     }
 
+    public void addCardButtonOnMouseEntered (MouseEvent event) {
+        addCardButton.setStyle("-fx-background-color: #b0bfd4");
+    }
+
+    public void addCardButtonOnMouseExited (MouseEvent event) {
+        addCardButton.setStyle("-fx-background-color: #d1dae6");
+    }
 }
