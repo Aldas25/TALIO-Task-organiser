@@ -46,6 +46,9 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private ServerSignUpCtrl serverSignUpCtrl;
     private Scene serverSignUpScene;
 
+    private AdminBoardOverviewCtrl adminBoardOverviewCtrl;
+    private Scene adminBoardOverviewScene;
+
     private CardTemplateCtrl draggableCardCtrl;
     private ListTemplateCtrl currentDraggedOverListCtrl;
 
@@ -56,6 +59,8 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     public MainCtrl(ServerUtils server) {
         this.server = server;
     }
+
+
 
     public void initialize(
             Stage primaryStage,
@@ -85,6 +90,13 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         setKeyShortcuts();
         showServerLogin();
         primaryStage.show();
+    }
+
+    public void loadBoardScene(
+            Pair<AdminBoardOverviewCtrl, Parent> boardOverview){
+
+        this.adminBoardOverviewCtrl = boardOverview.getKey();
+        this.adminBoardOverviewScene = new Scene(boardOverview.getValue());
     }
 
     /**
@@ -129,6 +141,11 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     public void showServerSignUp() {
         primaryStage.setTitle("Sign Up");
         primaryStage.setScene(serverSignUpScene);
+    }
+
+    public void showBoardOverview(){
+        primaryStage.setTitle("Admin Board Overview");
+        primaryStage.setScene(adminBoardOverviewScene);
     }
 
     public void disconnectFromServer() {

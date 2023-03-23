@@ -79,6 +79,10 @@ public class ServerLoginCtrl implements Initializable {
         }
     }
 
+    public void openAdminScreen(){
+        mainCtrl.showBoardOverview();
+    }
+
     /**
      * Check if all fields have been completed
      *      If yes, connect to the server
@@ -88,18 +92,27 @@ public class ServerLoginCtrl implements Initializable {
      */
     public void loginButtonOnAction (ActionEvent event) {
         if (!usernameTextField.getText().isBlank() && !enterPasswordField.getText().isBlank()) {
-            connectToServer();
+            if(usernameTextField.getText().equals("admin") &&
+                    enterPasswordField.getText().equals("admin")){
+                openAdminScreen();
+            }
+            else{
+                connectToServer();
+            }
+
         } else {
             loginMessageLabel.setText("Please enter a username and a password.");
         }
     }
 
     /**
-     * Go to the Sign Up Scene
+     * Go to the Sign-Up Scene
      *
      * @param event On button click
      */
     public void signUpButtonOnAction (ActionEvent event) {
         mainCtrl.showServerSignUp();
     }
+
+
 }

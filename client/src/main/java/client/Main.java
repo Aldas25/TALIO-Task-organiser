@@ -51,8 +51,12 @@ public class Main extends Application {
         var helpScreen = load (
                 HelpScreenCtrl.class, "client", "scenes", "HelpScreen.fxml"
         );
+        var boardOverview = load(
+                AdminBoardOverviewCtrl.class, "client", "scenes", "AdminBoardOverview.fxml"
+        );
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        mainCtrl.loadBoardScene(boardOverview);
         mainCtrl.initialize(primaryStage, listOverview, addCard, serverLogin, serverSignUp,
                             helpScreen);
     }
