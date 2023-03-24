@@ -76,7 +76,7 @@
             <Font size="13.0" />
          </font>
       </PasswordField>
-      <Button fx:id="registerButton" layoutX="89.0" layoutY="547.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="29.0" prefWidth="342.0" style="-fx-background-color: d1dae6;" text="Register" textFill="#3c4867">
+      <Button fx:id="registerButton" layoutX="89.0" layoutY="547.0" mnemonicParsing="false" onAction="#registerButtonOnAction" onMouseEntered="#registerButtonOnMouseEnter" onMouseExited="#registerButtonOnMouseExit" prefHeight="29.0" prefWidth="342.0" style="-fx-background-color: d1dae6;" text="Register" textFill="#3c4867">
          <font>
             <Font size="14.0" />
          </font>
@@ -84,7 +84,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="closeButton" layoutX="89.0" layoutY="592.0" mnemonicParsing="false" onAction="#closeButtonOnAction" prefHeight="29.0" prefWidth="342.0" style="-fx-background-color: d1dae6;" text="Close" textFill="#3c4867">
+      <Button fx:id="closeButton" layoutX="89.0" layoutY="592.0" mnemonicParsing="false" onAction="#closeButtonOnAction" onMouseEntered="#closeButtonOnMouseEnter" onMouseExited="#closeButtonOnMouseExit" prefHeight="29.0" prefWidth="342.0" style="-fx-background-color: d1dae6;" text="Close" textFill="#3c4867">
          <font>
             <Font size="14.0" />
          </font>

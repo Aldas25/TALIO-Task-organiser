@@ -8,9 +8,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="cardAnchorPane" onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragEntered="#onDragEntered" onDragOver="#onDragOver" prefHeight="47.0" prefWidth="290.0" style="-fx-background-color: d1dae6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardTemplateCtrl">
+<AnchorPane fx:id="cardAnchorPane" onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragEntered="#onDragEntered" onDragOver="#onDragOver" prefHeight="47.0" prefWidth="292.0" style="-fx-background-color: d1dae6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardTemplateCtrl">
    <children>
-      <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#3c4867" layoutY="31.0" pickOnBounds="true" strokeType="OUTSIDE" strokeWidth="0.0" text="BLAH" textAlignment="CENTER" wrappingWidth="197.5">
+      <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#3c4867" layoutY="31.0" pickOnBounds="true" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="197.5">
          <font>
             <Font size="20.0" />
          </font>
@@ -18,16 +18,16 @@
             <Cursor fx:constant="MOVE" />
          </cursor>
       </Text>
-      <Button fx:id="editCardButton" layoutX="206.0" layoutY="9.0" mnemonicParsing="false" onAction="#editCard" style="-fx-background-color: #7D88A6; -fx-border-color: #3c4867;" text="edit" textFill="#3c4867">
+      <Button fx:id="editCardButton" layoutX="206.0" layoutY="9.0" mnemonicParsing="false" onAction="#editCard" onMouseEntered="#editCardButtonOnMouseEntered" onMouseExited="#editCardButtonOnMouseExited" style="-fx-background-color: #7D88A6; -fx-border-color: #3c4867;" text="edit" textFill="#3c4867">
          <font>
             <Font size="13.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <ImageView fx:id="trashBImageView" fitHeight="20.0" fitWidth="28.0" layoutX="257.0" layoutY="14.0" onMouseClicked="#removeCard" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="deleteImageView" fitHeight="22.0" fitWidth="29.0" layoutX="254.0" layoutY="14.0" onMouseClicked="#removeCard" onMouseEntered="#deleteImageViewOnMouseEntered" onMouseExited="#deleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/card/trashcan2.png" />
+            <Image url="@../../../java/client/images/card/delete2.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

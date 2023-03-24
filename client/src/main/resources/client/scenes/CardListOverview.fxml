@@ -11,23 +11,23 @@
     <content>
         <VBox fx:id="content" style="-fx-background-color: #EAE8E3;">
             <children>
-                  <Button mnemonicParsing="false" onAction="#disconnectFromServer" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8;" text="Disconnect from server" textFill="#3c4867">
-               <font>
-                  <Font size="13.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
-                <HBox fx:id="listContainer" prefHeight="487.0" prefWidth="653.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Button fx:id="addListButton" mnemonicParsing="false" onAction="#addNewList" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8;" text="+" textFill="#3c4867">
-                     <font>
+                <Button fx:id="disconnectButton" mnemonicParsing="false" onAction="#disconnectFromServer" onMouseEntered="#disconnectButtonOnMouseEnter" onMouseExited="#disconnectButtonOnMouseExited" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8;" text="Disconnect from server" textFill="#3c4867" VBox.vgrow="ALWAYS">
+                    <font>
                         <Font size="13.0" />
-                     </font>
-                     <cursor>
+                    </font>
+                    <cursor>
                         <Cursor fx:constant="HAND" />
-                     </cursor></Button>
-               </children></HBox>
+                    </cursor></Button>
+                <HBox fx:id="listContainer" prefHeight="487.0" prefWidth="653.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="addListButton" mnemonicParsing="false" onAction="#addNewList" onMouseEntered="#addListButtonOnMouseEntered" onMouseExited="#addListButtonOnMouseExited" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8;" text="+" textFill="#3c4867" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor></Button>
+                    </children></HBox>
             </children>
         </VBox>
     </content>

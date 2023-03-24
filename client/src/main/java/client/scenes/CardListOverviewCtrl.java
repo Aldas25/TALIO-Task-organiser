@@ -41,6 +41,8 @@ public class CardListOverviewCtrl {
     @FXML
     private Button addListButton;
     @FXML
+    private Button disconnectButton;
+    @FXML
     private VBox content;
 
     @Inject
@@ -107,5 +109,21 @@ public class CardListOverviewCtrl {
 
     public void disconnectFromServer() {
         mainCtrl.disconnectFromServer();
+    }
+
+    public void disconnectButtonOnMouseEnter() {
+        disconnectButton.setStyle("-fx-background-color: #b0bfd4; -fx-border-color: #6D85A8");
+    }
+
+    public void disconnectButtonOnMouseExited() {
+        disconnectButton.setStyle("-fx-background-color: #d1dae6; -fx-border-color: #6D85A8");
+    }
+
+    public void addListButtonOnMouseEntered() {
+        addListButton.setStyle("-fx-background-color: #b0bfd4; -fx-border-color: #6D85A8");
+    }
+
+    public void addListButtonOnMouseExited() {
+        addListButton.setStyle("-fx-background-color: #d1dae6; -fx-border-color: #6D85A8");
     }
 }
