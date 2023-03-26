@@ -22,7 +22,7 @@ public class CardControllerTest {
         cardRepo = new TestCardRepository();
         TestCardListRepository cardListRepo = new TestCardListRepository();
         sut = new CardController(cardRepo, cardListRepo);
-        listCtrl = new CardListController(cardListRepo, cardRepo);
+        listCtrl = new CardListController(cardListRepo, cardRepo, null);
     }
 
 

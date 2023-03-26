@@ -17,7 +17,11 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+
 import commons.Card;
 import commons.CardList;
 import jakarta.ws.rs.core.Response;
@@ -25,14 +29,65 @@ import org.glassfish.jersey.client.ClientConfig;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 public class ServerUtils {
 
     private String server = null;
 
+
+    public <T> void registerForMessages(String dest,Class<T> type, Consumer<T> consumer){
+        session.subscribe(dest, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return type;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                consumer.accept((T) payload);
+            }
+        });
+    }
+
+    private StompSession session;
+
+    private StompSession connect(String url){
+        var client = new StandardWebSocketClient();
+        var stomp = new WebSocketStompClient(client);
+        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        try{
+            return stomp.connect(url, new StompSessionHandlerAdapter() {}).get();
+        }
+        catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+        catch(ExecutionException e){
+            throw new RuntimeException(e);
+        }
+        throw new IllegalStateException();
+    }
+
+    public void send(String dest, Object o){
+        session.send(dest, o);
+    }
+
     public void setServer(String server) {
         this.server = server;
         System.out.println("Server set to: " + server);
+    }
+    /*
+        Connects session to the same port as the server.
+     */
+    public void setSession(){
+        session = connect("ws://localhost:8080/websocket");
     }
 
     public boolean isServerOk() {
@@ -114,5 +169,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
+
+
 
 }

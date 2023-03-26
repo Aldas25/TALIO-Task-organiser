@@ -5,6 +5,9 @@ import java.util.List;
 
 import commons.Card;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import commons.CardList;
@@ -18,9 +21,13 @@ public class CardListController {
     private final CardListRepository repo;
     private final CardRepository cardRepo;
 
-    public CardListController(CardListRepository repo, CardRepository cardRepo) {
+    private final SimpMessagingTemplate msgs;
+
+    public CardListController(CardListRepository repo, CardRepository cardRepo,
+                              SimpMessagingTemplate msgs) {
         this.repo = repo;
         this.cardRepo = cardRepo;
+        this.msgs = msgs;
     }
 
     @GetMapping(path = { "", "/" })
@@ -44,6 +51,14 @@ public class CardListController {
         CardList list = repo.findById(id).get();
         List<Card> cards = list.cards;
         return ResponseEntity.ok(cards);
+    }
+
+    @MessageMapping("/lists/add")// /app/lists/add
+    @SendTo("/topic/lists/add")
+    public CardList addMessage(CardList list){
+        add(list);
+        msgs.convertAndSend("/topic/lists/add", list);
+        return list;
     }
 
     @PostMapping(path = { "", "/" })
@@ -77,9 +92,15 @@ public class CardListController {
     private static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
-
+    @MessageMapping("/lists/delete")// /app/lists/delete
+    @SendTo("/topic/lists/delete")
+    public Long deleteListMessage(Long id){
+        deleteList(id);
+        msgs.convertAndSend("/topic/lists/delete", id);
+        return id;
+    }
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteList(@PathVariable("id") long id){
+    public ResponseEntity deleteList(@PathVariable("id") Long id){
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }

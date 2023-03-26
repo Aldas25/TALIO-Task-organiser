@@ -6,7 +6,12 @@ plugins {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	runtimeOnly 'com.h2database:h2'
 	implementation project(":commons")
+
+	// com.google.code.findbugs includes JSR305 implementation that fixes the warning: 'unknown enum constant GenerationType.AUTO'.
+	implementation 'com.google.code.findbugs:annotations:3.0.1'
 }
