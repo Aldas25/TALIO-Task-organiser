@@ -26,6 +26,8 @@ public class ServerLoginCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final CardListOverviewCtrl cardListOverviewCtrl;
+    private final ListTemplateCtrl listTemplateCtrl;
 
     @FXML
     private Label loginMessageLabel;
@@ -47,9 +49,13 @@ public class ServerLoginCtrl implements Initializable {
     DropShadow shadow = new DropShadow(5.0, Color.color(0.185,0.199,0.217));
 
     @Inject
-    public ServerLoginCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public ServerLoginCtrl(ServerUtils server, MainCtrl mainCtrl,
+                           CardListOverviewCtrl cardListOverviewCtrl,
+                           ListTemplateCtrl listTemplateCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.cardListOverviewCtrl = cardListOverviewCtrl;
+        this.listTemplateCtrl = listTemplateCtrl;
     }
 
     /**
@@ -86,6 +92,10 @@ public class ServerLoginCtrl implements Initializable {
         String serverURL = serverURLTextField.getText();
         server.setServer(serverURL);
         if (server.isServerOk()) {
+            server.setSession();
+            cardListOverviewCtrl.start();
+            listTemplateCtrl.start();
+
             loginMessageLabel.setText(null);
             mainCtrl.showListOverview();
         } else {

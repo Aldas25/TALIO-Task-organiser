@@ -23,6 +23,7 @@ import com.google.inject.Inject;
 import client.utils.ServerUtils;
 import commons.Card;
 import commons.CardList;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -49,6 +50,15 @@ public class CardListOverviewCtrl {
     public CardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+    }
+
+    /**
+     * start() method is invoked when client connects to a valid server.
+     */
+    public void start(){
+        server.registerForMessages("/topic/lists/add", CardList.class, list -> {
+            Platform.runLater(() -> refresh());
+        });
     }
 
     public void refresh() {
@@ -103,8 +113,7 @@ public class CardListOverviewCtrl {
 
     public void addNewList() {
         CardList list = new CardList("New list");
-        server.addCardList(list);
-        refresh();
+        server.send("/app/lists/add", list);
     }
 
     public void disconnectFromServer() {
@@ -126,4 +135,5 @@ public class CardListOverviewCtrl {
     public void addListButtonOnMouseExited() {
         addListButton.setStyle("-fx-background-color: #d1dae6; -fx-border-color: #6D85A8");
     }
+
 }

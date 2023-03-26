@@ -64,4 +64,5 @@ public class Main extends Application {
     public static <T> Pair<T, Parent> load(Class<T> c, String... parts) {
         return FXML.load(c, parts);
     }
+
 }

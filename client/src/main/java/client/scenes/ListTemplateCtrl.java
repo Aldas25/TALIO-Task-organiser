@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.CardList;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
@@ -10,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
@@ -52,6 +52,15 @@ public class ListTemplateCtrl implements Initializable {
         deleteImageView.setImage(deleteImage);
     }
 
+    /**
+     * start() method is invoked when client connects to a valid server.
+     */
+    public void start(){
+        server.registerForMessages("/topic/lists/delete", long.class, id -> {
+            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
+        });
+    }
+
     public void setList(CardList list) {
         this.list = list;
     }
@@ -60,16 +69,12 @@ public class ListTemplateCtrl implements Initializable {
         return list;
     }
 
-
-    public void updateCardListTitle(KeyEvent event) {
+    public void updateCardListTitle() {
         list.title = updateListNameField.getText();
         server.updateCardListTitle(list);
     }
-    public void removeCardList(MouseEvent event) {
-        server.removeCardList(list);
-
-        // refresh
-        mainCtrl.showListOverview();
+    public void removeCardList() {
+        server.send("/app/lists/delete", list.id);
     }
 
     public void addCard() {
@@ -256,4 +261,5 @@ public class ListTemplateCtrl implements Initializable {
     public void deleteImageViewOnMouseExited (MouseEvent event) {
         resetDeleteImageView();
     }
+
 }
