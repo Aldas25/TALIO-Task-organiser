@@ -20,18 +20,12 @@ public class CardControllerTest {
     @BeforeEach
     public void setup() {
         cardRepo = new TestCardRepository();
+        TestBoardRepository boardRepo = new TestBoardRepository();
         TestCardListRepository cardListRepo = new TestCardListRepository();
         sut = new CardController(cardRepo, cardListRepo);
-        listCtrl = new CardListController(cardListRepo, cardRepo, null);
+
+        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, null);
     }
-
-
-/*
-    Note that few tests below will fail in the future because we will implement a functionality that
-    does not let a card be added to the list which does not exist (this
-    happens either by entering a non-existent
-    list's id or leaving it empty)
- */
 
     @Test
     public void cannotGetByInvalidId() {
@@ -39,12 +33,14 @@ public class CardControllerTest {
 
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
+
     @Test
     public void cannotGetByNonExistentId() {
         var actual = sut.getById(1L);
 
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
+
     @Test
     public void getById() {
         CardList l = new CardList("l1");
@@ -55,6 +51,7 @@ public class CardControllerTest {
 
         assertEquals("c1", Objects.requireNonNull(actual.getBody()).title);
     }
+
     @Test
     public void getAllCards() {
         CardList l = new CardList("l1");
@@ -73,4 +70,5 @@ public class CardControllerTest {
         boolean actual = cardRepo.calledMethods.contains("save");
         assertTrue(actual);
     }
+
 }

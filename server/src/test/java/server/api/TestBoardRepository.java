@@ -1,21 +1,21 @@
 package server.api;
 
-import commons.CardList;
+import commons.Board;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-import server.database.CardListRepository;
+import server.database.BoardRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class TestCardListRepository implements CardListRepository {
+public class TestBoardRepository implements BoardRepository {
 
-    public final List<CardList> cardLists = new ArrayList<>();
+    public final List<Board> boards = new ArrayList<>();
     public final List<String> calledMethods = new ArrayList<>();
 
     private void call(String name) {
@@ -23,29 +23,29 @@ public class TestCardListRepository implements CardListRepository {
     }
 
     @Override
-    public List<CardList> findAll() {
+    public List<Board> findAll() {
         calledMethods.add("findAll");
-        return cardLists;
+        return boards;
     }
 
     @Override
-    public List<CardList> findAll(Sort sort) {
+    public List<Board> findAll(Sort sort) {
         return null;
     }
 
     @Override
-    public Page<CardList> findAll(Pageable pageable) {
+    public Page<Board> findAll(Pageable pageable) {
         return null;
     }
 
     @Override
-    public List<CardList> findAllById(Iterable<Long> longs) {
+    public List<Board> findAllById(Iterable<Long> longs) {
         return null;
     }
 
     @Override
     public long count() {
-        return cardLists.size();
+        return boards.size();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class TestCardListRepository implements CardListRepository {
     }
 
     @Override
-    public void delete(CardList entity) {
+    public void delete(Board entity) {
 
     }
 
@@ -64,7 +64,7 @@ public class TestCardListRepository implements CardListRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends CardList> entities) {
+    public void deleteAll(Iterable<? extends Board> entities) {
 
     }
 
@@ -74,30 +74,32 @@ public class TestCardListRepository implements CardListRepository {
     }
 
     @Override
-    public <S extends CardList> S save(S entity) {
+    public <S extends Board> S save(S entity) {
         call("save");
-        entity.id = cardLists.size();
-        cardLists.add(entity);
+        entity.id = boards.size();
+        boards.add(entity);
         return entity;
     }
 
     @Override
-    public <S extends CardList> List<S> saveAll(Iterable<S> entities) {
+    public <S extends Board> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<CardList> findById(Long aLong) {
-        for (CardList cardList : cardLists) {
-            if (cardList.id == aLong) {
-                return Optional.of(cardList);
+    public Optional<Board> findById(Long aLong) {
+        for (Board board : boards) {
+            if (board.id == aLong) {
+                return Optional.of(board);
             }
         }
         return Optional.empty();
     }
-    private Optional<CardList> find(Long id) {
-        return cardLists.stream().filter(q -> q.id == id).findFirst();
+
+    private Optional<Board> find(Long id) {
+        return boards.stream().filter(q -> q.id == id).findFirst();
     }
+
     @Override
     public boolean existsById(Long id) {
         call("existsById");
@@ -110,17 +112,17 @@ public class TestCardListRepository implements CardListRepository {
     }
 
     @Override
-    public <S extends CardList> S saveAndFlush(S entity) {
+    public <S extends Board> S saveAndFlush(S entity) {
         return null;
     }
 
     @Override
-    public <S extends CardList> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends Board> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<CardList> entities) {
+    public void deleteAllInBatch(Iterable<Board> entities) {
 
     }
 
@@ -135,51 +137,49 @@ public class TestCardListRepository implements CardListRepository {
     }
 
     @Override
-    public CardList getOne(Long aLong) {
+    public Board getOne(Long aLong) {
         return null;
     }
 
     @Override
-    public CardList getById(Long aLong) {
+    public Board getById(Long aLong) {
         return null;
     }
 
     @Override
-    public <S extends CardList> Optional<S> findOne(Example<S> example) {
+    public <S extends Board> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
     @Override
-    public <S extends CardList> List<S> findAll(Example<S> example) {
+    public <S extends Board> List<S> findAll(Example<S> example) {
         return null;
     }
 
     @Override
-    public <S extends CardList> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends Board> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
     @Override
-    public <S extends CardList> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends Board> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
     @Override
-    public <S extends CardList> long count(Example<S> example) {
+    public <S extends Board> long count(Example<S> example) {
         return 0;
     }
 
     @Override
-    public <S extends CardList> boolean exists(Example<S> example) {
+    public <S extends Board> boolean exists(Example<S> example) {
         return false;
     }
 
     @Override
-    public <S extends CardList, R> R findBy(
+    public <S extends Board, R> R findBy(
             Example<S> example,
             Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 }
-
-
