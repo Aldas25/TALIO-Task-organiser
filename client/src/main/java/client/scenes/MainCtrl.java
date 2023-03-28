@@ -55,11 +55,21 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private HelpScreenCtrl helpScreenCtrl;
     private Scene helpScreenScene;
 
+    private CardDeleteConfirmationCtrl cardDeleteConfirmationCtrl;
+    private Scene cardDeleteConfirmationScene;
+
+    private CardListDeleteConfirmationCtrl cardListDeleteConfirmationCtrl;
+    private Scene cardListDeleteConfirmationScene;
+
+
+    private Stage popUpCardConfirmStage;
+    private Stage popUpCardListConfirmStage;
+
+
     @Inject
     public MainCtrl(ServerUtils server) {
         this.server = server;
     }
-
 
 
     public void initialize(
@@ -92,14 +102,28 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         primaryStage.show();
     }
 
-    public void loadBoardScene(
+    public void loadAdminBoardScene(
             Pair<AdminBoardOverviewCtrl, Parent> boardOverview){
 
         this.adminBoardOverviewCtrl = boardOverview.getKey();
         this.adminBoardOverviewScene = new Scene(boardOverview.getValue());
     }
 
-    /**
+    public void loadCardDeleteConfirmationScene (
+            Pair<CardDeleteConfirmationCtrl, Parent> cardDeleteConfirmation) {
+
+        this.cardDeleteConfirmationCtrl = cardDeleteConfirmation.getKey();
+        this.cardDeleteConfirmationScene = new Scene (cardDeleteConfirmation.getValue());
+    }
+
+    public void loadCardListDeleteConfirmationScene (
+            Pair<CardListDeleteConfirmationCtrl, Parent> cardListDeleteConfirmation) {
+
+        this.cardListDeleteConfirmationCtrl = cardListDeleteConfirmation.getKey();
+        this.cardListDeleteConfirmationScene = new Scene(cardListDeleteConfirmation.getValue());
+    }
+
+     /**
      * Every time a key is pressed, go to the handle method
      *      and determine which shortcut it corresponds to.
      *
@@ -146,6 +170,38 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     public void showBoardOverview(){
         primaryStage.setTitle("Admin Board Overview");
         primaryStage.setScene(adminBoardOverviewScene);
+    }
+
+    public void showCardDeleteConfirmation (Card card) {
+        cardDeleteConfirmationCtrl.setCardToBeDeleted(card);
+
+        popUpCardConfirmStage = new Stage();
+        popUpCardConfirmStage.setScene(cardDeleteConfirmationScene);
+
+        popUpCardConfirmStage.setTitle("Confirm Delete");
+        popUpCardConfirmStage.initModality(Modality.APPLICATION_MODAL);
+
+        popUpCardConfirmStage.showAndWait();
+    }
+
+    public void closeCardDeleteConfirmation() {
+        popUpCardConfirmStage.close();
+    }
+
+    public void showCardListDeleteConfirmation (CardList cardList) {
+        cardListDeleteConfirmationCtrl.setCardListToBeDeleted(cardList);
+
+        popUpCardListConfirmStage = new Stage();
+        popUpCardListConfirmStage.setScene(cardListDeleteConfirmationScene);
+
+        popUpCardListConfirmStage.setTitle("Confirm Delete");
+        popUpCardListConfirmStage.initModality(Modality.APPLICATION_MODAL);
+
+        popUpCardListConfirmStage.showAndWait();
+    }
+
+    public void closeCardListDeleteConfirmation () {
+        popUpCardListConfirmStage.close();
     }
 
     public void disconnectFromServer() {

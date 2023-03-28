@@ -15,10 +15,7 @@
  */
 package client;
 
-import client.scenes.AddCardCtrl;
-import client.scenes.CardListOverviewCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.ServerLoginCtrl;
+import client.scenes.*;
 import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -33,5 +30,10 @@ public class MyModule implements Module {
         binder.bind(CardListOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddCardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ServerLoginCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(ServerSignUpCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AdminBoardOverviewCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(HelpScreenCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(CardDeleteConfirmationCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(CardListDeleteConfirmationCtrl.class).in(Scopes.SINGLETON);
     }
 }

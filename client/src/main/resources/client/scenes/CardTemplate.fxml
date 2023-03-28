@@ -25,7 +25,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <ImageView fx:id="deleteImageView" fitHeight="22.0" fitWidth="29.0" layoutX="254.0" layoutY="14.0" onMouseClicked="#removeCard" onMouseEntered="#deleteImageViewOnMouseEntered" onMouseExited="#deleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="deleteImageView" fitHeight="22.0" fitWidth="29.0" layoutX="254.0" layoutY="14.0" onMouseClicked="#showPopUp" onMouseEntered="#deleteImageViewOnMouseEntered" onMouseExited="#deleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../java/client/images/card/delete2.png" />
          </image>

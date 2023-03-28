@@ -12,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 
-import client.utils.ServerUtils;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -67,6 +66,10 @@ public class CardTemplateCtrl implements Initializable {
 
     public AnchorPane getCardAnchorPane() {
         return cardAnchorPane;
+    }
+
+    public void showPopUp () {
+        mainCtrl.showCardDeleteConfirmation(card);
     }
 
     /**
@@ -155,12 +158,6 @@ public class CardTemplateCtrl implements Initializable {
     }
     public void editCard(){
         mainCtrl.showUpdateCard(currentListCtrl.getList(), card);
-    }
-
-    public void removeCard(){
-        server.removeCard(card);
-        // refresh
-        mainCtrl.showListOverview();
     }
 
     public void editCardButtonOnMouseEntered (MouseEvent event) {
