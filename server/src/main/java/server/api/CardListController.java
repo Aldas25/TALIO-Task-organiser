@@ -2,8 +2,9 @@ package server.api;
 
 import java.util.List;
 
-
+import commons.Board;
 import commons.Card;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -11,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import commons.CardList;
+import server.database.BoardRepository;
 import server.database.CardListRepository;
 import server.database.CardRepository;
 
@@ -20,13 +22,17 @@ public class CardListController {
 
     private final CardListRepository repo;
     private final CardRepository cardRepo;
+    private final BoardRepository boardRepo;
 
     private final SimpMessagingTemplate msgs;
 
-    public CardListController(CardListRepository repo, CardRepository cardRepo,
+    public CardListController(CardListRepository repo,
+                              CardRepository cardRepo,
+                              BoardRepository boardRepo,
                               SimpMessagingTemplate msgs) {
         this.repo = repo;
         this.cardRepo = cardRepo;
+        this.boardRepo = boardRepo;
         this.msgs = msgs;
     }
 
@@ -105,8 +111,24 @@ public class CardListController {
             return ResponseEntity.badRequest().build();
         }
 
+        removeCardListFromItsBoard(id);
         repo.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/board")
+    public ResponseEntity<Board> getBoard(@PathVariable("id") long id){
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        CardList cardList = repo.findById(id).get();
+        for(Board board : boardRepo.findAll()){
+            if(board.lists.contains(cardList)){
+                return ResponseEntity.ok(board);
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/{id}")
@@ -124,4 +146,34 @@ public class CardListController {
 
         return ResponseEntity.ok(saved);
     }
+
+    @PutMapping("/{id}/board/{boardId}/{newPos}")
+    public ResponseEntity<CardList> moveList(
+            @PathVariable("id") long id,
+            @PathVariable("boardId") long boardId,
+            @PathVariable("newPos") int newPos
+    ){
+        CardList cardList = repo.findById(id).get();
+        removeCardListFromItsBoard(id);
+
+        Board board = boardRepo.findById(boardId).get();
+        board.lists.add(newPos, cardList);
+        boardRepo.save(board);
+
+        return ResponseEntity.ok().build();
+    }
+
+    private ResponseEntity removeCardListFromItsBoard(long id) {
+        CardList cardList = repo.findById(id).get();
+        var boardResponse = getBoard(id);
+        if (boardResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
+            return ResponseEntity.badRequest().build();
+
+        Board prevBoard = boardResponse.getBody();
+        prevBoard.lists.remove(cardList);
+        boardRepo.save(prevBoard);
+
+        return ResponseEntity.ok().build();
+    }
+
 }
