@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.Board;
 import commons.Card;
 import commons.CardList;
 import client.utils.ServerUtils;
@@ -61,9 +62,13 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private CardListDeleteConfirmationCtrl cardListDeleteConfirmationCtrl;
     private Scene cardListDeleteConfirmationScene;
 
+    private BoardDeleteConfirmationCtrl boardDeleteConfirmationCtrl;
+    private Scene boardDeleteConfirmationScene;
+
 
     private Stage popUpCardConfirmStage;
     private Stage popUpCardListConfirmStage;
+    private Stage popUpBoardConfirmStage;
 
 
     @Inject
@@ -114,6 +119,13 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
         this.cardDeleteConfirmationCtrl = cardDeleteConfirmation.getKey();
         this.cardDeleteConfirmationScene = new Scene (cardDeleteConfirmation.getValue());
+    }
+
+    public void loadBoardDeleteConfirmationScene (
+            Pair<BoardDeleteConfirmationCtrl, Parent> boardDeleteConfirmation
+    ) {
+        this.boardDeleteConfirmationCtrl = boardDeleteConfirmation.getKey();
+        this.boardDeleteConfirmationScene = new Scene (boardDeleteConfirmation.getValue());
     }
 
     public void loadCardListDeleteConfirmationScene (
@@ -202,6 +214,22 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
     public void closeCardListDeleteConfirmation () {
         popUpCardListConfirmStage.close();
+    }
+
+    public void showBoardDeleteConfirmation (Board board) {
+        boardDeleteConfirmationCtrl.setBoardToBeDeleted(board);
+
+        popUpBoardConfirmStage = new Stage();
+        popUpBoardConfirmStage.setScene(boardDeleteConfirmationScene);
+
+        popUpBoardConfirmStage.setTitle("Confirm Delete");
+        popUpBoardConfirmStage.initModality(Modality.APPLICATION_MODAL);
+
+        popUpBoardConfirmStage.showAndWait();
+    }
+
+    public void closeBoardDeleteConfirmation () {
+        popUpBoardConfirmStage.close();
     }
 
     public void disconnectFromServer() {

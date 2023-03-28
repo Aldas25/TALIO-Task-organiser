@@ -62,9 +62,7 @@ public class CardListOverviewCtrl {
     }
 
     public void refresh() {
-        content.setSpacing(20); //set the distance between button and the lists themselves
         listContainer.getChildren().clear();
-        listContainer.setSpacing(5);            //spacing between lists
 
         List<CardList> allLists = server.getCardLists();
         for (CardList cardList : allLists) {

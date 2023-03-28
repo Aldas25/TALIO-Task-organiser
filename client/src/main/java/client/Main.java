@@ -61,12 +61,17 @@ public class Main extends Application {
                 CardListDeleteConfirmationCtrl.class, "client", "scenes",
                 "CardListDeleteConfirmation.fxml"
         );
+        var boardDeleteConfirmation = load (
+                BoardDeleteConfirmationCtrl.class, "client", "scenes",
+                "BoardDeleteConfirmation.fxml"
+        );
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
         mainCtrl.loadAdminBoardScene(adminBoardOverview);
         mainCtrl.loadCardDeleteConfirmationScene (cardDeleteConfirmation);
         mainCtrl.loadCardListDeleteConfirmationScene (cardListDeleteConfirmation);
+        mainCtrl.loadBoardDeleteConfirmationScene (boardDeleteConfirmation);
 
         mainCtrl.initialize(primaryStage, listOverview, addCard, serverLogin, serverSignUp,
                             helpScreen);
