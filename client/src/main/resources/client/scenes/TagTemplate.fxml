@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="26.0" prefWidth="64.0" style="-fx-background-radius: 7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagTemplateCtrl">
+   <children>
+      <TextField prefHeight="26.0" prefWidth="64.0" style="-fx-text-fill: #3c4867;" />
+   </children>
+</AnchorPane>

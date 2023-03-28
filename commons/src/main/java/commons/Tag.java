@@ -1,32 +1,22 @@
 package commons;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
-
-import javax.persistence.*;
-
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
-public class BoardList {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+public class Tag {
 
     public String title;
+    public String color;
 
-    @OneToMany
-    public List<Board> boards;
-
-    public BoardList(String title) {
+    public Tag(String title, String color){
         this.title = title;
-        this.boards = new ArrayList<>();
+        this.color = color;
     }
 
     @Override
