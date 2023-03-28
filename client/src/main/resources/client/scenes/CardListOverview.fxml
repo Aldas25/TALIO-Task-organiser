@@ -9,7 +9,7 @@
 
 <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: #ecece7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardListOverviewCtrl">
     <content>
-        <VBox fx:id="content" style="-fx-background-color: #EAE8E3;">
+        <VBox fx:id="content" spacing="20.0" style="-fx-background-color: #EAE8E3;">
             <children>
                 <Button fx:id="disconnectButton" mnemonicParsing="false" onAction="#disconnectFromServer" onMouseEntered="#disconnectButtonOnMouseEnter" onMouseExited="#disconnectButtonOnMouseExited" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8;" text="Disconnect from server" textFill="#3c4867" VBox.vgrow="ALWAYS">
                     <font>
@@ -18,7 +18,7 @@
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor></Button>
-                <HBox fx:id="listContainer" prefHeight="487.0" prefWidth="653.0" VBox.vgrow="ALWAYS">
+                <HBox fx:id="listContainer" prefHeight="487.0" prefWidth="653.0" spacing="5.0" VBox.vgrow="ALWAYS">
                     <children>
                         <Button fx:id="addListButton" mnemonicParsing="false" onAction="#addNewList" onMouseEntered="#addListButtonOnMouseEntered" onMouseExited="#addListButtonOnMouseExited" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8;" text="+" textFill="#3c4867" HBox.hgrow="ALWAYS">
                             <font>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane onDragDetected="#confirmButtonOnAction" prefHeight="106.0" prefWidth="257.0" style="-fx-background-color: E8ECF2;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardDeleteConfirmationCtrl">
+    <children>
+        <Text fill="#303952" layoutX="24.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delete this board?">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+        <Button fx:id="confirmButton" layoutX="92.0" layoutY="61.0" mnemonicParsing="false" onAction="#confirmButtonOnAction" onMouseEntered="#confirmButtonOnMouseEntered" onMouseExited="#confirmButtonOnMouseExited" prefHeight="28.0" prefWidth="66.0" style="-fx-border-radius: 6; -fx-background-color: B5C99A;" text="Confirm" textFill="#151928">
+            <font>
+                <Font size="13.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+        <Button fx:id="cancelButton" layoutX="177.0" layoutY="61.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" onMouseEntered="#cancelButtonOnMouseEntered" onMouseExited="#cancelButtonOnMouseExited" prefHeight="28.0" prefWidth="66.0" style="-fx-border-radius: 6; -fx-background-color: DD6C6C;" text="Cancel" textFill="#151928">
+            <font>
+                <Font size="13.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+    </children>
+</AnchorPane>

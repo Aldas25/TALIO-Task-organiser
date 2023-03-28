@@ -35,5 +35,6 @@ public class MyModule implements Module {
         binder.bind(HelpScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CardDeleteConfirmationCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CardListDeleteConfirmationCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(BoardDeleteConfirmationCtrl.class).in(Scopes.SINGLETON);
     }
 }
