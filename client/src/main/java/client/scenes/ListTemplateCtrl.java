@@ -73,12 +73,13 @@ public class ListTemplateCtrl implements Initializable {
         list.title = updateListNameField.getText();
         server.updateCardListTitle(list);
     }
-    public void removeCardList() {
-        server.send("/app/lists/delete", list.id);
-    }
 
     public void addCard() {
         mainCtrl.showAddCard(list);
+    }
+
+    public void showListPopUp() {
+        mainCtrl.showCardListDeleteConfirmation(list);
     }
 
     public Button getAddCardButton() {
