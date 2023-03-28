@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import commons.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -17,10 +18,14 @@ public class BoardTemplateCtrl implements Initializable {
     private MainCtrl mainCtrl;
     private ServerUtils server;
 
+    private Board board;
+
+    @FXML
+    private TextField updateBoardNameField;
+
     @FXML
     private Button viewBoardButton;
-    @FXML
-    private TextField boardTitle;
+
     @FXML
     private ImageView boardDeleteImageView;
 
@@ -67,5 +72,14 @@ public class BoardTemplateCtrl implements Initializable {
      */
     public void viewBoardButtonOnAction() {
 
+    }
+
+    public void showBoardPopUp(){
+        mainCtrl.showBoardDeleteConfirmation(board);
+    }
+
+    public void updateBoardTitle() {
+        board.title = updateBoardNameField.getText();
+        server.updateBoardTitle(board);
     }
 }
