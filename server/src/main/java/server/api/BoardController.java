@@ -81,4 +81,14 @@ public class BoardController {
         return ResponseEntity.ok(cardList);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteBoard(@PathVariable("id") long id){
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        repo.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
