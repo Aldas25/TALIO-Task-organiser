@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
+import commons.Board;
 import commons.Card;
 import commons.CardList;
 import jakarta.ws.rs.core.Response;
@@ -168,6 +169,21 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);
+    }
+    public Response removeBoard(Board board){
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/" + board.id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
+    }
+
+    public Board updateBoardTitle(Board board){
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/" + board.id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
 

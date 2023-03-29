@@ -34,7 +34,7 @@ public class BoardDeleteConfirmationCtrl {
 
     public void confirmButtonOnAction () {
         // delete the board itself
-        // add the code here
+        server.removeBoard(boardToBeDeleted);
 
 
         this.boardToBeDeleted = null;
