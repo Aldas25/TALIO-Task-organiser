@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import commons.Tag;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -140,6 +141,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+    }
+
+    public Tag addTag(Tag tag){
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/tags/" + tag.id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
     }
     public Card updateCardTitle(Card card) {
         return ClientBuilder.newClient(new ClientConfig())

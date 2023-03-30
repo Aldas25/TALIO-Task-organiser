@@ -8,6 +8,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.List;
+
 @Entity
 public class Card {
 
@@ -19,13 +21,17 @@ public class Card {
 
     public String title;
 
+    @OneToMany
+    public List<Tag> tagList;
+
     @SuppressWarnings("unused")
-    protected Card() {
+    public Card() {
         // for object mappers
     }
 
-    public Card(String title) {
+    public Card(String title, List<Tag> tagList) {
         this.title = title;
+        this.tagList = tagList;
     }
 
 

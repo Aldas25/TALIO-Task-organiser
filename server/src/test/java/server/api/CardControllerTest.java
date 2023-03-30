@@ -4,8 +4,10 @@ import commons.Card;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.database.TagRepository;
 
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,11 +22,12 @@ public class CardControllerTest {
     @BeforeEach
     public void setup() {
         cardRepo = new TestCardRepository();
+        TagRepository tagRepo = new TestTagRepository();
         TestBoardRepository boardRepo = new TestBoardRepository();
         TestCardListRepository cardListRepo = new TestCardListRepository();
         sut = new CardController(cardRepo, cardListRepo);
 
-        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, null);
+        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, tagRepo, null);
     }
 
     @Test
@@ -45,7 +48,7 @@ public class CardControllerTest {
     public void getById() {
         CardList l = new CardList("l1");
         listCtrl.add(l);
-        Card card = new Card("c1");
+        Card card = new Card("c1", new ArrayList<>());
         listCtrl.addCard(l.id,card);
         var actual = sut.getById(card.id);
 
@@ -56,7 +59,7 @@ public class CardControllerTest {
     public void getAllCards() {
         CardList l = new CardList("l1");
         listCtrl.add(l);
-        listCtrl.addCard(l.id,new Card("c1"));
+        listCtrl.addCard(l.id,new Card("c1", new ArrayList<>()));
         var actual = cardRepo.findAll();
 
         assertEquals(actual, sut.getAll());
@@ -66,7 +69,7 @@ public class CardControllerTest {
     public void databaseIsUsed() {
         CardList l = new CardList("l1");
         listCtrl.add(l);
-        listCtrl.addCard(l.id,new Card("c1"));
+        listCtrl.addCard(l.id,new Card("c1", new ArrayList<>()));
         boolean actual = cardRepo.calledMethods.contains("save");
         assertTrue(actual);
     }

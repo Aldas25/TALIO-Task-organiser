@@ -4,10 +4,16 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.CardList;
+import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddCardCtrl {
 
@@ -20,6 +26,14 @@ public class AddCardCtrl {
     private TextField cardTitleTextField;
     @FXML
     private Button addCardButton;
+
+    @FXML
+    private TextField titleTagTextField;
+
+    @FXML
+    private ColorPicker colorPicker;
+
+
 
     @Inject
     public AddCardCtrl(MainCtrl mainCtrl, ServerUtils server) {
@@ -53,21 +67,56 @@ public class AddCardCtrl {
      */
     public void addOrUpdateCard() {
         if(currentCard == null){
-            addCard();
+            if(titleTagTextField.getText().equals("")){
+                addCard();
+            }
+            else{
+                addCardTag();
+            }
+
         }
         else{
-            updateCard();
+            if(titleTagTextField.getText().equals("")){
+                updateCard();
+            }
+            else{
+                updateTagCard();
+            }
         }
         mainCtrl.showListOverview();
     }
 
-    public void addCard() {
-        Card card = new Card(cardTitleTextField.getText());
-        server.addCard(card,list);
-    }
+
+
+
+
 
     public void updateCard() {
         currentCard.title = cardTitleTextField.getText();
+        server.updateCardTitle(currentCard);
+        currentCard = null;
+    }
+
+    public void addCard() {
+        Card card = new Card(cardTitleTextField.getText(), new ArrayList<>());
+        server.addCard(card,list);
+    }
+    private void addCardTag() {
+        Tag tag = new Tag(titleTagTextField.getText(), toHexString(colorPicker.getValue()));
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(tag);
+        Card card = new Card(cardTitleTextField.getText(), tagList);
+
+        server.addCard(card, list);
+
+
+        //server.addTag(tag);
+    }
+
+    private void updateTagCard() {
+        currentCard.title = cardTitleTextField.getText();
+        Tag tag = new Tag(titleTagTextField.getText(), toHexString(colorPicker.getValue()));
+        currentCard.tagList.add(tag);
         server.updateCardTitle(currentCard);
         currentCard = null;
     }
@@ -78,5 +127,13 @@ public class AddCardCtrl {
 
     public void addCardButtonOnMouseExited (MouseEvent event) {
         addCardButton.setStyle("-fx-background-color: #d1dae6");
+    }
+
+    private String toHexString(Color color) {
+        int r = ((int) Math.round(color.getRed()     * 255)) << 24;
+        int g = ((int) Math.round(color.getGreen()   * 255)) << 16;
+        int b = ((int) Math.round(color.getBlue()    * 255)) << 8;
+        int a = ((int) Math.round(color.getOpacity() * 255));
+        return String.format("#%08X", (r + g + b + a));
     }
 }

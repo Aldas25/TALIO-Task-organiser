@@ -19,7 +19,8 @@
             <Cursor fx:constant="MOVE" />
          </cursor>
       </Text>
-      <Button fx:id="editCardButton" layoutX="206.0" layoutY="9.0" mnemonicParsing="false" onAction="#editCard" onMouseEntered="#editCardButtonOnMouseEntered" onMouseExited="#editCardButtonOnMouseExited" style="-fx-background-color: #7D88A6; -fx-border-color: #3c4867;" text="edit" textFill="#3c4867">
+      <HBox layoutY="42.0" prefHeight="21.0" prefWidth="292.0" />
+      <Button fx:id="editCardButton" layoutX="199.0" layoutY="9.0" mnemonicParsing="false" onAction="#editCard" onMouseEntered="#editCardButtonOnMouseEntered" onMouseExited="#editCardButtonOnMouseExited" prefHeight="30.0" prefWidth="50.0" style="-fx-background-color: #7D88A6; -fx-border-color: #3c4867;" text="edit" textFill="#3c4867">
          <font>
             <Font size="13.0" />
          </font>
@@ -34,7 +35,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <HBox layoutY="45.0" prefHeight="21.0" prefWidth="292.0" />
    </children>
    <cursor>
       <Cursor fx:constant="MOVE" />
