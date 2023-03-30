@@ -21,6 +21,10 @@ public class Tag {
     public String title;
     public String color;
 
+    @SuppressWarnings("unused")
+    public Tag(){
+        //
+    }
     public Tag(String title, String color){
         this.title = title;
         this.color = color;

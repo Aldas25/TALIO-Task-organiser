@@ -23,6 +23,7 @@ import com.google.inject.Inject;
 import client.utils.ServerUtils;
 import commons.Card;
 import commons.CardList;
+import commons.Tag;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -61,6 +62,7 @@ public class CardListOverviewCtrl {
         });
     }
 
+
     public void refresh() {
         listContainer.getChildren().clear();
 
@@ -96,6 +98,8 @@ public class CardListOverviewCtrl {
                 Text cardText = (Text) cardNode.getChildren().get(0);
                 cardText.setText(card.title); // set the name of the Card
 
+                cardNode = addTags(cardNode, card);
+
                 listBox.getChildren().add(cardNode); // add this card to the children of the VBox
             }
 
@@ -112,6 +116,24 @@ public class CardListOverviewCtrl {
     public void addNewList() {
         CardList list = new CardList("New list");
         server.send("/app/lists/add", list);
+    }
+
+    public AnchorPane addTags(AnchorPane cardNode, Card card){
+        HBox tagBox = (HBox) cardNode.getChildren().get(1);
+        for(Tag tag : card.tagList){
+            var tagTemplate =
+                    Main.load(TagTemplateCtrl.class,
+                            "client", "scenes", "TagTemplate.fxml");
+            AnchorPane tagNode = (AnchorPane) tagTemplate.getValue();
+            tagNode.setStyle("-fx-background-color: " + tag.color + ";" +
+                    "-fx-background-radius: 5;");
+            Text tagTitle = (Text) tagNode.getChildren().get(0);
+            tagTitle.setText(tag.title);
+            tagBox.setSpacing(2);
+            tagBox.getChildren().add(tagNode);
+        }
+
+        return cardNode;
     }
 
     public void disconnectFromServer() {
