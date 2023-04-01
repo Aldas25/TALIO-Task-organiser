@@ -97,17 +97,27 @@ public class AddCardCtrl {
         //mainCtrl.showListOverview(board);
     }
 
+    /**
+     * Creates a new card and adds it to the server
+     */
     public void addCard() {
         Card card = new Card(cardTitleTextField.getText(), new ArrayList<>());
         server.addCard(card, list);
     }
 
+    /**
+     * Updates the title of a card after an edit
+     */
     public void updateCard() {
         currentCard.title = cardTitleTextField.getText();
         server.send("/app/cards/update", new CustomPair<Long, Card>(currentCard.id, currentCard));
         currentCard = null;
     }
 
+    /**
+     * Adds a card with a tag in it. First, it creates a tag,
+     * then it adds it to a list and creates a card with it
+     */
     private void addCardTag() {
         Tag tag = new Tag(titleTagTextField.getText(), toHexString(colorPicker.getValue()));
         List<Tag> tagList = new ArrayList<>();
@@ -116,6 +126,9 @@ public class AddCardCtrl {
         server.addCard(card, list);
     }
 
+    /**
+     * Updates a card title and a tag
+     */
     private void updateTagCard() {
         currentCard.title = cardTitleTextField.getText();
         Tag tag = new Tag(titleTagTextField.getText(), toHexString(colorPicker.getValue()));
@@ -133,6 +146,11 @@ public class AddCardCtrl {
         addCardButton.setStyle("-fx-background-color: #d1dae6");
     }
 
+    /**
+     * This method translates a Color to Hexadecimal value
+     * @param color the color chosen by the picker
+     * @return the hexadecimal value of the color
+     */
     private String toHexString(Color color) {
         int r = ((int) Math.round(color.getRed()     * 255)) << 24;
         int g = ((int) Math.round(color.getGreen()   * 255)) << 16;

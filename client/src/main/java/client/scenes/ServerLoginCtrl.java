@@ -33,16 +33,16 @@ public class ServerLoginCtrl implements Initializable {
     private ImageView logoImageView;
     @FXML
     private ImageView lockImageView;
+
     @FXML
-    private TextField usernameTextField;
-    @FXML
-    private PasswordField enterPasswordField;
+    private PasswordField adminTextField;
     @FXML
     private TextField serverURLTextField;
     @FXML
     private Button loginButton;
-    @FXML
-    private Button signupButton;
+
+    @FXML Button adminButton;
+
 
     DropShadow shadow = new DropShadow(5.0, Color.color(0.185,0.199,0.217));
 
@@ -103,18 +103,29 @@ public class ServerLoginCtrl implements Initializable {
      * @param event On button click
      */
     public void loginButtonOnAction (ActionEvent event) {
-        if (!usernameTextField.getText().isBlank() && !enterPasswordField.getText().isBlank()) {
-            loginMessageLabel.setText(null);
+        connectToServer();
+    }
 
-            if(usernameTextField.getText().equals("admin") &&
-                    enterPasswordField.getText().equals("admin")){
-                openAdminScreen();
-            }
-            else{
-                connectToServer();
-            }
-        } else {
-            loginMessageLabel.setText("Please enter a username and a password.");
+    /**
+     * Button to enter admin screen
+     * @param event On button click
+     */
+    public void adminButtonOnAction(ActionEvent event){
+        String serverURL = serverURLTextField.getText();
+        server.setServer(serverURL);
+
+        if(adminTextField.getText().isBlank()){
+            loginMessageLabel.setText("Admin password missing");
+        }
+        else if(!adminTextField.getText().equals("admin")){
+            loginMessageLabel.setText("Wrong admin password");
+        }
+        else if(server.isServerOk()){
+            loginMessageLabel.setText(null);
+            openAdminScreen();
+        }
+        else{
+            loginMessageLabel.setText("Please type in a valid server address.");
         }
 
     }
@@ -137,11 +148,11 @@ public class ServerLoginCtrl implements Initializable {
         loginButton.setStyle("-fx-background-color: #d1dae6");
     }
 
-    public void signupButtonOnMouseEntered (MouseEvent event) {
-        signupButton.setStyle("-fx-background-color: #b0bfd4");
+    public void adminButtonOnMouseEntered (MouseEvent event) {
+        adminButton.setStyle("-fx-background-color: #b0bfd4");
     }
 
-    public void signupButtonOnMouseExited (MouseEvent event) {
-        signupButton.setStyle("-fx-background-color: #d1dae6");
+    public void adminButtonOnMouseExited (MouseEvent event) {
+        adminButton.setStyle("-fx-background-color: #d1dae6");
     }
 }
