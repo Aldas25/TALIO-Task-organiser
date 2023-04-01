@@ -24,6 +24,11 @@ public class ServerSignUpCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
+
+    private final CardListOverviewCtrl cardListOverviewCtrl;
+    private final ListTemplateCtrl listTemplateCtrl;
+    private final BoardOverviewCtrl boardOverviewCtrl;
+
     @FXML
     private TextField firstnameTextField;
     @FXML
@@ -44,9 +49,17 @@ public class ServerSignUpCtrl implements Initializable {
     private Button closeButton;
 
     @Inject
-    public ServerSignUpCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public ServerSignUpCtrl(ServerUtils server, MainCtrl mainCtrl,
+                            CardListOverviewCtrl cardListOverviewCtrl,
+                            ListTemplateCtrl listTemplateCtrl,
+                            BoardOverviewCtrl boardOverviewCtrl) {
+
         this.server = server;
         this.mainCtrl = mainCtrl;
+
+        this.cardListOverviewCtrl = cardListOverviewCtrl;
+        this.listTemplateCtrl = listTemplateCtrl;
+        this.boardOverviewCtrl = boardOverviewCtrl;
     }
 
     /**
@@ -76,13 +89,18 @@ public class ServerSignUpCtrl implements Initializable {
     public void registerButtonOnAction (ActionEvent event) {
         String serverURL = serverURLTextField.getText();
         server.setServer(serverURL);
+
         if (!firstnameTextField.getText().isBlank() &&
                 !lastnameTextField.getText().isBlank() &&
                 !setPasswordField.getText().isBlank() &&
                 !confirmPasswordField.getText().isBlank()) {
 
+            server.setSession();
+            cardListOverviewCtrl.start();
+            boardOverviewCtrl.start();
+
             signUpLabelMessage.setText(null);
-            mainCtrl.showListOverview();
+            mainCtrl.showBoardOverview();
         } else {
             signUpLabelMessage.setText("All fields must be completed.");
         }

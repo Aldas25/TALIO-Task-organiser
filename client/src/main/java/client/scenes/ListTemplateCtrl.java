@@ -2,9 +2,9 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.CardList;
 import commons.CustomPair;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
@@ -28,6 +28,7 @@ public class ListTemplateCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
     private CardList list;
+    private Board board;
     @FXML
     private TextField updateListNameField;
     @FXML
@@ -54,19 +55,13 @@ public class ListTemplateCtrl implements Initializable {
         deleteImageView.setImage(deleteImage);
     }
 
-    /**
-     * start() method is invoked when client connects to a valid server.
-     */
-    public void start(){
-        server.registerForMessages("/topic/lists/delete", long.class, id -> {
-            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
-        });
-        server.registerForMessages("/topic/lists/update", CardList.class, cardList -> {
-            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
-        });
-        server.registerForMessages("/topic/cards/move", CardList.class, cardList -> {
-            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
-        });
+    public void setBoard (Board board) {
+        this.board = board;
+    }
+
+    public void start(CardList list, Board board){
+        setList(list);
+        setBoard(board);
     }
 
     public void setList(CardList list) {
@@ -88,11 +83,11 @@ public class ListTemplateCtrl implements Initializable {
     }
 
     public void addCard() {
-        mainCtrl.showAddCard(list);
+        mainCtrl.showAddCard(list, board);
     }
 
     public void showListPopUp() {
-        mainCtrl.showCardListDeleteConfirmation(list);
+        mainCtrl.showCardListDeleteConfirmation(list, board);
     }
 
     public Button getAddCardButton() {
@@ -153,6 +148,7 @@ public class ListTemplateCtrl implements Initializable {
         boolean success = false;
 
         if (cardCtrl != null && cardCtrl.getCard() != null) {
+            //mainCtrl.showListOverview(board);
             // mainCtrl.showListOverview();
             server.send("/topic/cards/move", list);
             success = true;
@@ -266,6 +262,7 @@ public class ListTemplateCtrl implements Initializable {
     public void addCardButtonOnMouseExited (MouseEvent event) {
         addCardButton.setStyle("-fx-background-color: #d1dae6");
     }
+
 
     public void deleteImageViewOnMouseEntered (MouseEvent event) {
         File deleteFile = new File ("client/src/main/java/client/images/list/delete3.png");

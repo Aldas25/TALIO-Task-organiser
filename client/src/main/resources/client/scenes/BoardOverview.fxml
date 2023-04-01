@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="650.0" style="-fx-background-color: ecece7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
+   <left>
+      <AnchorPane prefHeight="442.0" prefWidth="114.0" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8; -fx-border-width: 2; -fx-border-radius: 2;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="addImageView" fitHeight="50.0" fitWidth="67.0" layoutX="25.0" layoutY="56.0" onMouseClicked="#addOnMouseClicked" onMouseEntered="#addOnMouseEntered" onMouseExited="#addOnMouseExited" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../java/client/images/board-overview/add1.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Label layoutX="24.0" layoutY="115.0" text="ADD NEW" textFill="#3c4867">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="joinImageView" fitHeight="50.0" fitWidth="67.0" layoutX="24.0" layoutY="217.0" onMouseClicked="#joinOnMouseClicked" onMouseEntered="#joinOnMouseEntered" onMouseExited="#joinOnMouseExited" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <image>
+                  <Image url="@../../../java/client/images/board-overview/join1.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="23.0" layoutY="276.0" text="JOIN NEW" textFill="#3c4867">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="disconnectImageView" fitHeight="56.0" fitWidth="73.0" layoutX="18.0" layoutY="378.0" onMouseClicked="#disconnectOnMouseClicked" onMouseEntered="#disconnectOnMouseEntered" onMouseExited="#disconnectOnMouseExited" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <image>
+                  <Image url="@../../../java/client/images/board-overview/disconnect1.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="13.0" layoutY="443.0" text="DISCONNECT" textFill="#3c4867">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <BorderPane style="-fx-background-color: ecece7;" BorderPane.alignment="CENTER">
+         <center>
+            <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" style="-fx-background-color: ecece7;">
+               <content>
+                  <VBox fx:id="boardContainer" fillWidth="false" prefHeight="422.0" prefWidth="454.0" spacing="10.0" style="-fx-background-color: ecece7;" />
+               </content>
+            </ScrollPane>
+         </center>
+         <top>
+            <AnchorPane prefHeight="47.0" prefWidth="536.0" BorderPane.alignment="CENTER" />
+         </top>
+         <left>
+            <AnchorPane prefHeight="471.0" prefWidth="40.0" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <AnchorPane prefHeight="471.0" prefWidth="40.0" BorderPane.alignment="CENTER" />
+         </right>
+         <bottom>
+            <AnchorPane prefHeight="47.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </bottom>
+      </BorderPane>
+   </center>
+</BorderPane>

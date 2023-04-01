@@ -2,10 +2,10 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Card;
 import commons.CardList;
 import commons.CustomPair;
-import javafx.application.Platform;
 import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,6 +23,7 @@ public class AddCardCtrl {
     private final ServerUtils server;
     private CardList list;
     private Card currentCard;
+    private Board board;
 
     @FXML
     private TextField cardTitleTextField;
@@ -47,12 +48,6 @@ public class AddCardCtrl {
      * start() method is invoked when client connects to a valid server.
      */
     public void start(){
-        server.registerForMessages("/topic/cards/add", Card.class, card -> {
-            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
-        });
-        server.registerForMessages("/topic/cards/update", Card.class, card -> {
-            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
-        });
     }
 
     public void setList(CardList list) {
@@ -60,6 +55,9 @@ public class AddCardCtrl {
     }
     public void setCard(Card card){
         this.currentCard = card;
+    }
+    public void setBoard (Board board) {
+        this.board = board;
     }
     /**
      * When adding a new card, the text field should be empty.
@@ -96,6 +94,7 @@ public class AddCardCtrl {
                 updateTagCard();
             }
         }
+        //mainCtrl.showListOverview(board);
     }
 
     public void addCard() {
@@ -121,7 +120,8 @@ public class AddCardCtrl {
         currentCard.title = cardTitleTextField.getText();
         Tag tag = new Tag(titleTagTextField.getText(), toHexString(colorPicker.getValue()));
         currentCard.tagList.add(tag);
-        server.updateCardTitle(currentCard);
+//        server.updateCardTitle(currentCard);
+        server.send("/app/cards/update", new CustomPair<Long, Card>(currentCard.id, currentCard));
         currentCard = null;
     }
 

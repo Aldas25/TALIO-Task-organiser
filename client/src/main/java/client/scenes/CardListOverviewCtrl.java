@@ -15,26 +15,29 @@
  */
 package client.scenes;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import client.Main;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
-import commons.Card;
-import commons.CardList;
-import commons.Tag;
+import commons.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class CardListOverviewCtrl {
+public class CardListOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -42,16 +45,39 @@ public class CardListOverviewCtrl {
     @FXML
     private HBox listContainer;
     @FXML
-    private Button addListButton;
+    private ImageView disconnectImageView;
     @FXML
-    private Button disconnectButton;
-    @FXML
-    private VBox content;
+    private ImageView addImageView;
+
+    private Board board;
 
     @Inject
     public CardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+    }
+
+    @Override
+    public void initialize (URL url, ResourceBundle resourceBundle) {
+        resetDisconnectImageView();
+        resetAddImageView();
+    }
+
+    public void resetDisconnectImageView () {
+        File disconnectFile = new
+                File ("client/src/main/java/client/images/card-list-overview/disconnect1.png");
+        Image disconnectImage = new Image (disconnectFile.toURI().toString());
+        disconnectImageView.setImage(disconnectImage);
+    }
+
+    public void resetAddImageView () {
+        File addFile = new File ("client/src/main/java/client/images/card-list-overview/add1.png");
+        Image addImage = new Image (addFile.toURI().toString());
+        addImageView.setImage(addImage);
+    }
+
+    public void setBoard (Board board) {
+        this.board = board;
     }
 
     /**
@@ -61,61 +87,89 @@ public class CardListOverviewCtrl {
         server.registerForMessages("/topic/lists/add", CardList.class, list -> {
             Platform.runLater(() -> refresh());
         });
+        server.registerForMessages("/topic/lists/delete", long.class, id -> {
+            Platform.runLater(() -> refresh());
+        });
+        server.registerForMessages("/topic/lists/update", CardList.class, cardList -> {
+            Platform.runLater(() -> refresh());
+        });
+        server.registerForMessages("/topic/cards/move", CardList.class, cardList -> {
+            Platform.runLater(() -> refresh());
+        });
+        server.registerForMessages("/topic/cards/delete", long.class, id -> {
+            Platform.runLater(() -> refresh());
+        });
+        server.registerForMessages("/topic/cards/add", Card.class, card -> {
+            Platform.runLater(() -> mainCtrl.showListOverview());
+        });
+        server.registerForMessages("/topic/cards/update", Card.class, card -> {
+            Platform.runLater(() -> mainCtrl.showListOverview());
+        });
     }
 
     public void refresh() {
         listContainer.getChildren().clear();
 
-        List<CardList> allLists = server.getCardLists();
+        List<CardList> allLists = server.getCardListForBoard(board);
         for (CardList cardList : allLists) {
-            var listTemplate =
-                    Main.load(ListTemplateCtrl.class, "client", "scenes", "ListTemplate.fxml");
-
-            ListTemplateCtrl listTemplateCtrl = listTemplate.getKey();
-            AnchorPane listNode = (AnchorPane) listTemplate.getValue();
-            listTemplateCtrl.setList(cardList);
-
-            // retrieving text from a copy of the file ListTemplate
-            TextField textField = (TextField) listNode.getChildren().get(0);
-            textField.setText(cardList.title);                  // setting title to new node
-
-            // each list contains a Vertical Box with all its Cards
-            VBox listBox = (VBox) listNode.getChildren().get(1);
-            listBox.getChildren().clear();
-            listBox.setSpacing(10); // set spacing between the cards within a list
-
-            for (Card card : server.getCardsForList(cardList)) {
-
-                var cardTemplate =
-                        Main.load(CardTemplateCtrl.class, "client", "scenes", "CardTemplate.fxml");
-
-                CardTemplateCtrl cardTemplateCtrl = cardTemplate.getKey();
-                AnchorPane cardNode = (AnchorPane) cardTemplate.getValue();
-                cardTemplateCtrl.setCard(card);
-                cardTemplateCtrl.setCurrentListCtrl(listTemplateCtrl);
-
-                // retrieve name of the Card from the Text Box
-                Text cardText = (Text) cardNode.getChildren().get(0);
-                cardText.setText(card.title); // set the name of the Card
-
-                cardNode = addTags(cardNode, card);
-
-                listBox.getChildren().add(cardNode); // add this card to the children of the VBox
-            }
-
-            // adding "new list" button
-            listBox.getChildren().add(listTemplateCtrl.getAddCardButton());
+            AnchorPane listNode = loadCardListNode(cardList);
 
             // adding node to children of listContainer
             listContainer.getChildren().add(listNode);
         }
+    }
 
-        listContainer.getChildren().add(addListButton);
+    public AnchorPane loadCardListNode(CardList cardList) {
+        var listTemplate =
+                Main.load(ListTemplateCtrl.class, "client", "scenes", "ListTemplate.fxml");
+
+        ListTemplateCtrl listTemplateCtrl = listTemplate.getKey();
+        AnchorPane listNode = (AnchorPane) listTemplate.getValue();
+        listTemplateCtrl.start(cardList, board);
+
+        // retrieving text from a copy of the file ListTemplate
+        TextField textField = (TextField) listNode.getChildren().get(0);
+        textField.setText(cardList.title); // setting title to new node
+
+        // each list contains a Vertical Box with all its Cards
+        VBox listBox = (VBox) listNode.getChildren().get(1);
+        listBox.getChildren().clear();
+        listBox.setSpacing(10); // set spacing between the cards within a list
+
+        for (Card card : server.getCardsForList(cardList)) {
+            AnchorPane cardNode = loadCardNode(card, listTemplateCtrl);
+            listBox.getChildren().add(cardNode); // add this card to the children of the VBox
+        }
+
+        // adding "new list" button
+        listBox.getChildren().add(listTemplateCtrl.getAddCardButton());
+
+        return listNode;
+    }
+
+    public AnchorPane loadCardNode(Card card, ListTemplateCtrl listTemplateCtrl) {
+        var cardTemplate =
+                Main.load(CardTemplateCtrl.class, "client", "scenes", "CardTemplate.fxml");
+
+        CardTemplateCtrl cardTemplateCtrl = cardTemplate.getKey();
+        AnchorPane cardNode = (AnchorPane) cardTemplate.getValue();
+        cardTemplateCtrl.start(card, listTemplateCtrl);
+
+        // retrieve name of the Card from the Text Box
+        Text cardText = (Text) cardNode.getChildren().get(0);
+        cardText.setText(card.title); // set the name of the Card
+
+        cardNode = addTags(cardNode, card);
+        return cardNode;
     }
 
     public void addNewList() {
         CardList list = new CardList("New list", new ArrayList<>());
-        server.send("/app/lists/add", list);
+        server.send("/app/lists/add", new CustomPair<>(board.id, list));
+    }
+
+    public void disconnectFromBoard() {
+        mainCtrl.showBoardOverview();
     }
 
     public AnchorPane addTags(AnchorPane cardNode, Card card){
@@ -136,24 +190,25 @@ public class CardListOverviewCtrl {
         return cardNode;
     }
 
-    public void disconnectFromServer() {
-        mainCtrl.disconnectFromServer();
+    public void disconnectOnMouseEntered() {
+        File disconnectFile = new
+                File ("client/src/main/java/client/images/card-list-overview/disconnect2.png");
+        Image disconnectImage = new Image (disconnectFile.toURI().toString());
+        disconnectImageView.setImage(disconnectImage);
     }
 
-    public void disconnectButtonOnMouseEnter() {
-        disconnectButton.setStyle("-fx-background-color: #b0bfd4; -fx-border-color: #6D85A8");
+    public void disconnectOnMouseExited() {
+        resetDisconnectImageView();
     }
 
-    public void disconnectButtonOnMouseExited() {
-        disconnectButton.setStyle("-fx-background-color: #d1dae6; -fx-border-color: #6D85A8");
+    public void addOnMouseEntered() {
+        File addFile = new File ("client/src/main/java/client/images/card-list-overview/add2.png");
+        Image addImage = new Image (addFile.toURI().toString());
+        addImageView.setImage(addImage);
     }
 
-    public void addListButtonOnMouseEntered() {
-        addListButton.setStyle("-fx-background-color: #b0bfd4; -fx-border-color: #6D85A8");
-    }
-
-    public void addListButtonOnMouseExited() {
-        addListButton.setStyle("-fx-background-color: #d1dae6; -fx-border-color: #6D85A8");
+    public void addOnMouseExited() {
+        resetAddImageView();
     }
 
 }

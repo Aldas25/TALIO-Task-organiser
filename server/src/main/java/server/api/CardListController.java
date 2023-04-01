@@ -66,24 +66,6 @@ public class CardListController {
         return ResponseEntity.ok(cards);
     }
 
-    @MessageMapping("/lists/add")// /app/lists/add
-    @SendTo("/topic/lists/add")
-    public CardList addMessage(CardList list){
-        add(list);
-        msgs.convertAndSend("/topic/lists/add", list);
-        return list;
-    }
-
-    @PostMapping(path = { "", "/" })
-    public ResponseEntity<CardList> add(@RequestBody CardList list) {
-        if (isNullOrEmpty(list.title)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        CardList saved = repo.save(list);
-        return ResponseEntity.ok(saved);
-    }
-
     @MessageMapping("/cards/add")// /app/cards/add
     @SendTo("/topic/cards/add")
     public Card addCardMessage(CustomPair<Long, Card> pair){
@@ -111,9 +93,9 @@ public class CardListController {
         Card saved = cardRepo.save(card);
         CardList list = repo.findById(id).get();
         list.cards.add(saved);
-        repo.save(list);
+        CardList savedList = repo.save(list);
 
-        return ResponseEntity.ok(card);
+        return ResponseEntity.ok(saved);
     }
 
     private static boolean isNullOrEmpty(String s) {

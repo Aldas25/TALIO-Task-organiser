@@ -22,10 +22,8 @@ public class BoardTemplateCtrl implements Initializable {
 
     @FXML
     private TextField updateBoardNameField;
-
     @FXML
     private Button viewBoardButton;
-
     @FXML
     private ImageView boardDeleteImageView;
 
@@ -38,6 +36,10 @@ public class BoardTemplateCtrl implements Initializable {
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetDeleteImageView();
+    }
+
+    public void setBoard (Board board) {
+        this.board = board;
     }
 
     public void resetDeleteImageView() {
@@ -66,12 +68,10 @@ public class BoardTemplateCtrl implements Initializable {
 
     /**
      * Display the CardList of this particular Board
-     *
-     * Currently empty, needs API endpoints in order to be implementable
-     * Will wait for Issue #43 to be finished
      */
     public void viewBoardButtonOnAction() {
-
+        mainCtrl.setLastOpenedBoard(board);
+        mainCtrl.showListOverview();
     }
 
     public void showBoardPopUp(){

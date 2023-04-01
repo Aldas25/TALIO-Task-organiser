@@ -101,9 +101,9 @@ public class ServerUtils {
         }
     }
 
-    public List<CardList> getCardLists() {
+    public List<CardList> getCardListForBoard(Board board) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/lists")
+                .target(server).path("api/boards/" + board.id + "/lists")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<CardList>>() {});
@@ -132,6 +132,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .delete();
     }
+
     public void addCard(Card card, CardList list) {
         // session can only send one object, therefore we pair them up
         send("/app/cards/add", new CustomPair<Long, Card>(list.id, card));
@@ -144,6 +145,13 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
     }
+    public Tag updateTag(Tag tag){
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/tags/" + tag.id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(tag, APPLICATION_JSON), Tag.class);
+    }
     public Card updateCardTitle(Card card) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("/api/cards/" + card.id)
@@ -151,6 +159,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
+
     public Response removeCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("/api/cards/" + card.id)
@@ -158,6 +167,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .delete();
     }
+
     public List<Card> getCardsForList(CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/lists/" + list.id + "/cards")
@@ -173,6 +183,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
+
     public Response removeBoard(Board board){
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/boards/" + board.id)
@@ -189,6 +200,11 @@ public class ServerUtils {
                 .put(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
-
-
+    public List<Board> getBoards () {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<Board>>() {});
+    }
 }

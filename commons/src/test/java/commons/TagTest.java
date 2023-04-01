@@ -16,6 +16,8 @@ class TagTest {
     void notEqualsHashCode() {
         var t = new Tag("tag", "Black");
         var c = new Tag("secondTag", "Red");
+        t.id = 0;
+        c.id = 1;
         assertNotEquals(t, c);
         assertNotEquals(t.hashCode(), c.hashCode());
     }

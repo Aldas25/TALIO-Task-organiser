@@ -51,6 +51,9 @@ public class Main extends Application {
         var helpScreen = load (
                 HelpScreenCtrl.class, "client", "scenes", "HelpScreen.fxml"
         );
+        var boardOverview = load (
+                BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml"
+        );
         var adminBoardOverview = load(
                 AdminBoardOverviewCtrl.class, "client", "scenes", "AdminBoardOverview.fxml"
         );
@@ -68,6 +71,7 @@ public class Main extends Application {
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
+        mainCtrl.loadBoardOverview(boardOverview);
         mainCtrl.loadAdminBoardScene(adminBoardOverview);
         mainCtrl.loadCardDeleteConfirmationScene (cardDeleteConfirmation);
         mainCtrl.loadCardListDeleteConfirmationScene (cardListDeleteConfirmation);

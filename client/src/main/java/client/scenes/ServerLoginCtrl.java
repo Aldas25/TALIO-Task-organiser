@@ -26,10 +26,6 @@ public class ServerLoginCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    private final CardListOverviewCtrl cardListOverviewCtrl;
-    private final ListTemplateCtrl listTemplateCtrl;
-    private final AddCardCtrl addCardCtrl;
-    private final CardTemplateCtrl cardTemplateCtrl;
 
     @FXML
     private Label loginMessageLabel;
@@ -51,17 +47,9 @@ public class ServerLoginCtrl implements Initializable {
     DropShadow shadow = new DropShadow(5.0, Color.color(0.185,0.199,0.217));
 
     @Inject
-    public ServerLoginCtrl(ServerUtils server, MainCtrl mainCtrl,
-                           CardListOverviewCtrl cardListOverviewCtrl,
-                           ListTemplateCtrl listTemplateCtrl,
-                           AddCardCtrl addCardCtrl,
-                           CardTemplateCtrl cardTemplateCtrl) {
+    public ServerLoginCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-        this.cardListOverviewCtrl = cardListOverviewCtrl;
-        this.listTemplateCtrl = listTemplateCtrl;
-        this.addCardCtrl = addCardCtrl;
-        this.cardTemplateCtrl = cardTemplateCtrl;
     }
 
     /**
@@ -88,7 +76,7 @@ public class ServerLoginCtrl implements Initializable {
     }
 
     public void openAdminScreen(){
-        mainCtrl.showBoardOverview();
+        mainCtrl.showAdminBoardOverview();
     }
 
     /**
@@ -97,15 +85,10 @@ public class ServerLoginCtrl implements Initializable {
     public void connectToServer() {
         String serverURL = serverURLTextField.getText();
         server.setServer(serverURL);
-        if (server.isServerOk()) {
-            server.setSession();
-            cardListOverviewCtrl.start();
-            listTemplateCtrl.start();
-            addCardCtrl.start();
-            cardTemplateCtrl.start();
 
+        if (server.isServerOk()) {
             loginMessageLabel.setText(null);
-            mainCtrl.showListOverview();
+            mainCtrl.start();
         } else {
             loginMessageLabel.setText("Please type in a valid server address.");
         }
