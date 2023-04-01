@@ -18,6 +18,18 @@ public class TagController {
         this.repo = repo;
     }
 
+    @PostMapping("/{id}")
+    public ResponseEntity<Tag> addTag(@PathVariable("id") long id, @RequestBody Tag tag){
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Tag saved = repo.save(tag);
+        repo.save(tag);
+
+        return ResponseEntity.ok(tag);
+    }
+
     @GetMapping(path = { "", "/" })
     public List<Tag> getAll() {
         return repo.findAll();

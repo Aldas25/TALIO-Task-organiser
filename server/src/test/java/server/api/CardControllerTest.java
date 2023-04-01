@@ -25,8 +25,7 @@ public class CardControllerTest {
         TagRepository tagRepo = new TestTagRepository();
         TestBoardRepository boardRepo = new TestBoardRepository();
         TestCardListRepository cardListRepo = new TestCardListRepository();
-
-        sut = new CardController(cardRepo, cardListRepo, null);
+        sut = new CardController(cardRepo, cardListRepo, tagRepo, null);
         listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, tagRepo, null);
     }
 
