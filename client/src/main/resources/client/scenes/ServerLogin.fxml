@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ServerLoginCtrl">
    <children>
       <AnchorPane style="-fx-background-color: ecece7;">
@@ -33,27 +32,17 @@
                   <Image url="@../../../java/client/images/log-in/lock.png" />
                </image>
             </ImageView>
-            <Label layoutX="23.0" layoutY="123.0" text="Username" textFill="#3c4867">
+            <Label layoutX="33.0" layoutY="242.0" text="Admin" textFill="#3c4867">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="usernameTextField" layoutX="97.0" layoutY="120.0" prefHeight="26.0" prefWidth="173.0" promptText="Username" style="-fx-text-fill: #626C88; -fx-prompt-text-fill: #BCC2DC;">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </TextField>
-            <Label layoutX="23.0" layoutY="164.0" text="Password" textFill="#3c4867">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <PasswordField fx:id="enterPasswordField" layoutX="97.0" layoutY="161.0" prefHeight="26.0" prefWidth="173.0" promptText="Password" style="-fx-text-fill: #626C88; -fx-prompt-text-fill: #BCC2DC;">
+            <PasswordField fx:id="adminTextField" layoutX="95.0" layoutY="238.0" prefHeight="26.0" prefWidth="173.0" promptText="Enter Admin Password" style="-fx-text-fill: #626C88; -fx-prompt-text-fill: #BCC2DC;">
                <font>
                   <Font size="13.0" />
                </font>
             </PasswordField>
-            <Button fx:id="loginButton" layoutX="25.0" layoutY="277.0" mnemonicParsing="false" onAction="#loginButtonOnAction" onMouseEntered="#loginButtonOnMouseEntered" onMouseExited="#loginButtonOnMouseExited" prefHeight="32.0" prefWidth="240.0" style="-fx-background-color: d1dae6;" text="Log In" textFill="#3c4867">
+            <Button fx:id="loginButton" layoutX="34.0" layoutY="168.0" mnemonicParsing="false" onAction="#loginButtonOnAction" onMouseEntered="#loginButtonOnMouseEntered" onMouseExited="#loginButtonOnMouseExited" prefHeight="32.0" prefWidth="240.0" style="-fx-background-color: d1dae6;" text="Connect" textFill="#3c4867">
                <font>
                   <Font size="13.0" />
                </font>
@@ -61,29 +50,29 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="signupButton" layoutX="25.0" layoutY="327.0" mnemonicParsing="false" onAction="#signUpButtonOnAction" onMouseEntered="#signupButtonOnMouseEntered" onMouseExited="#signupButtonOnMouseExited" prefHeight="32.0" prefWidth="240.0" style="-fx-background-color: d1dae6;" text="Sign Up" textFill="#3c4867">
-               <font>
-                  <Font size="13.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="16.0" layoutY="244.0" prefHeight="19.0" prefWidth="260.0" textFill="#76191c">
+            <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="24.0" layoutY="335.0" prefHeight="19.0" prefWidth="260.0" textFill="#76191c">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label layoutX="23.0" layoutY="203.0" text="Server URL" textFill="#3c4867">
+            <Label layoutX="21.0" layoutY="128.0" text="Server URL" textFill="#3c4867">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="serverURLTextField" layoutX="97.0" layoutY="200.0" prefHeight="26.0" prefWidth="173.0" promptText="http://localhost:8080/" style="-fx-text-fill: #626C88;" text="http://localhost:8080/">
+            <TextField fx:id="serverURLTextField" layoutX="95.0" layoutY="125.0" prefHeight="26.0" prefWidth="173.0" promptText="http://localhost:8080/" style="-fx-text-fill: #626C88;" text="http://localhost:8080/">
                <font>
                   <Font size="13.0" />
                </font>
             </TextField>
+            <Button fx:id="adminButton" layoutX="34.0" layoutY="280.0" mnemonicParsing="false" onAction="#adminButtonOnAction" onMouseEntered="#adminButtonOnMouseEntered" onMouseExited="#adminButtonOnMouseExited" prefHeight="32.0" prefWidth="240.0" style="-fx-background-color: d1dae6;" text="Admin Login" textFill="#3c4867">
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </AnchorPane>
    </children>
