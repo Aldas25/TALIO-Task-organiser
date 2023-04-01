@@ -129,7 +129,7 @@ public class CardListOverviewCtrl {
                     "-fx-background-radius: 5;");
             Text tagTitle = (Text) tagNode.getChildren().get(0);
             tagTitle.setText(tag.title);
-            tagBox.setSpacing(2);
+            tagBox.setSpacing(5);
             tagBox.getChildren().add(tagNode);
         }
 
