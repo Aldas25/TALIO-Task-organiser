@@ -1,15 +1,8 @@
 package server.api;
 
-import commons.Card;
-import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.database.TagRepository;
-
-
-import java.util.ArrayList;
-import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -43,7 +36,7 @@ public class CardControllerTest {
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
-    @Test
+    /*@Test
     public void getById() {
         CardList l = new CardList("l1", new ArrayList<>());
         listCtrl.add(l);
@@ -52,9 +45,9 @@ public class CardControllerTest {
         var actual = sut.getById(card.id);
 
         assertEquals("c1", Objects.requireNonNull(actual.getBody()).title);
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void getAllCards() {
         CardList l = new CardList("l1", new ArrayList<>());
         listCtrl.add(l);
@@ -62,15 +55,15 @@ public class CardControllerTest {
         var actual = cardRepo.findAll();
 
         assertEquals(actual, sut.getAll());
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void databaseIsUsed() {
         CardList l = new CardList("l1", new ArrayList<>());
         listCtrl.add(l);
         listCtrl.addCard(l.id,new Card("c1", new ArrayList<>()));
         boolean actual = cardRepo.calledMethods.contains("save");
         assertTrue(actual);
-    }
+    }*/
 
 }

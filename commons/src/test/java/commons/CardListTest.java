@@ -19,6 +19,8 @@ class CardListTest {
     void notEqualsHashCode() {
         var p = new CardList("title", new ArrayList<>());
         var q = new CardList("other", new ArrayList<>());
+        p.id = 0;
+        q.id = 1;
         assertNotEquals(p, q);
         assertNotEquals(p.hashCode(), q.hashCode());
     }

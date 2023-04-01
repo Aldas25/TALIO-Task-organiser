@@ -35,12 +35,10 @@ public class BoardDeleteConfirmationCtrl {
     public void confirmButtonOnAction () {
         // delete the board itself
         server.removeBoard(boardToBeDeleted);
-
-
         this.boardToBeDeleted = null;
 
         // refresh
-        mainCtrl.showListOverview();
+        mainCtrl.showBoardOverview();
 
         // close the pop-up
         mainCtrl.closeBoardDeleteConfirmation();

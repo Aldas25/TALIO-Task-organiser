@@ -50,6 +50,9 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private AdminBoardOverviewCtrl adminBoardOverviewCtrl;
     private Scene adminBoardOverviewScene;
 
+    private BoardOverviewCtrl boardOverviewCtrl;
+    private Scene boardOverviewScene;
+
     private CardTemplateCtrl draggableCardCtrl;
     private ListTemplateCtrl currentDraggedOverListCtrl;
 
@@ -69,6 +72,8 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private Stage popUpCardConfirmStage;
     private Stage popUpCardListConfirmStage;
     private Stage popUpBoardConfirmStage;
+
+    private Board lastOpenedBoard;
 
 
     @Inject
@@ -107,11 +112,18 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         primaryStage.show();
     }
 
-    public void loadAdminBoardScene(
-            Pair<AdminBoardOverviewCtrl, Parent> boardOverview){
+    public void loadBoardOverview (
+        Pair<BoardOverviewCtrl, Parent> boardOverview){
 
-        this.adminBoardOverviewCtrl = boardOverview.getKey();
-        this.adminBoardOverviewScene = new Scene(boardOverview.getValue());
+        this.boardOverviewCtrl = boardOverview.getKey();
+        this.boardOverviewScene = new Scene (boardOverview.getValue());
+    }
+
+    public void loadAdminBoardScene(
+            Pair<AdminBoardOverviewCtrl, Parent> adminBoardOverview){
+
+        this.adminBoardOverviewCtrl = adminBoardOverview.getKey();
+        this.adminBoardOverviewScene = new Scene(adminBoardOverview.getValue());
     }
 
     public void loadCardDeleteConfirmationScene (
@@ -135,6 +147,18 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         this.cardListDeleteConfirmationScene = new Scene(cardListDeleteConfirmation.getValue());
     }
 
+    public void setLastOpenedBoard(Board board) {
+        this.lastOpenedBoard = board;
+    }
+
+    public void start() {
+        server.setSession();
+        listOverviewCtrl.start();
+        boardOverviewCtrl.start();
+        addCardCtrl.start();
+        showBoardOverview();
+    }
+
      /**
      * Every time a key is pressed, go to the handle method
      *      and determine which shortcut it corresponds to.
@@ -150,21 +174,24 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     public void showListOverview() {
         primaryStage.setTitle("Card lists: overview");
         primaryStage.setScene(listOverviewScene);
+        listOverviewCtrl.setBoard(lastOpenedBoard);
         listOverviewCtrl.refresh();
     }
 
-    public void showAddCard(CardList list) {
+    public void showAddCard(CardList list, Board board) {
         primaryStage.setTitle("Add new card");
         primaryStage.setScene(addCardScene);
         addCardCtrl.setList(list);
+        addCardCtrl.setBoard(board);
         addCardCtrl.refresh();
     }
 
-    public void showUpdateCard(CardList list, Card card) {
+    public void showUpdateCard(CardList list, Card card, Board board) {
         primaryStage.setTitle("Edit a card");
         primaryStage.setScene(addCardScene);
         addCardCtrl.setList(list);
         addCardCtrl.setCard(card);
+        addCardCtrl.setBoard(board);
         addCardCtrl.refresh();
     }
 
@@ -179,13 +206,20 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         primaryStage.setScene(serverSignUpScene);
     }
 
-    public void showBoardOverview(){
+    public void showAdminBoardOverview(){
         primaryStage.setTitle("Admin Board Overview");
         primaryStage.setScene(adminBoardOverviewScene);
     }
 
-    public void showCardDeleteConfirmation (Card card) {
+    public void showBoardOverview () {
+        primaryStage.setTitle("Board Overview");
+        primaryStage.setScene(boardOverviewScene);
+        boardOverviewCtrl.refresh();
+    }
+
+    public void showCardDeleteConfirmation (Card card, Board board) {
         cardDeleteConfirmationCtrl.setCardToBeDeleted(card);
+        cardDeleteConfirmationCtrl.setBoard(board);
 
         popUpCardConfirmStage = new Stage();
         popUpCardConfirmStage.setScene(cardDeleteConfirmationScene);
@@ -200,8 +234,9 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         popUpCardConfirmStage.close();
     }
 
-    public void showCardListDeleteConfirmation (CardList cardList) {
+    public void showCardListDeleteConfirmation (CardList cardList, Board board) {
         cardListDeleteConfirmationCtrl.setCardListToBeDeleted(cardList);
+        cardListDeleteConfirmationCtrl.setBoard(board);
 
         popUpCardListConfirmStage = new Stage();
         popUpCardListConfirmStage.setScene(cardListDeleteConfirmationScene);

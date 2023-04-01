@@ -4,7 +4,6 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 import javax.persistence.*;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 public class Card {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
     public String title;
@@ -33,14 +32,15 @@ public class Card {
 
     @Override
     public boolean equals(Object obj) {
-        return obj.getClass() == this.getClass()
+        return obj != null && obj.getClass() == this.getClass()
                 && ((Card) obj).id == this.id;
         //return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return (int)id;
+        //return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override

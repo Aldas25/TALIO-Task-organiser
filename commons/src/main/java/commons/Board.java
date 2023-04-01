@@ -1,12 +1,8 @@
 package commons;
 
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
@@ -15,26 +11,35 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 public class Board {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
-    @OneToMany
+
+    @OneToMany (fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
     public List<CardList> lists;
 
     public String title;
 
-    public Board(String title){
+    public Board(String title, List<CardList> lists){
         this.title = title;
-        this.lists = new ArrayList<>();
+        this.lists = lists;
+    }
+
+    @SuppressWarnings("unused")
+    public Board() {
+        // for object mapper
     }
 
     @Override
     public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
+        return obj != null && obj.getClass() == this.getClass()
+                && ((Board) obj).id == this.id;
+        //return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return (int)id;
+        //return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override

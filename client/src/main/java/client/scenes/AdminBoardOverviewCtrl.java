@@ -20,7 +20,6 @@ public class AdminBoardOverviewCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-
     public void disconnectFromServer(){
         mainCtrl.disconnectFromServer();
     }

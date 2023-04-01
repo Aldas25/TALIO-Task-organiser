@@ -2,8 +2,8 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Card;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -24,6 +24,7 @@ public class CardTemplateCtrl implements Initializable {
     private final ServerUtils server;
     private Card card;
     private ListTemplateCtrl currentListCtrl;
+    private Board board;
 
     @FXML
     private AnchorPane cardAnchorPane;
@@ -43,13 +44,9 @@ public class CardTemplateCtrl implements Initializable {
         resetDeleteImageView();
     }
 
-    /**
-     * start() method is invoked when client connects to a valid server.
-     */
-    public void start(){
-        server.registerForMessages("/topic/cards/delete", long.class, id -> {
-            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
-        });
+    public void start(Card card, ListTemplateCtrl currentListCtrl){
+        setCard(card);
+        setCurrentListCtrl(currentListCtrl);
     }
 
     public void resetDeleteImageView() {
@@ -78,8 +75,12 @@ public class CardTemplateCtrl implements Initializable {
         return cardAnchorPane;
     }
 
+    public void setBoard (Board board) {
+        this.board = board;
+    }
+
     public void showPopUp () {
-        mainCtrl.showCardDeleteConfirmation(card);
+        mainCtrl.showCardDeleteConfirmation(card, board);
     }
 
     /**
@@ -167,7 +168,7 @@ public class CardTemplateCtrl implements Initializable {
         event.consume();
     }
     public void editCard(){
-        mainCtrl.showUpdateCard(currentListCtrl.getList(), card);
+        mainCtrl.showUpdateCard(currentListCtrl.getList(), card, board);
     }
 
     public void editCardButtonOnMouseEntered (MouseEvent event) {
