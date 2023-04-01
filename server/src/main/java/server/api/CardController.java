@@ -3,8 +3,12 @@ package server.api;
 import java.util.List;
 
 import commons.CardList;
+import commons.CustomPair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import commons.Card;
@@ -17,10 +21,14 @@ public class CardController {
 
     private final CardRepository repo;
     private final CardListRepository listRepo;
+    private final SimpMessagingTemplate msgs;
 
-    public CardController(CardRepository repo, CardListRepository listRepo) {
+    public CardController(CardRepository repo,
+                          CardListRepository listRepo,
+                          SimpMessagingTemplate msgs) {
         this.repo = repo;
         this.listRepo = listRepo;
+        this.msgs = msgs;
     }
 
     @GetMapping(path = { "", "/" })
@@ -41,20 +49,42 @@ public class CardController {
         return s == null || s.isEmpty();
     }
 
+    @MessageMapping("/cards/delete")// /app/cards/delete
+    @SendTo("/topic/cards/delete")
+    public Long deleteCardMessage(Long id){
+        deleteCard(id);
+        msgs.convertAndSend("/topic/cards/delete", id);
+        return id;
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteCard(@PathVariable("id") long id){
+    public ResponseEntity deleteCard(@PathVariable("id") Long id){
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
 
-        removeCardFromItsList(id);
+        ResponseEntity removingResponse = removeCardFromItsList(id);
+        if (removingResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
+            return ResponseEntity.badRequest().build();
+
         repo.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
+    @MessageMapping("/cards/update")// /app/cards/update
+    @SendTo("/topic/cards/update")
+    public Card updateCardMessage(CustomPair<Long, Card> pair){
+        Long id = pair.getId();
+        Card card = pair.getVar();
+
+        updateCardTitle(id, card);
+        msgs.convertAndSend("/topic/cards/update", card);
+        return card;
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Card> updateCardTitle(
-            @PathVariable("id") long id,
+            @PathVariable("id") Long id,
             @RequestBody Card card
     ){
         if (id < 0 || !repo.existsById(id)) {
@@ -92,7 +122,8 @@ public class CardController {
         }
 
         Card card = repo.findById(id).get();
-        for(CardList list : listRepo.findAll()){
+        List<CardList> allLists = listRepo.findAll();
+        for(CardList list : allLists){
             if(list.cards.contains(card)){
                 return ResponseEntity.ok(list);
             }

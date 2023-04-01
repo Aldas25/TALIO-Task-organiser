@@ -9,7 +9,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,17 +20,21 @@ public class CardList {
 
     public String title;
 
-    @OneToMany
+    /**
+     * EAGER fetching tells Hibernate to get the related entities with the initial query.
+     * In this case, Hibernate will get cardList when doing queries with cards.
+     */
+    @OneToMany (fetch=FetchType.EAGER)
     public List<Card> cards;
 
     @SuppressWarnings("unused")
-    protected CardList() {
+    public CardList() {
         // for object mapper
     }
 
-    public CardList(String title) {
+    public CardList(String title, List<Card> cards) {
         this.title = title;
-        this.cards = new ArrayList<>();
+        this.cards = cards;
     }
 
     @Override

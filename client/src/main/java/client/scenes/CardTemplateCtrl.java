@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -40,6 +41,15 @@ public class CardTemplateCtrl implements Initializable {
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetDeleteImageView();
+    }
+
+    /**
+     * start() method is invoked when client connects to a valid server.
+     */
+    public void start(){
+        server.registerForMessages("/topic/cards/delete", long.class, id -> {
+            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
+        });
     }
 
     public void resetDeleteImageView() {

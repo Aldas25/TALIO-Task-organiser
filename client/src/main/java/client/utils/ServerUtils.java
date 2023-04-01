@@ -22,10 +22,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
-import commons.Board;
-import commons.Card;
-import commons.CardList;
-import commons.Tag;
+import commons.*;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -135,12 +132,9 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .delete();
     }
-    public Card addCard(Card card, CardList list) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/lists/" + list.id + "/cards")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+    public void addCard(Card card, CardList list) {
+        // session can only send one object, therefore we pair them up
+        send("/app/cards/add", new CustomPair<Long, Card>(list.id, card));
     }
 
     public Tag addTag(Tag tag){

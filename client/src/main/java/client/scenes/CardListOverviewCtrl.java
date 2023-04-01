@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import client.Main;
@@ -61,7 +62,6 @@ public class CardListOverviewCtrl {
             Platform.runLater(() -> refresh());
         });
     }
-
 
     public void refresh() {
         listContainer.getChildren().clear();
@@ -114,7 +114,7 @@ public class CardListOverviewCtrl {
     }
 
     public void addNewList() {
-        CardList list = new CardList("New list");
+        CardList list = new CardList("New list", new ArrayList<>());
         server.send("/app/lists/add", list);
     }
 

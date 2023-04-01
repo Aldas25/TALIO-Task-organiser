@@ -4,6 +4,8 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.CardList;
+import commons.CustomPair;
+import javafx.application.Platform;
 import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -41,6 +43,18 @@ public class AddCardCtrl {
         this.server = server;
     }
 
+    /**
+     * start() method is invoked when client connects to a valid server.
+     */
+    public void start(){
+        server.registerForMessages("/topic/cards/add", Card.class, card -> {
+            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
+        });
+        server.registerForMessages("/topic/cards/update", Card.class, card -> {
+            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
+        });
+    }
+
     public void setList(CardList list) {
         this.list = list;
     }
@@ -73,7 +87,6 @@ public class AddCardCtrl {
             else{
                 addCardTag();
             }
-
         }
         else{
             if(titleTagTextField.getText().equals("")){
@@ -83,34 +96,25 @@ public class AddCardCtrl {
                 updateTagCard();
             }
         }
-        mainCtrl.showListOverview();
-    }
-
-
-
-
-
-
-    public void updateCard() {
-        currentCard.title = cardTitleTextField.getText();
-        server.updateCardTitle(currentCard);
-        currentCard = null;
     }
 
     public void addCard() {
         Card card = new Card(cardTitleTextField.getText(), new ArrayList<>());
-        server.addCard(card,list);
+        server.addCard(card, list);
     }
+
+    public void updateCard() {
+        currentCard.title = cardTitleTextField.getText();
+        server.send("/app/cards/update", new CustomPair<Long, Card>(currentCard.id, currentCard));
+        currentCard = null;
+    }
+
     private void addCardTag() {
         Tag tag = new Tag(titleTagTextField.getText(), toHexString(colorPicker.getValue()));
         List<Tag> tagList = new ArrayList<>();
         tagList.add(tag);
         Card card = new Card(cardTitleTextField.getText(), tagList);
-
         server.addCard(card, list);
-
-
-        //server.addTag(tag);
     }
 
     private void updateTagCard() {

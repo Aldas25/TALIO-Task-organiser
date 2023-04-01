@@ -28,6 +28,8 @@ public class ServerLoginCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     private final CardListOverviewCtrl cardListOverviewCtrl;
     private final ListTemplateCtrl listTemplateCtrl;
+    private final AddCardCtrl addCardCtrl;
+    private final CardTemplateCtrl cardTemplateCtrl;
 
     @FXML
     private Label loginMessageLabel;
@@ -51,11 +53,15 @@ public class ServerLoginCtrl implements Initializable {
     @Inject
     public ServerLoginCtrl(ServerUtils server, MainCtrl mainCtrl,
                            CardListOverviewCtrl cardListOverviewCtrl,
-                           ListTemplateCtrl listTemplateCtrl) {
+                           ListTemplateCtrl listTemplateCtrl,
+                           AddCardCtrl addCardCtrl,
+                           CardTemplateCtrl cardTemplateCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.cardListOverviewCtrl = cardListOverviewCtrl;
         this.listTemplateCtrl = listTemplateCtrl;
+        this.addCardCtrl = addCardCtrl;
+        this.cardTemplateCtrl = cardTemplateCtrl;
     }
 
     /**
@@ -95,6 +101,8 @@ public class ServerLoginCtrl implements Initializable {
             server.setSession();
             cardListOverviewCtrl.start();
             listTemplateCtrl.start();
+            addCardCtrl.start();
+            cardTemplateCtrl.start();
 
             loginMessageLabel.setText(null);
             mainCtrl.showListOverview();

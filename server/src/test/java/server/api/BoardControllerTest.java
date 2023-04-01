@@ -5,6 +5,7 @@ import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,7 +69,7 @@ public class BoardControllerTest {
     public void cannotAddCardListWithNullTitle() {
         Board b = new Board("b1");
         sut.add(b);
-        var actual = sut.addCardList(b.id, new CardList(null));
+        var actual = sut.addCardList(b.id, new CardList(null, new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
@@ -76,7 +77,7 @@ public class BoardControllerTest {
     public void cannotAddCardListWithEmptyTitle() {
         Board b = new Board("b1");
         sut.add(b);
-        var actual = sut.addCardList(b.id, new CardList(""));
+        var actual = sut.addCardList(b.id, new CardList("", new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
@@ -84,7 +85,7 @@ public class BoardControllerTest {
     public void addOneCardList() {
         Board b = new Board("b1");
         sut.add(b);
-        sut.addCardList(b.id, new CardList("l1"));
+        sut.addCardList(b.id, new CardList("l1", new ArrayList<>()));
 
         var boards = boardRepo.findAll();
         var boardWithList = boards.get(0);
