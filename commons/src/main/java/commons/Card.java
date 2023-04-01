@@ -4,7 +4,6 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 import javax.persistence.*;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -17,11 +16,9 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
-
-
     public String title;
 
-    @OneToMany
+    @ManyToMany (fetch=FetchType.EAGER)
     public List<Tag> tagList;
 
     @SuppressWarnings("unused")
@@ -34,11 +31,11 @@ public class Card {
         this.tagList = tagList;
     }
 
-
-
     @Override
     public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
+        return obj.getClass() == this.getClass()
+                && ((Card) obj).id == this.id;
+        //return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override

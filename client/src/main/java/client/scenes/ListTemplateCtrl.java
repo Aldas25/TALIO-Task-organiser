@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.CardList;
+import commons.CustomPair;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
@@ -59,6 +61,12 @@ public class ListTemplateCtrl implements Initializable {
         server.registerForMessages("/topic/lists/delete", long.class, id -> {
             Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
         });
+        server.registerForMessages("/topic/lists/update", CardList.class, cardList -> {
+            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
+        });
+        server.registerForMessages("/topic/cards/move", CardList.class, cardList -> {
+            Platform.runLater(() -> mainCtrl.showListOverview()); // refresh
+        });
     }
 
     public void setList(CardList list) {
@@ -69,9 +77,14 @@ public class ListTemplateCtrl implements Initializable {
         return list;
     }
 
-    public void updateCardListTitle() {
-        list.title = updateListNameField.getText();
-        server.updateCardListTitle(list);
+    public void updateCardListTitle(KeyEvent event) {
+        if(event.getCode().equals(KeyCode.ENTER)){
+            list.title = updateListNameField.getText();
+            server.send("/app/lists/update", new CustomPair<Long, CardList>(list.id, list));
+        }
+    }
+    public void removeCardList() {
+        server.send("/app/lists/delete", list.id);
     }
 
     public void addCard() {
@@ -95,7 +108,7 @@ public class ListTemplateCtrl implements Initializable {
      */
     public void onDragEntered(DragEvent event) {
         mainCtrl.setCurrentDraggedOverListCtrl(this);
-        // if the card is in another list now, insert card at this list
+        // if the cards is in another list now, insert card at this list
         if (mainCtrl.getDraggableCardCtrl().getCurrentListCtrl() != this) {
             insertDraggedCardAtEnd();
         }
@@ -140,7 +153,8 @@ public class ListTemplateCtrl implements Initializable {
         boolean success = false;
 
         if (cardCtrl != null && cardCtrl.getCard() != null) {
-            mainCtrl.showListOverview();
+            // mainCtrl.showListOverview();
+            server.send("/topic/cards/move", list);
             success = true;
         }
 

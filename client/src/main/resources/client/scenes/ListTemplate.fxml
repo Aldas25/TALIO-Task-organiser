@@ -11,7 +11,7 @@
 
 <AnchorPane fx:id="listAnchorPane" onDragDropped="#onDragDropped" onDragEntered="#onDragEntered" onDragExited="#onDragExited" onDragOver="#onDragOver" prefHeight="459.0" prefWidth="290.0" style="-fx-background-color: #6D85A8;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ListTemplateCtrl">
    <children>
-      <TextField fx:id="updateListNameField" alignment="CENTER" layoutX="1.0" layoutY="24.0" onKeyTyped="#updateCardListTitle" prefHeight="51.0" prefWidth="290.0" style="-fx-background-color: #6D85A8; -fx-text-fill: #151928;">
+      <TextField fx:id="updateListNameField" alignment="CENTER" layoutX="1.0" layoutY="24.0" onKeyPressed="#updateCardListTitle" prefHeight="51.0" prefWidth="290.0" style="-fx-background-color: #6D85A8; -fx-text-fill: #151928;">
          <font>
             <Font size="24.0" />
          </font>

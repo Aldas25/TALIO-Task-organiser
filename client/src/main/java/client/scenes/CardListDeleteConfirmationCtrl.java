@@ -38,9 +38,6 @@ public class CardListDeleteConfirmationCtrl {
         server.send("/app/lists/delete", cardListToBeDeleted.id);
         this.cardListToBeDeleted = null;
 
-        // refresh
-        mainCtrl.showListOverview();
-
         // close the pop-up
         mainCtrl.closeCardListDeleteConfirmation();
     }

@@ -30,19 +30,19 @@ public class CardListControllerTest {
 
     @Test
     public void cannotAddNullCardList() {
-        var actual = sut.add(new CardList(null));
+        var actual = sut.add(new CardList(null, new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
     public void cannotAddEmptyCardList() {
-        var actual = sut.add(new CardList(""));
+        var actual = sut.add(new CardList("", new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
     public void addOneCardList() {
-        sut.add(new CardList("l1"));
+        sut.add(new CardList("l1", new ArrayList<>()));
 
         var lists = cardListRepo.findAll();
 
@@ -66,7 +66,7 @@ public class CardListControllerTest {
 
     @Test
     public void getById() {
-        CardList l = new CardList("l1");
+        CardList l = new CardList("l1", new ArrayList<>());
         sut.add(l);
         var actual = sut.getById(l.id);
 
@@ -75,10 +75,10 @@ public class CardListControllerTest {
 
     @Test
     public void getAllCardLists() {
-        CardList cardList = new CardList("l1");
+        CardList cardList = new CardList("l1", new ArrayList<>());
         List<CardList> expected = List.of(cardList);
 
-        sut.add(new CardList("l1"));
+        sut.add(new CardList("l1", new ArrayList<>()));
 
         assertEquals(expected, sut.getAll());
         assertEquals(expected, cardListRepo.findAll());
@@ -100,7 +100,7 @@ public class CardListControllerTest {
 
     @Test
     public void getCardsFromOneList() {
-        CardList l = new CardList("l1");
+        CardList l = new CardList("l1", new ArrayList<>());
         sut.add(l);
         Card c = new Card("c1", new ArrayList<>());
         sut.addCard(l.id,c);
@@ -111,14 +111,14 @@ public class CardListControllerTest {
 
     @Test
     public void databaseIsUsed() {
-        sut.add(new CardList("l1"));
+        sut.add(new CardList("l1", new ArrayList<>()));
         boolean actual = cardListRepo.calledMethods.contains("save");
         assertTrue(actual);
     }
 
     @Test
     public void cannotAddCardWithNullTitle() {
-        CardList l = new CardList("l1");
+        CardList l = new CardList("l1", new ArrayList<>());
         sut.add(l);
         var actual = sut.addCard(l.id,new Card(null, new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
@@ -126,7 +126,7 @@ public class CardListControllerTest {
 
     @Test
     public void cannotAddCardWithEmptyTitle() {
-        CardList l = new CardList("l1");
+        CardList l = new CardList("l1", new ArrayList<>());
         sut.add(l);
         var actual = sut.addCard(l.id,new Card( "", new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
@@ -134,7 +134,7 @@ public class CardListControllerTest {
 
     @Test
     public void addOneCard() {
-        CardList l = new CardList("l1");
+        CardList l = new CardList("l1", new ArrayList<>());
         sut.add(l);
         ArrayList<Tag> tags = new ArrayList<>();
         tags.add(new Tag("aaa", "blue"));

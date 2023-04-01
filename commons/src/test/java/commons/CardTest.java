@@ -29,8 +29,10 @@ class CardTest {
 
     @Test
     void notEqualsHashCode() {
-        var a = new Card("card", tagList);
-        var b = new Card("cards", tagList);
+        var a = new Card("card1", tagList);
+        var b = new Card("card2", tagList);
+        a.id = 0;
+        b.id = 1;
         assertNotEquals(a, b);
         assertNotEquals(a.hashCode(), b.hashCode());
     }
