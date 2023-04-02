@@ -102,13 +102,16 @@ public class CardListOverviewCtrl implements Initializable {
             Platform.runLater(() -> refresh());
         });
         server.registerForMessages("/topic/cards/add", Card.class, card -> {
-            Platform.runLater(() -> mainCtrl.showListOverview());
+            Platform.runLater(() -> refresh());
         });
         server.registerForMessages("/topic/cards/update", Card.class, card -> {
-            Platform.runLater(() -> mainCtrl.showListOverview());
+            Platform.runLater(() -> refresh());
         });
     }
 
+    /**
+     * Refreshes all the lists from server
+     */
     public void refresh() {
         listContainer.getChildren().clear();
 
@@ -122,6 +125,11 @@ public class CardListOverviewCtrl implements Initializable {
         showInviteKey();
     }
 
+    /**
+     * Loads the selected Card List Node
+     * @param cardList The chosen Card List
+     * @return The Node from that card list
+     */
     public AnchorPane loadCardListNode(CardList cardList) {
         var listTemplate =
                 Main.load(ListTemplateCtrl.class, "client", "scenes", "ListTemplate.fxml");
@@ -150,6 +158,12 @@ public class CardListOverviewCtrl implements Initializable {
         return listNode;
     }
 
+    /**
+     * Loads the anchor pane of the card
+     * @param card The selected card
+     * @param listTemplateCtrl The list controller
+     * @return The anchor pane of the card
+     */
     public AnchorPane loadCardNode(Card card, ListTemplateCtrl listTemplateCtrl) {
         var cardTemplate =
                 Main.load(CardTemplateCtrl.class, "client", "scenes", "CardTemplate.fxml");
@@ -175,6 +189,12 @@ public class CardListOverviewCtrl implements Initializable {
         mainCtrl.showBoardOverview();
     }
 
+    /**
+     * Adds the tags of the card to the HBOX
+     * @param cardNode The card node
+     * @param card The actual card
+     * @return The anchor pane of the card
+     */
     public AnchorPane addTags(AnchorPane cardNode, Card card){
         HBox tagBox = (HBox) cardNode.getChildren().get(1);
         for(Tag tag : card.tagList){
