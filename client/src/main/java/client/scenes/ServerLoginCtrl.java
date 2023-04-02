@@ -117,28 +117,19 @@ public class ServerLoginCtrl implements Initializable {
         if(adminTextField.getText().isBlank()){
             loginMessageLabel.setText("Admin password missing");
         }
-        else if(!adminTextField.getText().equals("admin")){
+        else if(!server.isServerOk()){
+            loginMessageLabel.setText("Please type in a valid server address.");
+        }
+        else if(!server.checkAdminPassword(adminTextField.getText())){
             loginMessageLabel.setText("Wrong admin password");
         }
-        else if(server.isServerOk()){
+        else{
             loginMessageLabel.setText(null);
             openAdminScreen();
         }
-        else{
-            loginMessageLabel.setText("Please type in a valid server address.");
-        }
 
     }
 
-
-    /**
-     * Go to the Sign Up Scene
-     *
-     * @param event On button click
-     */
-    public void signUpButtonOnAction (ActionEvent event) {
-        mainCtrl.showServerSignUp();
-    }
 
     public void loginButtonOnMouseEntered (MouseEvent event) {
         loginButton.setStyle("-fx-background-color: #b0bfd4");
