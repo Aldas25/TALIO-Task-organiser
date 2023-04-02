@@ -16,6 +16,7 @@
 package client;
 
 import client.scenes.*;
+import client.services.BoardService;
 import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -26,6 +27,16 @@ public class MyModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
+
+        bindServices(binder);
+        bindControllers(binder);
+    }
+
+    private void bindServices(Binder binder) {
+        binder.bind(BoardService.class).in(Scopes.SINGLETON);
+    }
+
+    private void bindControllers(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CardListOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddCardCtrl.class).in(Scopes.SINGLETON);

@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Board;
 import commons.Card;
 import commons.CardList;
 import commons.CustomPair;
@@ -21,9 +20,9 @@ public class AddCardCtrl {
 
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
+
     private CardList list;
     private Card currentCard;
-    private Board board;
 
     @FXML
     private TextField cardTitleTextField;
@@ -55,9 +54,6 @@ public class AddCardCtrl {
     }
     public void setCard(Card card){
         this.currentCard = card;
-    }
-    public void setBoard (Board board) {
-        this.board = board;
     }
     /**
      * When adding a new card, the text field should be empty.

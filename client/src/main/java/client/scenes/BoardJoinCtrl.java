@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.services.BoardService;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.fxml.FXML;
@@ -14,10 +15,9 @@ public class BoardJoinCtrl {
 
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
+    private final BoardService boardService;
 
     private String enteredKey;
-
-    private Board boardToJoin;
 
     @FXML
     private Text joinError;
@@ -30,9 +30,11 @@ public class BoardJoinCtrl {
 
 
     @Inject
-    public BoardJoinCtrl(MainCtrl mainCtrl, ServerUtils server) {
+    public BoardJoinCtrl(MainCtrl mainCtrl, ServerUtils server,
+                         BoardService boardService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.boardService = boardService;
     }
 
     public void tryJoin(){
@@ -41,28 +43,16 @@ public class BoardJoinCtrl {
             return;
         }
 
-        this.boardToJoin = server.getBoardbyInviteKey(enteredKey);
+        Board boardToJoin = server.getBoardbyInviteKey(enteredKey);
 
         if(boardToJoin == null){
             joinError.setText("Board Not Found");
             return;
         }
-        mainCtrl.setLastOpenedBoard(boardToJoin);
+
+        boardService.setCurrentBoard(boardToJoin);
         mainCtrl.showListOverview();
         closeAndClear();
-
-//        for(Board board: server.getBoards()) {
-//            String boardKey = board.inviteKey;
-//
-//            if (this.enteredKey.equals(boardKey)) {
-//                this.boardToJoin = board;
-//                mainCtrl.setLastOpenedBoard(boardToJoin);
-//                mainCtrl.showListOverview();
-//                closeAndClear();
-//                return;
-//            }
-//        }
-//        joinError.setText("Board Not Found");
     }
 
     public void cancelButtonOnAction () {

@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.services.BoardService;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.fxml.FXML;
@@ -15,8 +16,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BoardTemplateCtrl implements Initializable {
+
     private MainCtrl mainCtrl;
     private ServerUtils server;
+    private BoardService boardService;
 
     private Board board;
 
@@ -31,9 +34,11 @@ public class BoardTemplateCtrl implements Initializable {
     private ImageView boardDeleteImageView;
 
     @Inject
-    public BoardTemplateCtrl (MainCtrl mainCtrl, ServerUtils server) {
+    public BoardTemplateCtrl (MainCtrl mainCtrl, ServerUtils server,
+                              BoardService boardService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.boardService = boardService;
     }
 
     @Override
@@ -73,7 +78,7 @@ public class BoardTemplateCtrl implements Initializable {
      * Display the CardList of this particular Board
      */
     public void viewBoardButtonOnAction() {
-        mainCtrl.setLastOpenedBoard(board);
+        boardService.setCurrentBoard(board);
         mainCtrl.showListOverview();
     }
 

@@ -1,8 +1,8 @@
 package client.scenes;
 
+import client.services.BoardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Board;
 import commons.CardList;
 import commons.CustomPair;
 import javafx.fxml.FXML;
@@ -27,8 +27,9 @@ public class ListTemplateCtrl implements Initializable {
 
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
+    private final BoardService boardService;
+
     private CardList list;
-    private Board board;
     @FXML
     private TextField updateListNameField;
     @FXML
@@ -39,9 +40,11 @@ public class ListTemplateCtrl implements Initializable {
     private ImageView deleteImageView;
 
     @Inject
-    public ListTemplateCtrl(MainCtrl mainCtrl, ServerUtils server) {
+    public ListTemplateCtrl(MainCtrl mainCtrl, ServerUtils server,
+                            BoardService boardService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.boardService = boardService;
     }
 
     @Override
@@ -55,13 +58,8 @@ public class ListTemplateCtrl implements Initializable {
         deleteImageView.setImage(deleteImage);
     }
 
-    public void setBoard (Board board) {
-        this.board = board;
-    }
-
-    public void start(CardList list, Board board){
+    public void start(CardList list){
         setList(list);
-        setBoard(board);
     }
 
     public void setList(CardList list) {
@@ -83,11 +81,11 @@ public class ListTemplateCtrl implements Initializable {
     }
 
     public void addCard() {
-        mainCtrl.showAddCard(list, board);
+        mainCtrl.showAddCard(list);
     }
 
     public void showListPopUp() {
-        mainCtrl.showCardListDeleteConfirmation(list, board);
+        mainCtrl.showCardListDeleteConfirmation(list);
     }
 
     public Button getAddCardButton() {

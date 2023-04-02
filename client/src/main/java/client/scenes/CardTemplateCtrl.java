@@ -168,7 +168,7 @@ public class CardTemplateCtrl implements Initializable {
         event.consume();
     }
     public void editCard(){
-        mainCtrl.showUpdateCard(currentListCtrl.getList(), card, board);
+        mainCtrl.showUpdateCard(currentListCtrl.getList(), card);
     }
 
     public void editCardButtonOnMouseEntered (MouseEvent event) {
