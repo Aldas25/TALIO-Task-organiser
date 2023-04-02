@@ -94,7 +94,7 @@ public class AddCardCtrl {
                 updateTagCard();
             }
         }
-        //mainCtrl.showListOverview(board);
+        mainCtrl.showListOverview();
     }
 
     /**
