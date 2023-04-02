@@ -105,7 +105,7 @@ public class BoardOverviewCtrl implements Initializable {
      * the ID of the desired Board and then show the Board in the List.
      */
     public void joinOnMouseClicked () {
-
+        mainCtrl.showJoinBoard();
     }
 
     public void disconnectOnMouseClicked () {

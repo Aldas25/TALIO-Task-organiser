@@ -43,6 +43,8 @@ public class CardListOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     @FXML
+    private TextField inviteKeyField;
+    @FXML
     private HBox listContainer;
     @FXML
     private ImageView disconnectImageView;
@@ -117,6 +119,7 @@ public class CardListOverviewCtrl implements Initializable {
             // adding node to children of listContainer
             listContainer.getChildren().add(listNode);
         }
+        showInviteKey();
     }
 
     public AnchorPane loadCardListNode(CardList cardList) {
@@ -209,6 +212,10 @@ public class CardListOverviewCtrl implements Initializable {
 
     public void addOnMouseExited() {
         resetAddImageView();
+    }
+
+    public void showInviteKey(){
+        inviteKeyField.setText(String.valueOf(board.inviteKey));
     }
 
 }

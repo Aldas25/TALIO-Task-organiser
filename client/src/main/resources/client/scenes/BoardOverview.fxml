@@ -35,7 +35,7 @@
                   <Image url="@../../../java/client/images/board-overview/join1.png" />
                </image>
             </ImageView>
-            <Label layoutX="23.0" layoutY="276.0" text="JOIN NEW" textFill="#3c4867">
+            <Label layoutX="38.0" layoutY="275.0" text="JOIN" textFill="#3c4867">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

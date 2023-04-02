@@ -308,4 +308,23 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<Board>>() {});
     }
+
+
+    public Board getBoardbyInviteKey(String enteredKey){
+        Response response = ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/byKey/" + enteredKey)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get();
+        Board board = null; // will return this, if not found will be null
+        try {
+            if (response.getStatus() == 200) {
+                board = response.readEntity(Board.class);
+            }
+        } finally {
+            response.close();
+        }
+
+        return board;
+    }
 }

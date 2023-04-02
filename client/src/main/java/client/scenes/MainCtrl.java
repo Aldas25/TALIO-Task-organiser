@@ -68,10 +68,15 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private BoardDeleteConfirmationCtrl boardDeleteConfirmationCtrl;
     private Scene boardDeleteConfirmationScene;
 
+    private BoardJoinCtrl boardJoinCtrl;
+    private Scene joinBoardScene;
+
 
     private Stage popUpCardConfirmStage;
     private Stage popUpCardListConfirmStage;
     private Stage popUpBoardConfirmStage;
+
+    private Stage popUpJoinBoardStage;
 
     private Board lastOpenedBoard;
 
@@ -145,6 +150,13 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
         this.cardListDeleteConfirmationCtrl = cardListDeleteConfirmation.getKey();
         this.cardListDeleteConfirmationScene = new Scene(cardListDeleteConfirmation.getValue());
+    }
+
+    public void loadJoinBoardScene (
+            Pair<BoardJoinCtrl, Parent> joinBoard) {
+
+        this.boardJoinCtrl = joinBoard.getKey();
+        this.joinBoardScene = new Scene(joinBoard.getValue());
     }
 
     public void setLastOpenedBoard(Board board) {
@@ -266,6 +278,17 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     public void closeBoardDeleteConfirmation () {
         popUpBoardConfirmStage.close();
     }
+
+    public void showJoinBoard(){
+        popUpJoinBoardStage = new Stage();
+        popUpJoinBoardStage.setScene(joinBoardScene);
+
+        popUpJoinBoardStage.setTitle("Join Board");
+        popUpJoinBoardStage.initModality(Modality.APPLICATION_MODAL);
+        popUpJoinBoardStage.showAndWait();
+    }
+
+    public void closeJoinBoard(){popUpJoinBoardStage.close();}
 
     public void disconnectFromServer() {
         server.setServer(null);
