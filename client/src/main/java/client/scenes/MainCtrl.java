@@ -78,9 +78,6 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
     private Stage popUpJoinBoardStage;
 
-    private Board lastOpenedBoard;
-
-
     @Inject
     public MainCtrl(ServerUtils server) {
         this.server = server;
@@ -159,10 +156,6 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         this.joinBoardScene = new Scene(joinBoard.getValue());
     }
 
-    public void setLastOpenedBoard(Board board) {
-        this.lastOpenedBoard = board;
-    }
-
     public void start() {
         server.setSession();
         listOverviewCtrl.start();
@@ -186,24 +179,21 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     public void showListOverview() {
         primaryStage.setTitle("Card lists: overview");
         primaryStage.setScene(listOverviewScene);
-        listOverviewCtrl.setBoard(lastOpenedBoard);
         listOverviewCtrl.refresh();
     }
 
-    public void showAddCard(CardList list, Board board) {
+    public void showAddCard(CardList list) {
         primaryStage.setTitle("Add new card");
         primaryStage.setScene(addCardScene);
         addCardCtrl.setList(list);
-        addCardCtrl.setBoard(board);
         addCardCtrl.refresh();
     }
 
-    public void showUpdateCard(CardList list, Card card, Board board) {
+    public void showUpdateCard(CardList list, Card card) {
         primaryStage.setTitle("Edit a card");
         primaryStage.setScene(addCardScene);
         addCardCtrl.setList(list);
         addCardCtrl.setCard(card);
-        addCardCtrl.setBoard(board);
         addCardCtrl.refresh();
     }
 
@@ -246,9 +236,8 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         popUpCardConfirmStage.close();
     }
 
-    public void showCardListDeleteConfirmation (CardList cardList, Board board) {
+    public void showCardListDeleteConfirmation (CardList cardList) {
         cardListDeleteConfirmationCtrl.setCardListToBeDeleted(cardList);
-        cardListDeleteConfirmationCtrl.setBoard(board);
 
         popUpCardListConfirmStage = new Stage();
         popUpCardListConfirmStage.setScene(cardListDeleteConfirmationScene);

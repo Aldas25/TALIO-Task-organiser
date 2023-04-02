@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import client.Main;
+import client.services.BoardService;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -41,6 +42,7 @@ public class CardListOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final BoardService boardService;
 
     @FXML
     private TextField inviteKeyField;
@@ -51,12 +53,12 @@ public class CardListOverviewCtrl implements Initializable {
     @FXML
     private ImageView addImageView;
 
-    private Board board;
-
     @Inject
-    public CardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public CardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl,
+                                BoardService boardService) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.boardService = boardService;
     }
 
     @Override
@@ -76,10 +78,6 @@ public class CardListOverviewCtrl implements Initializable {
         File addFile = new File ("client/src/main/java/client/images/card-list-overview/add1.png");
         Image addImage = new Image (addFile.toURI().toString());
         addImageView.setImage(addImage);
-    }
-
-    public void setBoard (Board board) {
-        this.board = board;
     }
 
     /**
@@ -115,7 +113,7 @@ public class CardListOverviewCtrl implements Initializable {
     public void refresh() {
         listContainer.getChildren().clear();
 
-        List<CardList> allLists = server.getCardListForBoard(board);
+        List<CardList> allLists = boardService.getListsForCurrentBoard();
         for (CardList cardList : allLists) {
             AnchorPane listNode = loadCardListNode(cardList);
 
@@ -136,7 +134,7 @@ public class CardListOverviewCtrl implements Initializable {
 
         ListTemplateCtrl listTemplateCtrl = listTemplate.getKey();
         AnchorPane listNode = (AnchorPane) listTemplate.getValue();
-        listTemplateCtrl.start(cardList, board);
+        listTemplateCtrl.start(cardList);
 
         // retrieving text from a copy of the file ListTemplate
         TextField textField = (TextField) listNode.getChildren().get(0);
@@ -182,7 +180,9 @@ public class CardListOverviewCtrl implements Initializable {
 
     public void addNewList() {
         CardList list = new CardList("New list", new ArrayList<>());
-        server.send("/app/lists/add", new CustomPair<>(board.id, list));
+        server.send("/app/lists/add",
+                new CustomPair<>(boardService.getCurrentBoard().id,
+                        list));
     }
 
     public void disconnectFromBoard() {
@@ -235,7 +235,8 @@ public class CardListOverviewCtrl implements Initializable {
     }
 
     public void showInviteKey(){
-        inviteKeyField.setText(String.valueOf(board.inviteKey));
+        String inviteKey = boardService.getBoardInviteKey();
+        inviteKeyField.setText(inviteKey);
     }
 
 }

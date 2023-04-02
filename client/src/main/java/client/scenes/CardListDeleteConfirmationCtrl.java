@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
-import commons.Board;
 import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
@@ -14,7 +13,6 @@ public class CardListDeleteConfirmationCtrl {
     private final ServerUtils server;
 
     private CardList cardListToBeDeleted;
-    private Board board;
 
     @FXML
     private Button cancelButton;
@@ -29,10 +27,6 @@ public class CardListDeleteConfirmationCtrl {
 
     public void setCardListToBeDeleted (CardList list) {
         this.cardListToBeDeleted = list;
-    }
-
-    public void setBoard (Board board) {
-        this.board = board;
     }
 
     public void cancelButtonOnAction () {
