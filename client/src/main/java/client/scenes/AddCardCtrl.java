@@ -1,10 +1,11 @@
 package client.scenes;
 
+import client.services.CardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.CardList;
-import commons.CustomPair;
+//import commons.CustomPair;
 import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,7 +23,7 @@ public class AddCardCtrl {
     private final ServerUtils server;
 
     private CardList list;
-    private Card currentCard;
+    private CardService cardService;
 
     @FXML
     private TextField cardTitleTextField;
@@ -38,9 +39,10 @@ public class AddCardCtrl {
 
 
     @Inject
-    public AddCardCtrl(MainCtrl mainCtrl, ServerUtils server) {
+    public AddCardCtrl(MainCtrl mainCtrl, ServerUtils server, CardService cardService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.cardService = cardService;
     }
 
     /**
@@ -53,18 +55,18 @@ public class AddCardCtrl {
         this.list = list;
     }
     public void setCard(Card card){
-        this.currentCard = card;
+        cardService.setCurrentCard(card);
     }
     /**
      * When adding a new card, the text field should be empty.
      * When updating an existing card, the text field should contain the old data.
      */
     public void refresh() {
-        if(currentCard == null){
+        if(cardService.getCurrentCard() == null){
             cardTitleTextField.setText("");
         }
         else{
-            cardTitleTextField.setText(currentCard.title);
+            cardTitleTextField.setText(cardService.getCurrentCard().title);
         }
     }
     /**
@@ -74,7 +76,7 @@ public class AddCardCtrl {
      * When everything's done, we set the current card of this controller to null.
      */
     public void addOrUpdateCard() {
-        if(currentCard == null){
+        if(cardService.getCurrentCard()== null){
             if(titleTagTextField.getText().equals("")){
                 addCard();
             }
@@ -97,17 +99,15 @@ public class AddCardCtrl {
      * Creates a new card and adds it to the server
      */
     public void addCard() {
-        Card card = new Card(cardTitleTextField.getText(), new ArrayList<>());
-        server.addCard(card, list);
+        cardService.addCardToList(list,cardTitleTextField.getText());
     }
 
     /**
      * Updates the title of a card after an edit
      */
     public void updateCard() {
-        currentCard.title = cardTitleTextField.getText();
-        server.send("/app/cards/update", new CustomPair<Long, Card>(currentCard.id, currentCard));
-        currentCard = null;
+        cardService.updateTitleCurrentCard(cardTitleTextField.getText());
+        cardService.setCurrentCard(null);
     }
 
     /**
@@ -126,12 +126,13 @@ public class AddCardCtrl {
      * Updates a card title and a tag
      */
     private void updateTagCard() {
-        currentCard.title = cardTitleTextField.getText();
-        Tag tag = new Tag(titleTagTextField.getText(), toHexString(colorPicker.getValue()));
-        currentCard.tagList.add(tag);
-//        server.updateCardTitle(currentCard);
-        server.send("/app/cards/update", new CustomPair<Long, Card>(currentCard.id, currentCard));
-        currentCard = null;
+        return;
+//        currentCard.title = cardTitleTextField.getText();
+//        Tag tag = new Tag(titleTagTextField.getText(), toHexString(colorPicker.getValue()));
+//        currentCard.tagList.add(tag);
+////        server.updateCardTitle(currentCard);
+//        server.send("/app/cards/update", new CustomPair<Long, Card>(currentCard.id, currentCard));
+//        currentCard = null;
     }
 
     public void addCardButtonOnMouseEntered (MouseEvent event) {
