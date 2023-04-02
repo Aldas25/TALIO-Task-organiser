@@ -220,15 +220,13 @@ public class ServerUtils {
     /**
      * Updates the title of a card in server
      * @param card The card that is changing
-     * @return The changed card
      */
-    public Card updateCardTitle(Card card) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("/api/cards/" + card.id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(card, APPLICATION_JSON), Card.class);
+
+
+    public void updateCardTitle(Card card) {
+        send("/app/cards/update", new CustomPair<Long, Card>(card.id, card));
     }
+
 
     /**
      * Remove card from the server
