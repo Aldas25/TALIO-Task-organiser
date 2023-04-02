@@ -131,4 +131,18 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/byKey/{inviteKey}")
+    public ResponseEntity<Board> getBoardbyInviteKey(@PathVariable("inviteKey") String enteredKey){
+        if(enteredKey.length() != 4){
+            return ResponseEntity.badRequest().build();
+        }
+        for(Board board: repo.findAll()){
+            if(enteredKey.equals(board.inviteKey)){
+                return ResponseEntity.ok(board);
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+
 }

@@ -21,6 +21,9 @@ public class BoardTemplateCtrl implements Initializable {
     private Board board;
 
     @FXML
+    private ImageView joinImageView;
+
+    @FXML
     private TextField updateBoardNameField;
     @FXML
     private Button viewBoardButton;
@@ -82,4 +85,5 @@ public class BoardTemplateCtrl implements Initializable {
         board.title = updateBoardNameField.getText();
         server.updateBoardTitle(board);
     }
+
 }
