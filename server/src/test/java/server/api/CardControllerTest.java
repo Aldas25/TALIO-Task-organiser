@@ -1,11 +1,8 @@
 package server.api;
 
-import commons.Board;
-import commons.Card;
-import commons.CardList;
+import commons.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.database.TagRepository;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -19,21 +16,24 @@ public class CardControllerTest {
     private TestCardRepository cardRepo;
     private TestBoardRepository boardRepo;
     private TestCardListRepository cardListRepo;
+    private TestTagRepository tagRepo;
+
     private CardController cardCtrl;
     private CardListController listCtrl;
     private BoardController boardCtrl;
+    private TestSimpMessagingTemplate msgs;
 
     @BeforeEach
     public void setup() {
         cardRepo = new TestCardRepository();
         boardRepo = new TestBoardRepository();
         cardListRepo = new TestCardListRepository();
+        tagRepo = new TestTagRepository();
+        msgs = new TestSimpMessagingTemplate(null);
 
-        TagRepository tagRepo = new TestTagRepository();
-
-        cardCtrl = new CardController(cardRepo, cardListRepo, tagRepo, null);
-        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, tagRepo, null);
-        boardCtrl = new BoardController(boardRepo, cardListRepo, null);
+        cardCtrl = new CardController(cardRepo, cardListRepo, tagRepo, msgs);
+        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, tagRepo, msgs);
+        boardCtrl = new BoardController(boardRepo, cardListRepo, msgs);
     }
 
     @Test
@@ -121,7 +121,10 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        Card card = new Card("c1", new ArrayList<>());
+        ArrayList<Tag> tags = new ArrayList<Tag>();
+        tags.add(new Tag ("aaa", "blue"));
+
+        Card card = new Card("c1", tags);
         listCtrl.addCard(list.id, card);
 
         Card card2 = new Card("c2", new ArrayList<>());
@@ -162,6 +165,14 @@ public class CardControllerTest {
         boardCtrl.addCardList(board.id, list);
 
         var actual = cardCtrl.deleteCard(1L);
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void deleteCardNonExistentListTest () {
+        Card card = new Card("c1", new ArrayList<>());
+
+        var actual = cardCtrl.deleteCard(card.id);
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
@@ -214,5 +225,52 @@ public class CardControllerTest {
         var actual = cardCtrl.moveCard(card.id, -1L, 0);
 
         assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void deleteCardMessageTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        Card card = new Card("c1", new ArrayList<>());
+        listCtrl.addCard(list.id, card);
+
+        Card card2 = new Card("c2", new ArrayList<>());
+        listCtrl.addCard(list.id, card2);
+
+        cardCtrl.deleteCardMessage(card2.id);
+
+        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/cards/delete"));
+        assertEquals(1, list.cards.size());
+    }
+
+    @Test
+    public void updateCardMessageTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        Card card = new Card("c1", new ArrayList<>());
+        listCtrl.addCard(list.id, card);
+
+        Card card2 = new Card("c2", new ArrayList<>());
+        listCtrl.addCard(list.id, card2);
+
+        cardCtrl.updateCardMessage(new CustomPair<>(card.id, card2));
+
+        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/cards/update"));
+        assertEquals("c2", card.title);
+    }
+
+    @Test
+    public void isNullOrEmptyTest () {
+        String s = "";
+
+        assertTrue(cardCtrl.isNullOrEmpty(s));
     }
 }

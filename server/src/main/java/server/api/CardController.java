@@ -50,8 +50,7 @@ public class CardController {
         return ResponseEntity.ok(repo.findById(id).get());
     }
 
-
-    private static boolean isNullOrEmpty(String s) {
+    public static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 
@@ -103,7 +102,6 @@ public class CardController {
             tagRepo.save(tag);
         }
 
-
         cardFromRepo.title = card.title;
         Card saved = repo.save(cardFromRepo);
 
@@ -142,7 +140,7 @@ public class CardController {
 
         Card card = repo.findById(id).get();
         List<CardList> allLists = listRepo.findAll();
-        for(CardList list : allLists){
+        for(CardList list : allLists) {
             if(list.cards.contains(card)){
                 return ResponseEntity.ok(list);
             }
