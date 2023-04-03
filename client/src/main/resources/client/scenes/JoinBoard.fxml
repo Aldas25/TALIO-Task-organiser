@@ -7,10 +7,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane onDragDetected="#joinButtonOnAction" prefHeight="106.0" prefWidth="257.0" style="-fx-background-color: E8ECF2;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardJoinCtrl">
+<AnchorPane onDragDetected="#joinButtonOnAction" prefHeight="107.0" prefWidth="235.0" style="-fx-background-color: E8ECF2;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardJoinCtrl">
    <children>
-      <TextField fx:id="enterInviteKeyField" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="73.0" promptText="Enter Key" />
-      <Button fx:id="cancelButton" layoutX="177.0" layoutY="61.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" onMouseEntered="#cancelButtonOnMouseEntered" onMouseExited="#cancelButtonOnMouseExited" prefHeight="28.0" prefWidth="66.0" style="-fx-border-radius: 6; -fx-background-color: DD6C6C;" text="Cancel" textFill="#151928">
+      <TextField fx:id="enterInviteKeyField" alignment="CENTER" layoutX="16.0" layoutY="14.0" prefHeight="28.0" prefWidth="203.0" promptText="Enter Key" style="-fx-prompt-text-fill: #BCC2DC; -fx-text-fill: #626C88;">
+         <font>
+            <Font size="13.0" />
+         </font></TextField>
+      <Button fx:id="cancelButton" layoutX="151.0" layoutY="65.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" onMouseEntered="#cancelButtonOnMouseEntered" onMouseExited="#cancelButtonOnMouseExited" prefHeight="28.0" prefWidth="66.0" style="-fx-border-radius: 6; -fx-background-color: DD6C6C;" text="Cancel" textFill="#151928">
          <font>
             <Font size="13.0" />
          </font>
@@ -18,7 +21,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="joinButton" layoutX="92.0" layoutY="61.0" mnemonicParsing="false" onAction="#joinButtonOnAction" onMouseEntered="#joinButtonOnMouseEntered" onMouseExited="#joinButtonOnMouseExited" prefHeight="28.0" prefWidth="66.0" style="-fx-border-radius: 6; -fx-background-color: B5C99A;" text="Join" textFill="#151928">
+      <Button fx:id="joinButton" layoutX="66.0" layoutY="65.0" mnemonicParsing="false" onAction="#joinButtonOnAction" onMouseEntered="#joinButtonOnMouseEntered" onMouseExited="#joinButtonOnMouseExited" prefHeight="28.0" prefWidth="66.0" style="-fx-border-radius: 6; -fx-background-color: B5C99A;" text="Join" textFill="#151928">
          <font>
             <Font size="13.0" />
          </font>
@@ -26,6 +29,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Text fx:id="joinError" fill="#ff0101" layoutX="106.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="117.19335174560547" />
+      <Text fx:id="joinError" fill="#76191c" layoutX="47.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="141.0" />
    </children>
 </AnchorPane>

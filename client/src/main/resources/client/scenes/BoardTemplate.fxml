@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="100.0" prefWidth="440.0" style="-fx-background-color: #6D85A8; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardTemplateCtrl">
    <children>
-      <TextField fx:id="updateBoardNameField" alignment="CENTER" layoutX="12.0" layoutY="14.0" onKeyTyped="#updateBoardTitle" prefHeight="43.0" prefWidth="406.0" style="-fx-background-color: #6D85A8; -fx-text-fill: #151928; -fx-background-radius: 0;" text="New Board">
+      <TextField fx:id="updateBoardNameField" alignment="CENTER" layoutX="12.0" layoutY="14.0" onKeyTyped="#updateBoardTitle" prefHeight="43.0" prefWidth="406.0" style="-fx-background-color: #6D85A8; -fx-text-fill: #151928; -fx-background-radius: 0;" text="New Board" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="14.0">
          <font>
             <Font size="20.0" />
          </font>
@@ -18,7 +18,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <Button fx:id="viewBoardButton" layoutX="340.0" layoutY="56.0" mnemonicParsing="false" onAction="#viewBoardButtonOnAction" onMouseEntered="#viewBoardButtonOnMouseEntered" onMouseExited="#viewBoardButtonOnMouseExited" prefHeight="20.0" prefWidth="82.0" style="-fx-background-color: d1dae6; -fx-border-radius: 6;" text="View Board" textFill="#3c4867">
+      <Button fx:id="viewBoardButton" layoutX="340.0" layoutY="56.0" mnemonicParsing="false" onAction="#viewBoardButtonOnAction" onMouseEntered="#viewBoardButtonOnMouseEntered" onMouseExited="#viewBoardButtonOnMouseExited" prefHeight="20.0" prefWidth="82.0" style="-fx-background-color: d1dae6; -fx-border-radius: 6;" text="View Board" textFill="#3c4867" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="56.0">
          <font>
             <Font size="13.0" />
          </font>
@@ -26,7 +26,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <ImageView fx:id="boardDeleteImageView" fitHeight="28.0" fitWidth="26.0" layoutX="410.0" layoutY="8.0" onMouseClicked="#showBoardPopUp" onMouseEntered="#boardDeleteImageViewOnMouseEntered" onMouseExited="#boardDeleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="boardDeleteImageView" fitHeight="28.0" fitWidth="26.0" layoutX="410.0" layoutY="8.0" onMouseClicked="#showBoardPopUp" onMouseEntered="#boardDeleteImageViewOnMouseEntered" onMouseExited="#boardDeleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="73.4285717010498" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="8.0">
          <image>
             <Image url="@../../../java/client/images/board/delete1.png" />
          </image>
