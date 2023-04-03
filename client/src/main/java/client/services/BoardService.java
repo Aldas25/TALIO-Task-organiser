@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.CardList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BoardService {
@@ -33,4 +34,15 @@ public class BoardService {
     public List<CardList> getListsForCurrentBoard() {
         return server.getCardListForBoard(currentBoard);
     }
+
+    public void addBoard(String title) {
+        Board newBoard = new Board(title, new ArrayList<>());
+        server.addBoard(newBoard);
+    }
+
+    public void addListToCurrentBoard(String title) {
+        CardList list = new CardList(title, new ArrayList<>());
+        server.addListToCurrentBoard(currentBoard, list);
+    }
+
 }

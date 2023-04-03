@@ -17,7 +17,6 @@ package client.scenes;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -179,10 +178,7 @@ public class CardListOverviewCtrl implements Initializable {
     }
 
     public void addNewList() {
-        CardList list = new CardList("New list", new ArrayList<>());
-        server.send("/app/lists/add",
-                new CustomPair<>(boardService.getCurrentBoard().id,
-                        list));
+        boardService.addListToCurrentBoard("New List");
     }
 
     public void disconnectFromBoard() {

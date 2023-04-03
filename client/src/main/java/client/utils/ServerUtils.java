@@ -143,6 +143,20 @@ public class ServerUtils {
     }
 
     /**
+     * Adds board to server
+     * @param board the board to be added
+     */
+    public void addBoard(Board board) {
+        send("/app/boards/add",board);
+    }
+
+    public void addListToCurrentBoard(Board board, CardList cardList){
+        send("/app/lists/add",
+                new CustomPair<>(board.id, cardList));
+    }
+
+
+    /**
      * Adds a CardList to api/lists
      * @param list The new CardList
      * @return The CardList added
