@@ -12,7 +12,7 @@ public class MainController {
     @GetMapping("/")
     @ResponseBody
     public String index() {
-        return "Hello world!";
+        return "Application is running!";
     }
 
     @GetMapping("/status")
