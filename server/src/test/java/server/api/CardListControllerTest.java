@@ -56,6 +56,7 @@ public class CardListControllerTest {
         boardCtrl.addCardList(board.id, l);
         var actual = listCtrl.getById(l.id);
 
+        assertEquals(OK, actual.getStatusCode());
         assertEquals("l1", Objects.requireNonNull(actual.getBody()).title);
     }
 
@@ -99,6 +100,8 @@ public class CardListControllerTest {
         listCtrl.addCard(l.id, c);
 
         var cardList = listCtrl.getCardsForList(l.id);
+
+        assertEquals(OK, cardList.getStatusCode());
         assertEquals(List.of(c), cardList.getBody());
     }
 
@@ -166,6 +169,8 @@ public class CardListControllerTest {
         Card card = new Card ("c1", tags);
 
         var actual = listCtrl.addCard(1L, card);
+
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
@@ -188,6 +193,8 @@ public class CardListControllerTest {
         listCtrl.addCard(list.id, card1);
 
         var actual = listCtrl.getCardsForList(list.id);
+
+        assertEquals(OK, actual.getStatusCode());
         assertEquals(List.of(card1), actual.getBody());
     }
 
@@ -208,6 +215,7 @@ public class CardListControllerTest {
         var deleteResponse = listCtrl.deleteList(list.id);
 
         assertEquals(OK, deleteResponse.getStatusCode());
+        assertEquals(0, board.lists.size());
     }
 
     @Test
@@ -227,6 +235,7 @@ public class CardListControllerTest {
         CardList list2 = new CardList("l2", new ArrayList<>());
         var actual = listCtrl.updateListTitle(list.id, list2);
 
+        assertEquals(OK, actual.getStatusCode());
         assertEquals("l2", list.title);
     }
 

@@ -143,6 +143,4 @@ public class BoardController {
         }
         return ResponseEntity.badRequest().build();
     }
-
-
 }
