@@ -1,22 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminBoardOverviewCtrl">
-  <content>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="487.0" prefWidth="653.0" style="-fx-background-color: #ecece7;">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="650.0" style="-fx-background-color: ecece7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminBoardOverviewCtrl">
+   <left>
+      <AnchorPane prefHeight="442.0" prefWidth="114.0" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8; -fx-border-width: 2; -fx-border-radius: 2;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="disconnectButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#disconnectFromServer" onMouseEntered="#disconnectButtonOnMouseEntered" onMouseExited="#disconnectButtonOnMouseExited" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8;" text="Disconnect from server" textFill="#3c4867" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
-             <font>
-                 <Font size="13.0" />
-             </font>
-             <cursor>
-                 <Cursor fx:constant="HAND" />
-             </cursor></Button>
-         </children></AnchorPane>
-  </content>
-</ScrollPane>
+            <ImageView fx:id="disconnectImageView" fitHeight="56.0" fitWidth="73.0" layoutX="21.0" layoutY="377.0" onMouseClicked="#disconnectFromServer" onMouseEntered="#disconnectOnMouseEntered" onMouseExited="#disconnectOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="18.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <image>
+                  <Image url="@../../../java/client/images/board-overview/disconnect1.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="17.0" layoutY="443.0" prefHeight="20.0" prefWidth="95.0" text="DISCONNECT" textFill="#3c4867" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="6.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <BorderPane style="-fx-background-color: ecece7;" BorderPane.alignment="CENTER">
+         <center>
+            <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" style="-fx-background-color: ecece7;">
+               <content>
+                  <VBox fx:id="boardContainer" prefHeight="422.0" prefWidth="454.0" spacing="10.0" style="-fx-background-color: ecece7;" />
+               </content>
+            </ScrollPane>
+         </center>
+         <top>
+            <AnchorPane prefHeight="47.0" prefWidth="536.0" BorderPane.alignment="CENTER" />
+         </top>
+         <left>
+            <AnchorPane prefHeight="471.0" prefWidth="40.0" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <AnchorPane prefHeight="471.0" prefWidth="40.0" BorderPane.alignment="CENTER" />
+         </right>
+         <bottom>
+            <AnchorPane prefHeight="47.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </bottom>
+      </BorderPane>
+   </center>
+</BorderPane>

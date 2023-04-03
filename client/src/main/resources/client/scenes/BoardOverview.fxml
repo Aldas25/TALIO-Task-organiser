@@ -14,7 +14,7 @@
    <left>
       <AnchorPane prefHeight="442.0" prefWidth="114.0" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8; -fx-border-width: 2; -fx-border-radius: 2;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="addImageView" fitHeight="50.0" fitWidth="67.0" layoutX="25.0" layoutY="56.0" onMouseClicked="#addOnMouseClicked" onMouseEntered="#addOnMouseEntered" onMouseExited="#addOnMouseExited" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="addImageView" fitHeight="50.0" fitWidth="67.0" layoutX="25.0" layoutY="56.0" onMouseClicked="#addOnMouseClicked" onMouseEntered="#addOnMouseEntered" onMouseExited="#addOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="21.821426391601562" AnchorPane.topAnchor="56.0">
                <image>
                   <Image url="@../../../java/client/images/board-overview/add1.png" />
                </image>
@@ -22,12 +22,12 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <Label layoutX="24.0" layoutY="115.0" text="ADD NEW" textFill="#3c4867">
+            <Label layoutX="28.0" layoutY="119.0" prefHeight="20.0" prefWidth="72.0" text="ADD NEW" textFill="#3c4867" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="117.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <ImageView fx:id="joinImageView" fitHeight="50.0" fitWidth="67.0" layoutX="24.0" layoutY="217.0" onMouseClicked="#joinOnMouseClicked" onMouseEntered="#joinOnMouseEntered" onMouseExited="#joinOnMouseExited" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="joinImageView" fitHeight="50.0" fitWidth="67.0" layoutX="24.0" layoutY="217.0" onMouseClicked="#joinOnMouseClicked" onMouseEntered="#joinOnMouseEntered" onMouseExited="#joinOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.821426391601562" AnchorPane.topAnchor="217.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -35,12 +35,12 @@
                   <Image url="@../../../java/client/images/board-overview/join1.png" />
                </image>
             </ImageView>
-            <Label layoutX="38.0" layoutY="275.0" text="JOIN" textFill="#3c4867">
+            <Label layoutX="43.0" layoutY="280.0" prefHeight="20.0" prefWidth="38.0" text="JOIN" textFill="#3c4867" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="278.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <ImageView fx:id="disconnectImageView" fitHeight="56.0" fitWidth="73.0" layoutX="18.0" layoutY="378.0" onMouseClicked="#disconnectOnMouseClicked" onMouseEntered="#disconnectOnMouseEntered" onMouseExited="#disconnectOnMouseExited" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="disconnectImageView" fitHeight="50.0" fitWidth="67.0" layoutX="21.0" layoutY="378.0" onMouseClicked="#disconnectOnMouseClicked" onMouseEntered="#disconnectOnMouseEntered" onMouseExited="#disconnectOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="22.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -48,7 +48,7 @@
                   <Image url="@../../../java/client/images/board-overview/disconnect1.png" />
                </image>
             </ImageView>
-            <Label layoutX="13.0" layoutY="443.0" text="DISCONNECT" textFill="#3c4867">
+            <Label layoutX="19.0" layoutY="443.0" prefHeight="20.0" prefWidth="95.0" text="DISCONNECT" textFill="#3c4867" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="6.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -61,7 +61,7 @@
          <center>
             <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" style="-fx-background-color: ecece7;">
                <content>
-                  <VBox fx:id="boardContainer" fillWidth="false" prefHeight="422.0" prefWidth="454.0" spacing="10.0" style="-fx-background-color: ecece7;" />
+                  <VBox fx:id="boardContainer" prefHeight="422.0" prefWidth="454.0" spacing="10.0" style="-fx-background-color: ecece7;" />
                </content>
             </ScrollPane>
          </center>

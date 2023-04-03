@@ -3,16 +3,22 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-public class AdminBoardOverviewCtrl {
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class AdminBoardOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
     @FXML
-    private Button disconnectButton;
+    private ImageView disconnectImageView;
 
     @Inject
     public AdminBoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -20,15 +26,30 @@ public class AdminBoardOverviewCtrl {
         this.mainCtrl = mainCtrl;
     }
 
+    @Override
+    public void initialize (URL url, ResourceBundle resourceBundle) {
+        resetDisconnectImageView();
+    }
+
+    public void resetDisconnectImageView () {
+        File disconnectFile = new
+                File ("client/src/main/java/client/images/admin-board-overview/disconnect1.png");
+        Image disconnectImage = new Image (disconnectFile.toURI().toString());
+        disconnectImageView.setImage(disconnectImage);
+    }
+
     public void disconnectFromServer(){
         mainCtrl.disconnectFromServer();
     }
 
-    public void disconnectButtonOnMouseEntered (MouseEvent event) {
-        disconnectButton.setStyle("-fx-background-color: #b0bfd4; -fx-border-color: #6D85A8");
+    public void disconnectOnMouseEntered (MouseEvent event) {
+        File disconnectFile = new
+                File ("client/src/main/java/client/images/admin-board-overview/disconnect2.png");
+        Image disconnectImage = new Image (disconnectFile.toURI().toString());
+        disconnectImageView.setImage(disconnectImage);
     }
 
-    public void disconnectButtonOnMouseExited (MouseEvent event) {
-        disconnectButton.setStyle("-fx-background-color: #d1dae6; -fx-border-color: #6D85A8");
+    public void disconnectOnMouseExited (MouseEvent event) {
+        resetDisconnectImageView();
     }
 }
