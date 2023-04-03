@@ -76,9 +76,18 @@ public class TestBoardRepository implements BoardRepository {
     @Override
     public <S extends Board> S save(S entity) {
         call("save");
+
+        for (int i = 0; i < boards.size(); i++) {
+            if (boards.get(i).id == entity.id) {
+                boards.set(i, entity);
+                return entity;
+            }
+        }
+
         entity.id = boards.size();
         boards.add(entity);
         return entity;
+
     }
 
     @Override

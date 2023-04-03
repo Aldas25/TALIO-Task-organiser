@@ -76,6 +76,14 @@ public class TestCardListRepository implements CardListRepository {
     @Override
     public <S extends CardList> S save(S entity) {
         call("save");
+
+        for (int i = 0; i < cardLists.size(); i++) {
+            if (cardLists.get(i).id == entity.id) {
+                cardLists.set(i, entity);
+                return entity;
+            }
+        }
+
         entity.id = cardLists.size();
         cardLists.add(entity);
         return entity;
