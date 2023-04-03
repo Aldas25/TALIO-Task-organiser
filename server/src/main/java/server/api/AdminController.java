@@ -15,12 +15,18 @@ import java.util.Random;
 public class AdminController {
 
     private final BoardRepository boardRepository;
+    private final Random random;
 
     private String adminPassword;
 
-    public AdminController(BoardRepository boardRepository){
+    public AdminController(BoardRepository boardRepository, Random random){
         this.boardRepository = boardRepository;
+        this.random = random;
         generatePassword();
+    }
+
+    public String getAdminPassword() {
+        return this.adminPassword;
     }
 
     /**
@@ -52,10 +58,9 @@ public class AdminController {
     /**
      * Function to generate random 10 characters passsword that prints to server
      */
-    private void generatePassword(){
+    public void generatePassword(){
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder();
-        Random random = new Random();
 
         for(int i = 0; i < 10; i++){
             int index = random.nextInt(characters.length());
@@ -65,7 +70,7 @@ public class AdminController {
         String randomString = sb.toString();
 
         this.adminPassword = randomString;
-        System.out.println("\nThe generated password is " + adminPassword + "\n");
+        System.out.println("\nThe generated admin password is " + adminPassword + "\n");
     }
 
 }
