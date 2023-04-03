@@ -12,6 +12,8 @@ public class TestServerUtils extends ServerUtils {
 
     public List<String> log = new ArrayList<>();
 
+    public List<Board> boards = new ArrayList<>();
+
     @Override
     public List<CardList> getCardListForBoard(Board board) {
         log.add("getCardListForBoard " + board.id);
@@ -34,6 +36,18 @@ public class TestServerUtils extends ServerUtils {
     @Override
     public void updateCardTitle(Card card) {
         log.add("updateCardTitle " + card.id + " " + card.title);
+    }
+
+    @Override
+    public void addBoard(Board board){
+        log.add("addBoard "+ board.id + " " + board.title);
+        boards.add(board);
+    }
+
+    @Override
+    public void addListToCurrentBoard(Board board, CardList cardList){
+        log.add("addListToCurrentBoard " + board.id + " " + cardList.id + " " + cardList.title);
+        board.lists.add(cardList);
     }
 
 }

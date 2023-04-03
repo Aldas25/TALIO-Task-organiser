@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.Main;
+import client.services.BoardService;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.application.Platform;
@@ -15,13 +16,14 @@ import javafx.scene.layout.VBox;
 import javax.inject.Inject;
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
     private MainCtrl mainCtrl;
     private ServerUtils server;
+
+    private final BoardService boardService;
 
     @FXML
     private ImageView addImageView;
@@ -33,9 +35,10 @@ public class BoardOverviewCtrl implements Initializable {
     private VBox boardContainer;
 
     @Inject
-    public BoardOverviewCtrl (MainCtrl mainCtrl, ServerUtils server) {
+    public BoardOverviewCtrl (MainCtrl mainCtrl, ServerUtils server, BoardService boardService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.boardService = boardService;
     }
 
     @Override
@@ -93,8 +96,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void addOnMouseClicked () {
-        Board newBoard = new Board("New Board", new ArrayList<>());
-        server.send("/app/boards/add", newBoard);
+        boardService.addBoard("New Board");
     }
 
     /**

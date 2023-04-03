@@ -50,6 +50,31 @@ public class BoardServiceTest {
     }
 
     @Test
+    public void testAddBoard(){
+        sut.addBoard("Title");
+        assertTrue(server.log.contains("addBoard 0 Title"));
+        assertEquals(List.of(new Board("Title", new ArrayList<>())), server.boards);
+    }
+
+    @Test
+    public void testAddListToCurrentBoard(){
+        Board b = new Board("Title", new ArrayList<>());
+        sut.setCurrentBoard(b);
+        sut.addListToCurrentBoard("Title");
+        assertTrue(server.log.contains("addListToCurrentBoard 0 0 Title"));
+        assertEquals( List.of(new CardList("Title", new ArrayList<>())), b.lists);
+    }
+
+    @Test
+    public void testGetInviteKey(){
+        Board b = new Board("Title", new ArrayList<>());
+        b.inviteKey = "42";
+        sut.setCurrentBoard(b);
+        assertEquals( "42", sut.getBoardInviteKey());
+    }
+
+
+    @Test
     public void testGetCardLists() {
         CardList list1 = new CardList("list1", new ArrayList<>());
         list1.id = 1;
