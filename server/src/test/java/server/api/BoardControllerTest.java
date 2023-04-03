@@ -16,33 +16,35 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class BoardControllerTest {
 
     private TestBoardRepository boardRepo;
-    private BoardController sut;
+    private BoardController boardCtrl;
 
     @BeforeEach
     public void setup() {
         TestCardRepository cardRepo = new TestCardRepository();
         TestCardListRepository cardListRepo = new TestCardListRepository();
+
         boardRepo = new TestBoardRepository();
-        sut = new BoardController(boardRepo, cardListRepo, null);
+        boardCtrl = new BoardController(boardRepo, cardListRepo, null);
     }
 
     @Test
     public void cannotAddNullBoard() {
-        var actual = sut.add(new Board(null, new ArrayList<>()));
+        var actual = boardCtrl.add(new Board(null, new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
     public void cannotAddEmptyBoard() {
-        var actual = sut.add(new Board("", new ArrayList<>()));
+        var actual = boardCtrl.add(new Board("", new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
     public void getById() {
-        Board b = new Board("b1", new ArrayList<>());
-        sut.add(b);
-        var actual = sut.getById(b.id);
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        var actual = boardCtrl.getById(board.id);
 
         assertEquals("b1", Objects.requireNonNull(actual.getBody()).title);
     }
@@ -52,40 +54,46 @@ public class BoardControllerTest {
         Board board = new Board("b1", new ArrayList<>());
         List<Board> expected = List.of(board);
 
-        sut.add(new Board("b1", new ArrayList<>()));
+        boardCtrl.add(new Board("b1", new ArrayList<>()));
 
-        assertEquals(expected, sut.getAll());
+        assertEquals(expected, boardCtrl.getAll());
         assertEquals(expected, boardRepo.findAll());
     }
 
     @Test
     public void databaseIsUsed() {
-        sut.add(new Board("b1", new ArrayList<>()));
+        boardCtrl.add(new Board("b1", new ArrayList<>()));
+
         boolean actual = boardRepo.calledMethods.contains("save");
+
         assertTrue(actual);
     }
 
     @Test
     public void cannotAddCardListWithNullTitle() {
-        Board b = new Board("b1", new ArrayList<>());
-        sut.add(b);
-        var actual = sut.addCardList(b.id, new CardList(null, new ArrayList<>()));
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        var actual = boardCtrl.addCardList(board.id, new CardList(null, new ArrayList<>()));
+
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
     public void cannotAddCardListWithEmptyTitle() {
-        Board b = new Board("b1", new ArrayList<>());
-        sut.add(b);
-        var actual = sut.addCardList(b.id, new CardList("", new ArrayList<>()));
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        var actual = boardCtrl.addCardList(board.id, new CardList("", new ArrayList<>()));
+
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
     public void addOneCardList() {
-        Board b = new Board("b1", new ArrayList<>());
-        sut.add(b);
-        sut.addCardList(b.id, new CardList("l1", new ArrayList<>()));
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+        boardCtrl.addCardList(board.id, new CardList("l1", new ArrayList<>()));
 
         var boards = boardRepo.findAll();
         var boardWithList = boards.get(0);
@@ -93,5 +101,4 @@ public class BoardControllerTest {
 
         assertEquals("l1", actual.title);
     }
-
 }

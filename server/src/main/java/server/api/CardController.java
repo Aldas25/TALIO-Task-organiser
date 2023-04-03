@@ -116,6 +116,14 @@ public class CardController {
             @PathVariable("listId") long listId,
             @PathVariable("newPos") int newPos
     ){
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (listId < 0 || !listRepo.existsById(listId)) {
+            return ResponseEntity.badRequest().build();
+        }
+
         Card card = repo.findById(id).get();
         removeCardFromItsList(id);
 

@@ -1,135 +1,152 @@
 package server.api;
 
+import commons.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 public class CardListControllerTest {
     private TestCardListRepository cardListRepo;
     private TestTagRepository tagRepo;
-    private CardListController sut;
+    private TestBoardRepository boardRepo;
+    private CardListController listCtrl;
+    private BoardController boardCtrl;
+    private TestSimpMessagingTemplate msgs;
 
     @BeforeEach
     public void setup() {
         TestCardRepository cardRepo = new TestCardRepository();
-        TestBoardRepository boardRepo = new TestBoardRepository();
+
         tagRepo = new TestTagRepository();
         cardListRepo = new TestCardListRepository();
-        sut = new CardListController(cardListRepo, cardRepo, boardRepo, tagRepo, null);
+        boardRepo = new TestBoardRepository();
+        msgs = new TestSimpMessagingTemplate(null);
+
+        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, tagRepo, msgs);
+        boardCtrl = new BoardController(boardRepo, cardListRepo, msgs);
     }
 
-    /*@Test
-    public void cannotAddNullCardList() {
-        var actual = sut.add(new CardList(null, new ArrayList<>()));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }*/
-
-    /*@Test
-    public void cannotAddEmptyCardList() {
-        var actual = sut.add(new CardList("", new ArrayList<>()));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }*/
-
-    /*@Test
-    public void addOneCardList() {
-        sut.add(new CardList("l1", new ArrayList<>()));
-
-        var lists = cardListRepo.findAll();
-
-        assertEquals(1, lists.size());
-        assertEquals("l1", lists.get(0).title);
-    }*/
-
     @Test
-    public void cannotGetByInvalidId() {
-        var actual = sut.getById(-1L);
+    public void cannotGetByInvalidIdTest() {
+        var actual = listCtrl.getById(-1L);
 
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void cannotGetByNonExistentId() {
-        var actual = sut.getById(1L);
+    public void cannotGetByNonExistentIdTest() {
+        var actual = listCtrl.getById(1L);
 
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
-    /*@Test
-    public void getById() {
+    @Test
+    public void getByIdTest() {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
         CardList l = new CardList("l1", new ArrayList<>());
-        sut.add(l);
-        var actual = sut.getById(l.id);
+        boardCtrl.addCardList(board.id, l);
+        var actual = listCtrl.getById(l.id);
 
         assertEquals("l1", Objects.requireNonNull(actual.getBody()).title);
-    }*/
+    }
 
-    /*@Test
-    public void getAllCardLists() {
+    @Test
+    public void getAllCardListsTest() {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
         CardList cardList = new CardList("l1", new ArrayList<>());
         List<CardList> expected = List.of(cardList);
 
-        sut.add(new CardList("l1", new ArrayList<>()));
+        boardCtrl.addCardList(board.id, new CardList("l1", new ArrayList<>()));
 
-        assertEquals(expected, sut.getAll());
+        assertEquals(expected, listCtrl.getAll());
         assertEquals(expected, cardListRepo.findAll());
-    }*/
+    }
 
     @Test
-    public void cannotGetCardsFromInvalidList() {
-        var cardList = sut.getCardsForList(-1L);
+    public void cannotGetCardsFromInvalidListTest() {
+        var cardList = listCtrl.getCardsForList(-1L);
 
         assertEquals(BAD_REQUEST, cardList.getStatusCode());
     }
 
     @Test
-    public void cannotGetCardsFromNonExistentList() {
-        var cardList = sut.getCardsForList(1L);
+    public void cannotGetCardsFromNonExistentListTest() {
+        var cardList = listCtrl.getCardsForList(1L);
 
         assertEquals(BAD_REQUEST, cardList.getStatusCode());
     }
 
-    /*@Test
-    public void getCardsFromOneList() {
+    @Test
+    public void getCardsFromOneListTest() {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
         CardList l = new CardList("l1", new ArrayList<>());
-        sut.add(l);
+        boardCtrl.addCardList(board.id, l);
+
         Card c = new Card("c1", new ArrayList<>());
-        sut.addCard(l.id,c);
-        var cardList = sut.getCardsForList(l.id);
+        listCtrl.addCard(l.id, c);
 
+        var cardList = listCtrl.getCardsForList(l.id);
         assertEquals(List.of(c), cardList.getBody());
-    }*/
+    }
 
-    /*@Test
-    public void databaseIsUsed() {
-        sut.add(new CardList("l1", new ArrayList<>()));
+    @Test
+    public void databaseIsUsedTest() {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        boardCtrl.addCardList(board.id, new CardList("l1", new ArrayList<>()));
         boolean actual = cardListRepo.calledMethods.contains("save");
         assertTrue(actual);
-    }*/
+    }
 
-    /*@Test
-    public void cannotAddCardWithNullTitle() {
+    @Test
+    public void cannotAddCardWithNullTitleTest() {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
         CardList l = new CardList("l1", new ArrayList<>());
-        sut.add(l);
-        var actual = sut.addCard(l.id,new Card(null, new ArrayList<>()));
+        boardCtrl.addCardList(board.id, l);
+
+        var actual = listCtrl.addCard(l.id,new Card(null, new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }*/
+    }
 
-    /*@Test
-    public void cannotAddCardWithEmptyTitle() {
+    @Test
+    public void cannotAddCardWithEmptyTitleTest() {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
         CardList l = new CardList("l1", new ArrayList<>());
-        sut.add(l);
-        var actual = sut.addCard(l.id,new Card( "", new ArrayList<>()));
+        boardCtrl.addCardList(board.id, l);
+
+        var actual = listCtrl.addCard(l.id,new Card( "", new ArrayList<>()));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }*/
+    }
 
-    /*@Test
-    public void addOneCard() {
+    @Test
+    public void addOneCardTest() {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
         CardList l = new CardList("l1", new ArrayList<>());
-        sut.add(l);
+        boardCtrl.addCardList(board.id, l);
+
         ArrayList<Tag> tags = new ArrayList<>();
         tags.add(new Tag("aaa", "blue"));
-        sut.addCard(l.id, new Card("c1", tags));
+        listCtrl.addCard(l.id, new Card("c1", tags));
 
         var lists = cardListRepo.findAll();
         var listWithCard = lists.get(0);
@@ -137,6 +154,169 @@ public class CardListControllerTest {
 
         assertEquals("c1", actual.title);
         assertEquals("aaa", actual.tagList.get(0).title);
-    }*/
+    }
 
+    @Test
+    public void addCardNonExistentListTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        ArrayList<Tag> tags = new ArrayList<>();
+        tags.add(new Tag("aaa", "blue"));
+        Card card = new Card ("c1", tags);
+
+        var actual = listCtrl.addCard(1L, card);
+    }
+
+    @Test
+    public void getCardsForNonExistentListTest () {
+        var actual = listCtrl.getCardsForList(1L);
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void getCardsForListTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        ArrayList<Tag> tags1 = new ArrayList<>();
+        tags1.add(new Tag("aaa", "blue"));
+        Card card1 = new Card ("c1", tags1);
+        listCtrl.addCard(list.id, card1);
+
+        var actual = listCtrl.getCardsForList(list.id);
+        assertEquals(List.of(card1), actual.getBody());
+    }
+
+    @Test
+    public void deleteNonExistentListTest () {
+        var actual = listCtrl.deleteList(1L);
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void deleteListTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        var deleteResponse = listCtrl.deleteList(list.id);
+
+        assertEquals(OK, deleteResponse.getStatusCode());
+    }
+
+    @Test
+    public void updateNonExistentListTitleTest () {
+        var actual = listCtrl.updateListTitle(1L, new CardList("c1", null));
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void updateListTitleTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        CardList list2 = new CardList("l2", new ArrayList<>());
+        var actual = listCtrl.updateListTitle(list.id, list2);
+
+        assertEquals("l2", list.title);
+    }
+
+    @Test
+    public void getBoardByBadIdTest () {
+        var actual = listCtrl.getBoard(1L);
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void moveBadIdListTest () {
+        var actual = listCtrl.moveList(1L, 1L, 0);
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void moveBadBoardIdListTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        var actual = listCtrl.moveList(list.id, 7L, 0);
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void moveListTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        CardList list2 = new CardList("l2", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list2);
+
+        var actual = listCtrl.moveList(list.id, board.id, 1);
+
+        assertEquals(OK, actual.getStatusCode());
+        assertEquals("l2", board.lists.get(0).title);
+    }
+
+    @Test
+    public void addCardMessageTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        ArrayList<Tag> tags = new ArrayList<>();
+        tags.add(new Tag("aaa", "blue"));
+
+        Card card = new Card ("c1", tags);
+
+        listCtrl.addCardMessage(new CustomPair<>(list.id, card));
+
+        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/cards/add"));
+    }
+
+    @Test
+    public void deleteListMessageTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        listCtrl.deleteListMessage(list.id);
+
+        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/lists/delete"));
+    }
+
+    @Test
+    public void deleteCardMessageTest () {
+        Board board = new Board("b1", new ArrayList<>());
+        boardCtrl.add(board);
+
+        CardList list = new CardList("l1", new ArrayList<>());
+        boardCtrl.addCardList(board.id, list);
+
+        ArrayList<Tag> tags = new ArrayList<>();
+        tags.add(new Tag("aaa", "blue"));
+
+        Card card = new Card ("c1", tags);
+
+        listCtrl.deleteCardMessage(new CustomPair<>(list.id, list));
+
+        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/cards/delete"));
+    }
 }

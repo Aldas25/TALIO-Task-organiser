@@ -151,35 +151,34 @@ public class CardListController {
             @PathVariable("boardId") long boardId,
             @PathVariable("newPos") int newPos
     ){
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (boardId < 0 || !boardRepo.existsById(boardId)) {
+            return ResponseEntity.badRequest().build();
+        }
         CardList cardList = repo.findById(id).get();
         removeCardListFromItsBoard(id);
 
         Board board = boardRepo.findById(boardId).get();
         board.lists.add(newPos, cardList);
         boardRepo.save(board);
-
         return ResponseEntity.ok().build();
     }
-
-    private ResponseEntity removeCardListFromItsBoard(long id) {
+    public ResponseEntity removeCardListFromItsBoard(long id) {
         CardList cardList = repo.findById(id).get();
         var boardResponse = getBoard(id);
         if (boardResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
             return ResponseEntity.badRequest().build();
-
         Board prevBoard = boardResponse.getBody();
         prevBoard.lists.remove(cardList);
         boardRepo.save(prevBoard);
-
         return ResponseEntity.ok().build();
     }
-
     @GetMapping("/{id}/board")
     public ResponseEntity<Board> getBoard(@PathVariable("id") long id){
-        if (id < 0 || !repo.existsById(id)) {
+        if (id < 0 || !repo.existsById(id))
             return ResponseEntity.badRequest().build();
-        }
-
         CardList cardList = repo.findById(id).get();
         for(Board board : boardRepo.findAll()){
             if(board.lists.contains(cardList)){
@@ -188,5 +187,4 @@ public class CardListController {
         }
         return ResponseEntity.badRequest().build();
     }
-
 }

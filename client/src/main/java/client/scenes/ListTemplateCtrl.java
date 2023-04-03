@@ -76,9 +76,6 @@ public class ListTemplateCtrl implements Initializable {
             server.send("/app/lists/update", new CustomPair<Long, CardList>(list.id, list));
         }
     }
-    public void removeCardList() {
-        server.send("/app/lists/delete", list.id);
-    }
 
     public void addCard() {
         mainCtrl.showAddCard(list);
@@ -260,7 +257,6 @@ public class ListTemplateCtrl implements Initializable {
     public void addCardButtonOnMouseExited (MouseEvent event) {
         addCardButton.setStyle("-fx-background-color: #d1dae6");
     }
-
 
     public void deleteImageViewOnMouseEntered (MouseEvent event) {
         File deleteFile = new File ("client/src/main/java/client/images/list/delete3.png");
