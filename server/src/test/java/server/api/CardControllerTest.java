@@ -62,6 +62,8 @@ public class CardControllerTest {
         listCtrl.addCard(list.id, card);
 
         var actual = cardCtrl.getById(card.id);
+
+        assertEquals(OK, actual.getStatusCode());
         assertEquals("c1", Objects.requireNonNull(actual.getBody()).title);
     }
 
@@ -104,6 +106,8 @@ public class CardControllerTest {
         listCtrl.addCard(list.id, card);
 
         var actual = cardCtrl.getList(card.id);
+
+        assertEquals(OK, actual.getStatusCode());
         assertEquals(list, Objects.requireNonNull(actual.getBody()));
     }
 
@@ -130,6 +134,7 @@ public class CardControllerTest {
         Card card2 = new Card("c2", new ArrayList<>());
         var actual = cardCtrl.updateCardTitle(card.id, card2);
 
+        assertEquals(OK, actual.getStatusCode());
         assertEquals("c2", Objects.requireNonNull(actual.getBody()).title);
     }
 
@@ -154,6 +159,7 @@ public class CardControllerTest {
         var actual = cardCtrl.deleteCard(deletedCard.id);
 
         assertEquals(OK, actual.getStatusCode());
+        assertEquals(0, board.lists.get(0).cards.size());
     }
 
     @Test
