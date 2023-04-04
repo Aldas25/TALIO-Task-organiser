@@ -172,7 +172,7 @@ public class ServerUtils {
      * @param board the board to be added
      */
     public void addBoard(Board board) {
-        send("/app/boards/add",board);
+        send("/app/boards/add", board);
     }
 
     /**
@@ -185,44 +185,12 @@ public class ServerUtils {
                 new CustomPair<>(board.id, cardList));
     }
 
-
-    /**
-     * Adds a CardList to api/lists
-     * @param list The new CardList
-     * @return The CardList added
-     */
-    public CardList addCardList(CardList list) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer()).path("api/lists")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(list, APPLICATION_JSON), CardList.class);
-    }
-
-    /**
-     * Updates the title of a CardList in server
-     * @param list The CardList that changes
-     * @return The new CardList with new title
-     */
-    public CardList updateCardListTitle(CardList list) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer()).path("api/lists/" + list.id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(list, APPLICATION_JSON), CardList.class);
-    }
-
     /**
      * Removes a CardList from server
      * @param list The CardList that needs to be removed
-     * @return A server Response
      */
-    public Response removeCardList(CardList list) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer()).path("api/lists/" + list.id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .delete();
+    public void removeCardList(CardList list) {
+        send("/app/lists/delete", list.id);
     }
 
     /**
@@ -249,14 +217,9 @@ public class ServerUtils {
     /**
      * Remove card from the server
      * @param card The card that is removed
-     * @return server Response
      */
-    public Response removeCard(Card card) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer()).path("/api/cards/" + card.id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .delete();
+    public void removeCard(Card card) {
+        send("/app/cards/delete", card.id);
     }
 
     /**

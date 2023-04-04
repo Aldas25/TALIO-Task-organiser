@@ -41,7 +41,7 @@ public class CardDeleteConfirmationCtrl {
 
     public void confirmButtonOnAction () {
         // delete the card itself
-        server.send("/app/cards/delete", cardToBeDeleted.id);
+        server.removeCard(cardToBeDeleted);
         this.cardToBeDeleted = null;
 
         // close the pop-up
