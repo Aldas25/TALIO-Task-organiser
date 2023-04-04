@@ -5,8 +5,6 @@ import com.google.inject.Inject;
 import commons.Card;
 import commons.CardList;
 
-import java.util.ArrayList;
-
 public class CardService {
 
     private final ServerUtils server;
@@ -27,7 +25,7 @@ public class CardService {
     }
 
     public void addCardToList(CardList list, String cardTitle) {
-        Card card = new Card(cardTitle, new ArrayList<>());
+        Card card = new Card(cardTitle);
         server.addCard(card, list);
     }
 

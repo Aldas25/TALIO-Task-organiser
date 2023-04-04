@@ -172,8 +172,6 @@ public class CardListOverviewCtrl implements Initializable {
         // retrieve name of the Card from the Text Box
         Text cardText = (Text) cardNode.getChildren().get(0);
         cardText.setText(card.title); // set the name of the Card
-
-        cardNode = addTags(cardNode, card);
         return cardNode;
     }
 
@@ -183,30 +181,6 @@ public class CardListOverviewCtrl implements Initializable {
 
     public void disconnectFromBoard() {
         mainCtrl.showBoardOverview();
-    }
-
-    /**
-     * Adds the tags of the card to the HBOX
-     * @param cardNode The card node
-     * @param card The actual card
-     * @return The anchor pane of the card
-     */
-    public AnchorPane addTags(AnchorPane cardNode, Card card){
-        HBox tagBox = (HBox) cardNode.getChildren().get(1);
-        for(Tag tag : card.tagList){
-            var tagTemplate =
-                    Main.load(TagTemplateCtrl.class,
-                            "client", "scenes", "TagTemplate.fxml");
-            AnchorPane tagNode = (AnchorPane) tagTemplate.getValue();
-            tagNode.setStyle("-fx-background-color: " + tag.color + ";" +
-                    "-fx-background-radius: 5;");
-            Text tagTitle = (Text) tagNode.getChildren().get(0);
-            tagTitle.setText(tag.title);
-            tagBox.setSpacing(5);
-            tagBox.getChildren().add(tagNode);
-        }
-
-        return cardNode;
     }
 
     public void disconnectOnMouseEntered() {

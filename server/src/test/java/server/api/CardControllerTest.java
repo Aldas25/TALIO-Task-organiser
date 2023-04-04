@@ -16,7 +16,6 @@ public class CardControllerTest {
     private TestCardRepository cardRepo;
     private TestBoardRepository boardRepo;
     private TestCardListRepository cardListRepo;
-    private TestTagRepository tagRepo;
 
     private CardController cardCtrl;
     private CardListController listCtrl;
@@ -28,11 +27,10 @@ public class CardControllerTest {
         cardRepo = new TestCardRepository();
         boardRepo = new TestBoardRepository();
         cardListRepo = new TestCardListRepository();
-        tagRepo = new TestTagRepository();
         msgs = new TestSimpMessagingTemplate(null);
 
-        cardCtrl = new CardController(cardRepo, cardListRepo, tagRepo, msgs);
-        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, tagRepo, msgs);
+        cardCtrl = new CardController(cardRepo, cardListRepo, msgs);
+        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, msgs);
         boardCtrl = new BoardController(boardRepo, cardListRepo, msgs);
     }
 
@@ -58,7 +56,7 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        Card card = new Card("c1", new ArrayList<>());
+        Card card = new Card("c1");
         listCtrl.addCard(list.id, card);
 
         var actual = cardCtrl.getById(card.id);
@@ -75,7 +73,7 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        listCtrl.addCard(list.id, new Card("c1", new ArrayList<>()));
+        listCtrl.addCard(list.id, new Card("c1"));
         var actual = cardRepo.findAll();
 
         assertEquals(actual, cardCtrl.getAll());
@@ -88,7 +86,7 @@ public class CardControllerTest {
 
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
-        listCtrl.addCard(list.id, new Card("c1", new ArrayList<>()));
+        listCtrl.addCard(list.id, new Card("c1"));
 
         boolean actual = cardRepo.calledMethods.contains("save");
         assertTrue(actual);
@@ -102,7 +100,7 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        Card card = new Card("c1", new ArrayList<>());
+        Card card = new Card("c1");
         listCtrl.addCard(list.id, card);
 
         var actual = cardCtrl.getList(card.id);
@@ -125,13 +123,10 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        ArrayList<Tag> tags = new ArrayList<Tag>();
-        tags.add(new Tag ("aaa", "blue"));
-
-        Card card = new Card("c1", tags);
+        Card card = new Card("c1");
         listCtrl.addCard(list.id, card);
 
-        Card card2 = new Card("c2", new ArrayList<>());
+        Card card2 = new Card("c2");
         var actual = cardCtrl.updateCardTitle(card.id, card2);
 
         assertEquals(OK, actual.getStatusCode());
@@ -140,7 +135,7 @@ public class CardControllerTest {
 
     @Test
     public void updateNonExistentCardTitleTest () {
-        Card card = new Card ("c3", new ArrayList<>());
+        Card card = new Card ("c3");
         var actual = cardCtrl.updateCardTitle(1L, card);
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
@@ -153,7 +148,7 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        Card deletedCard = new Card("c1", new ArrayList<>());
+        Card deletedCard = new Card("c1");
         listCtrl.addCard(list.id, deletedCard);
 
         var actual = cardCtrl.deleteCard(deletedCard.id);
@@ -176,7 +171,7 @@ public class CardControllerTest {
 
     @Test
     public void deleteCardNonExistentListTest () {
-        Card card = new Card("c1", new ArrayList<>());
+        Card card = new Card("c1");
 
         var actual = cardCtrl.deleteCard(card.id);
         assertEquals(BAD_REQUEST, actual.getStatusCode());
@@ -190,8 +185,8 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        Card card1 = new Card("c1", new ArrayList<>());
-        Card card2 = new Card("c2", new ArrayList<>());
+        Card card1 = new Card("c1");
+        Card card2 = new Card("c2");
         listCtrl.addCard(list.id, card1);
         listCtrl.addCard(list.id, card2);
 
@@ -209,7 +204,7 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        Card card = new Card("c1", new ArrayList<>());
+        Card card = new Card("c1");
         listCtrl.addCard(list.id, card);
 
         var actual = cardCtrl.moveCard(1L, list.id, 0);
@@ -225,7 +220,7 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        Card card = new Card("c1", new ArrayList<>());
+        Card card = new Card("c1");
         listCtrl.addCard(list.id, card);
 
         var actual = cardCtrl.moveCard(card.id, -1L, 0);
@@ -241,10 +236,10 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        Card card = new Card("c1", new ArrayList<>());
+        Card card = new Card("c1");
         listCtrl.addCard(list.id, card);
 
-        Card card2 = new Card("c2", new ArrayList<>());
+        Card card2 = new Card("c2");
         listCtrl.addCard(list.id, card2);
 
         cardCtrl.deleteCardMessage(card2.id);
@@ -261,10 +256,10 @@ public class CardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        Card card = new Card("c1", new ArrayList<>());
+        Card card = new Card("c1");
         listCtrl.addCard(list.id, card);
 
-        Card card2 = new Card("c2", new ArrayList<>());
+        Card card2 = new Card("c2");
         listCtrl.addCard(list.id, card2);
 
         cardCtrl.updateCardMessage(new CustomPair<>(card.id, card2));
