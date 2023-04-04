@@ -1,10 +1,10 @@
 package client.scenes;
 
 import client.services.BoardService;
+import client.services.ListService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.CardList;
-import commons.CustomPair;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
@@ -29,6 +29,8 @@ public class ListTemplateCtrl implements Initializable {
     private final ServerUtils server;
     private final BoardService boardService;
 
+    private final ListService listService;
+
     private CardList list;
     @FXML
     private TextField updateListNameField;
@@ -41,10 +43,11 @@ public class ListTemplateCtrl implements Initializable {
 
     @Inject
     public ListTemplateCtrl(MainCtrl mainCtrl, ServerUtils server,
-                            BoardService boardService) {
+                            BoardService boardService, ListService listService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.boardService = boardService;
+        this.listService = listService;
     }
 
     @Override
@@ -72,8 +75,9 @@ public class ListTemplateCtrl implements Initializable {
 
     public void updateCardListTitle(KeyEvent event) {
         if(event.getCode().equals(KeyCode.ENTER)){
-            list.title = updateListNameField.getText();
-            server.send("/app/lists/update", new CustomPair<Long, CardList>(list.id, list));
+            //list.title = updateListNameField.getText();
+            String newTitle = updateListNameField.getText();
+            listService.updateListTitle(list, newTitle);
         }
     }
 

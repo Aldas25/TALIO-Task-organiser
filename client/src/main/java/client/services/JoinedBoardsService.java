@@ -96,7 +96,7 @@ public class JoinedBoardsService {
             if (!server.isServerOk() || !server.getServer().equals(this.url))
                 return Optional.empty();
 
-            Board board = server.getBoardbyInviteKey(key);
+            Board board = server.getBoardByInviteKey(key);
             if (board == null)
                 return Optional.empty();
 
