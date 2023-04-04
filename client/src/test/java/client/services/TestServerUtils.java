@@ -51,7 +51,7 @@ public class TestServerUtils extends ServerUtils {
     }
 
     @Override
-    public Board getBoardbyInviteKey(String enteredKey) {
+    public Board getBoardByInviteKey(String enteredKey) {
         log.add("getBoardByInviteKey " + enteredKey);
         Board board = null;
         if (enteredKey.equals("key")) {
@@ -72,6 +72,11 @@ public class TestServerUtils extends ServerUtils {
     public void addListToCurrentBoard(Board board, CardList cardList){
         log.add("addListToCurrentBoard " + board.id + " " + cardList.id + " " + cardList.title);
         board.lists.add(cardList);
+    }
+
+    @Override
+    public void updateListTitle(CardList list){
+        log.add("updateListTitle " + list.title);
     }
 
 }

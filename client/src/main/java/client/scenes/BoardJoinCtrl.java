@@ -47,7 +47,7 @@ public class BoardJoinCtrl {
             return;
         }
 
-        Board boardToJoin = server.getBoardbyInviteKey(enteredKey);
+        Board boardToJoin = server.getBoardByInviteKey(enteredKey);
 
         if(boardToJoin == null){
             joinError.setText("Board Not Found");

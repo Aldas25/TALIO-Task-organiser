@@ -160,6 +160,14 @@ public class ServerUtils {
     }
 
     /**
+     * Updates the title of the list
+     * @param list the list to be updated
+     */
+    public void updateListTitle(CardList list){
+        send("/app/lists/update", new CustomPair<Long, CardList>(list.id, list));
+    }
+
+    /**
      * Adds board to server
      * @param board the board to be added
      */
@@ -167,6 +175,11 @@ public class ServerUtils {
         send("/app/boards/add",board);
     }
 
+    /**
+     * Adds a new list to current board
+     * @param board the board
+     * @param cardList the card list to add
+     */
     public void addListToCurrentBoard(Board board, CardList cardList){
         send("/app/lists/add",
                 new CustomPair<>(board.id, cardList));
@@ -339,8 +352,12 @@ public class ServerUtils {
                 .get(new GenericType<List<Board>>() {});
     }
 
-
-    public Board getBoardbyInviteKey(String enteredKey){
+    /**
+     * Get board by entered key
+     * @param enteredKey the entered key
+     * @return The board with that key
+     */
+    public Board getBoardByInviteKey(String enteredKey){
         Response response = ClientBuilder.newClient(new ClientConfig())
                 .target(getHttpServer()).path("api/boards/byKey/" + enteredKey)
                 .request(APPLICATION_JSON)
