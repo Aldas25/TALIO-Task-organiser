@@ -223,32 +223,6 @@ public class ServerUtils {
     }
 
     /**
-     * Adds a Tag to server
-     * @param tag The tag to add
-     * @return The tag created
-     */
-    public Tag addTag(Tag tag){
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer()).path("api/tags/" + tag.id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
-    }
-
-    /**
-     * Updates an existing tag to server
-     * @param tag The tag that changes
-     * @return The new changed tag
-     */
-    public Tag updateTag(Tag tag){
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer()).path("api/tags/" + tag.id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(tag, APPLICATION_JSON), Tag.class);
-    }
-
-    /**
      * Updates the title of a card in server
      * @param card The card that is changing
      */

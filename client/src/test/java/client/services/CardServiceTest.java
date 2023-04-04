@@ -30,14 +30,14 @@ class CardServiceTest {
 
     @Test
     public void testSetCurrentCard(){
-        Card c = new Card("title", new ArrayList<>());
+        Card c = new Card("title");
         sut.setCurrentCard(c);
         assertEquals(c,sut.getCurrentCard());
     }
 
     @Test
     public void testAddCardToList(){
-        Card c = new Card("title", new ArrayList<>());
+        Card c = new Card("title");
         CardList list = new CardList("list", new ArrayList<>());
         list.id = 0;
 
@@ -52,7 +52,7 @@ class CardServiceTest {
 
     @Test
     public void testUpdateTitleCurrentCard(){
-        Card c = new Card("title", new ArrayList<>());
+        Card c = new Card("title");
         sut.setCurrentCard(c);
         sut.updateTitleCurrentCard("newTitle");
         assertEquals("newTitle",sut.getCurrentCard().title);

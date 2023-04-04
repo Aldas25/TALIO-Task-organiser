@@ -14,7 +14,6 @@ import static org.springframework.http.HttpStatus.OK;
 
 public class CardListControllerTest {
     private TestCardListRepository cardListRepo;
-    private TestTagRepository tagRepo;
     private TestBoardRepository boardRepo;
     private CardListController listCtrl;
     private BoardController boardCtrl;
@@ -24,12 +23,11 @@ public class CardListControllerTest {
     public void setup() {
         TestCardRepository cardRepo = new TestCardRepository();
 
-        tagRepo = new TestTagRepository();
         cardListRepo = new TestCardListRepository();
         boardRepo = new TestBoardRepository();
         msgs = new TestSimpMessagingTemplate(null);
 
-        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, tagRepo, msgs);
+        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, msgs);
         boardCtrl = new BoardController(boardRepo, cardListRepo, msgs);
     }
 
@@ -96,7 +94,7 @@ public class CardListControllerTest {
         CardList l = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, l);
 
-        Card c = new Card("c1", new ArrayList<>());
+        Card c = new Card("c1");
         listCtrl.addCard(l.id, c);
 
         var cardList = listCtrl.getCardsForList(l.id);
@@ -123,7 +121,7 @@ public class CardListControllerTest {
         CardList l = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, l);
 
-        var actual = listCtrl.addCard(l.id,new Card(null, new ArrayList<>()));
+        var actual = listCtrl.addCard(l.id,new Card(null));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
@@ -135,7 +133,7 @@ public class CardListControllerTest {
         CardList l = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, l);
 
-        var actual = listCtrl.addCard(l.id,new Card( "", new ArrayList<>()));
+        var actual = listCtrl.addCard(l.id,new Card( ""));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
@@ -147,26 +145,20 @@ public class CardListControllerTest {
         CardList l = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, l);
 
-        ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("aaa", "blue"));
-        listCtrl.addCard(l.id, new Card("c1", tags));
+        listCtrl.addCard(l.id, new Card("c1"));
 
         var lists = cardListRepo.findAll();
         var listWithCard = lists.get(0);
         var actual = listWithCard.cards.get(0);
 
         assertEquals("c1", actual.title);
-        assertEquals("aaa", actual.tagList.get(0).title);
     }
 
     @Test
     public void addCardNonExistentListTest () {
         Board board = new Board("b1", new ArrayList<>());
         boardCtrl.add(board);
-
-        ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("aaa", "blue"));
-        Card card = new Card ("c1", tags);
+        Card card = new Card ("c1");
 
         var actual = listCtrl.addCard(1L, card);
 
@@ -187,9 +179,7 @@ public class CardListControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        ArrayList<Tag> tags1 = new ArrayList<>();
-        tags1.add(new Tag("aaa", "blue"));
-        Card card1 = new Card ("c1", tags1);
+        Card card1 = new Card ("c1");
         listCtrl.addCard(list.id, card1);
 
         var actual = listCtrl.getCardsForList(list.id);
@@ -288,10 +278,7 @@ public class CardListControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("aaa", "blue"));
-
-        Card card = new Card ("c1", tags);
+        Card card = new Card ("c1");
 
         listCtrl.addCardMessage(new CustomPair<>(list.id, card));
 
@@ -319,10 +306,7 @@ public class CardListControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addCardList(board.id, list);
 
-        ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("aaa", "blue"));
-
-        Card card = new Card ("c1", tags);
+        Card card = new Card ("c1");
 
         listCtrl.deleteCardMessage(new CustomPair<>(list.id, list));
 

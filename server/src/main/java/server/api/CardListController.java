@@ -5,7 +5,6 @@ import java.util.List;
 import commons.Board;
 import commons.Card;
 import commons.CustomPair;
-import commons.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -17,7 +16,6 @@ import commons.CardList;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
 import server.database.CardRepository;
-import server.database.TagRepository;
 
 @RestController
 @RequestMapping("/api/lists")
@@ -27,19 +25,15 @@ public class CardListController {
     private final CardRepository cardRepo;
     private final BoardRepository boardRepo;
 
-    private final TagRepository tagRepo;
-
     private final SimpMessagingTemplate msgs;
 
     public CardListController(CardListRepository repo,
                               CardRepository cardRepo,
                               BoardRepository boardRepo,
-                              TagRepository tagRepo,
                               SimpMessagingTemplate msgs) {
         this.repo = repo;
         this.cardRepo = cardRepo;
         this.boardRepo = boardRepo;
-        this.tagRepo = tagRepo;
         this.msgs = msgs;
     }
 
@@ -84,10 +78,6 @@ public class CardListController {
         }
         if(isNullOrEmpty(card.title)){
             return ResponseEntity.badRequest().build();
-        }
-
-        for(Tag tag : card.tagList){
-            tagRepo.save(tag);
         }
 
         Card saved = cardRepo.save(card);

@@ -3,7 +3,6 @@ package server.api;
 import java.util.List;
 
 import commons.CardList;
-import commons.Tag;
 import commons.CustomPair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import commons.Card;
 import server.database.CardListRepository;
 import server.database.CardRepository;
-import server.database.TagRepository;
 
 @RestController
 @RequestMapping("/api/cards")
@@ -23,17 +21,14 @@ public class CardController {
 
     private final CardRepository repo;
 
-    private final TagRepository tagRepo;
     private final CardListRepository listRepo;
     private final SimpMessagingTemplate msgs;
 
     public CardController(CardRepository repo,
                           CardListRepository listRepo,
-                          TagRepository tagRepo,
                           SimpMessagingTemplate msgs) {
         this.repo = repo;
         this.listRepo = listRepo;
-        this.tagRepo = tagRepo;
         this.msgs = msgs;
     }
 
@@ -97,10 +92,6 @@ public class CardController {
         }
         
         Card cardFromRepo = repo.findById(id).get();
-
-        for(Tag tag : card.tagList){
-            tagRepo.save(tag);
-        }
 
         cardFromRepo.title = card.title;
         Card saved = repo.save(cardFromRepo);

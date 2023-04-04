@@ -1,12 +1,8 @@
 package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
-
 import javax.persistence.*;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import java.util.List;
 
 @Entity
 public class Card {
@@ -17,17 +13,13 @@ public class Card {
 
     public String title;
 
-    @ManyToMany (fetch=FetchType.EAGER)
-    public List<Tag> tagList;
-
     @SuppressWarnings("unused")
     public Card() {
         // for object mappers
     }
 
-    public Card(String title, List<Tag> tagList) {
+    public Card(String title) {
         this.title = title;
-        this.tagList = tagList;
     }
 
     @Override
