@@ -11,12 +11,15 @@ import java.util.List;
 public class BoardService {
 
     private final ServerUtils server;
+    private final JoinedBoardsService joinedBoardsService;
 
     private Board currentBoard;
 
     @Inject
-    public BoardService(ServerUtils server) {
+    public BoardService(ServerUtils server,
+                        JoinedBoardsService joinedBoardsService) {
         this.server = server;
+        this.joinedBoardsService = joinedBoardsService;
     }
 
     public Board getCurrentBoard() {
@@ -38,6 +41,7 @@ public class BoardService {
     public void addBoard(String title) {
         Board newBoard = new Board(title, new ArrayList<>());
         server.addBoard(newBoard);
+        joinedBoardsService.joinBoardAndSave(newBoard);
     }
 
     public void addListToCurrentBoard(String title) {

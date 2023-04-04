@@ -39,6 +39,30 @@ public class TestServerUtils extends ServerUtils {
     }
 
     @Override
+    public boolean isServerOk() {
+        log.add("isServerOk");
+        return true;
+    }
+
+    @Override
+    public String getServer() {
+        log.add("getServer");
+        return "url";
+    }
+
+    @Override
+    public Board getBoardbyInviteKey(String enteredKey) {
+        log.add("getBoardByInviteKey " + enteredKey);
+        Board board = null;
+        if (enteredKey.equals("key")) {
+            board = new Board("Board title", new ArrayList<>());
+            board.id = 5;
+            board.inviteKey = "key";
+        }
+        return board;
+    }
+
+    @Override
     public void addBoard(Board board){
         log.add("addBoard "+ board.id + " " + board.title);
         boards.add(board);

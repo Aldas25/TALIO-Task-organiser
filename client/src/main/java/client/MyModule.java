@@ -18,6 +18,7 @@ package client;
 import client.scenes.*;
 import client.services.BoardService;
 import client.services.CardService;
+import client.services.JoinedBoardsService;
 import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -36,6 +37,7 @@ public class MyModule implements Module {
     private void bindServices(Binder binder) {
         binder.bind(BoardService.class).in(Scopes.SINGLETON);
         binder.bind(CardService.class).in(Scopes.SINGLETON);
+        binder.bind(JoinedBoardsService.class).in(Scopes.SINGLETON);
     }
 
     private void bindControllers(Binder binder) {
