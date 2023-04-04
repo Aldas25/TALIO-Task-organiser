@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.services.JoinedBoardsService;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
@@ -78,9 +79,12 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
     private Stage popUpJoinBoardStage;
 
+    private final JoinedBoardsService joinedBoardsService;
+
     @Inject
-    public MainCtrl(ServerUtils server) {
+    public MainCtrl(ServerUtils server, JoinedBoardsService joinedBoardsService) {
         this.server = server;
+        this.joinedBoardsService = joinedBoardsService;
     }
 
 
@@ -158,6 +162,7 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
     public void start() {
         server.setSession();
+        joinedBoardsService.readJoinedBoardsFromFile();
         listOverviewCtrl.start();
         boardOverviewCtrl.start();
         addCardCtrl.start();

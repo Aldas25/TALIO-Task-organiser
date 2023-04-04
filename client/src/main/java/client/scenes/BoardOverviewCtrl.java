@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.Main;
+import client.services.JoinedBoardsService;
 import client.services.BoardService;
 import client.utils.ServerUtils;
 import commons.Board;
@@ -20,10 +21,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
-    private MainCtrl mainCtrl;
-    private ServerUtils server;
 
+    private final MainCtrl mainCtrl;
+    private final ServerUtils server;
     private final BoardService boardService;
+    private final JoinedBoardsService joinedBoardsService;
 
     @FXML
     private ImageView addImageView;
@@ -35,10 +37,13 @@ public class BoardOverviewCtrl implements Initializable {
     private VBox boardContainer;
 
     @Inject
-    public BoardOverviewCtrl (MainCtrl mainCtrl, ServerUtils server, BoardService boardService) {
+    public BoardOverviewCtrl (MainCtrl mainCtrl, ServerUtils server,
+                              BoardService boardService,
+                              JoinedBoardsService joinedBoardsService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.boardService = boardService;
+        this.joinedBoardsService = joinedBoardsService;
     }
 
     @Override
@@ -76,7 +81,7 @@ public class BoardOverviewCtrl implements Initializable {
     public void refresh() {
         boardContainer.getChildren().clear();
 
-        List<Board> allBoards = server.getBoards();
+        List<Board> allBoards = joinedBoardsService.getJoinedBoards();
         for(Board board: allBoards) {
             var boardTemplate = Main.load (
                     BoardTemplateCtrl.class, "client", "scenes", "BoardTemplate.fxml"

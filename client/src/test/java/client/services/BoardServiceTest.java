@@ -15,6 +15,7 @@
  */
 package client.services;
 
+import client.utils.ServerUtils;
 import commons.Board;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,11 +30,13 @@ public class BoardServiceTest {
 
     private BoardService sut;
     private TestServerUtils server;
+    private TestJoinedBoardsService joinedBoardsService;
 
     @BeforeEach
     public void setup() {
         server = new TestServerUtils();
-        sut = new BoardService(server);
+        joinedBoardsService = new TestJoinedBoardsService(server);
+        sut = new BoardService(server, joinedBoardsService);
     }
 
     @Test
@@ -53,6 +56,7 @@ public class BoardServiceTest {
     public void testAddBoard(){
         sut.addBoard("Title");
         assertTrue(server.log.contains("addBoard 0 Title"));
+        assertTrue(joinedBoardsService.log.contains("joinBoardAndSave 0 Title"));
         assertEquals(List.of(new Board("Title", new ArrayList<>())), server.boards);
     }
 
@@ -89,5 +93,19 @@ public class BoardServiceTest {
 
         assertEquals(expected, sut.getListsForCurrentBoard());
         assertTrue(server.log.contains("getCardListForBoard 0"));
+    }
+
+    class TestJoinedBoardsService extends JoinedBoardsService {
+
+        public List<String> log = new ArrayList<>();
+
+        public TestJoinedBoardsService(ServerUtils server) {
+            super(server);
+        }
+
+        @Override
+        public void joinBoardAndSave(Board board) {
+            log.add("joinBoardAndSave " + board.id + " " + board.title);
+        }
     }
 }

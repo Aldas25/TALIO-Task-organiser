@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.services.BoardService;
+import client.services.JoinedBoardsService;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ public class BoardJoinCtrl {
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
     private final BoardService boardService;
+    private final JoinedBoardsService joinedBoardsService;
 
     private String enteredKey;
 
@@ -31,10 +33,12 @@ public class BoardJoinCtrl {
 
     @Inject
     public BoardJoinCtrl(MainCtrl mainCtrl, ServerUtils server,
-                         BoardService boardService) {
+                         BoardService boardService,
+                         JoinedBoardsService joinedBoardsService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.boardService = boardService;
+        this.joinedBoardsService = joinedBoardsService;
     }
 
     public void tryJoin(){
@@ -50,9 +54,11 @@ public class BoardJoinCtrl {
             return;
         }
 
-        boardService.setCurrentBoard(boardToJoin);
-        mainCtrl.showListOverview();
+//        boardService.setCurrentBoard(boardToJoin);
+//        mainCtrl.showListOverview();
+        joinedBoardsService.joinBoardAndSave(boardToJoin);
         closeAndClear();
+        mainCtrl.showBoardOverview();
     }
 
     public void cancelButtonOnAction () {

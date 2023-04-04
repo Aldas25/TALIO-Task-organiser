@@ -14,17 +14,16 @@ public class ServerUtilsTest {
         sut = new ServerUtils();
     }
 
-    // NOTE: add this later
-//    @Test
-//    public void testGetServerNull() {
-//        assertNull(sut.getServer());
-//    }
+    @Test
+    public void testGetServerNull() {
+        assertNull(sut.getServer());
+    }
 
-//    @Test
-//    public void testSetAndGetServer() {
-//        sut.setServer("server");
-//        assertEquals("server", sut.getServer());
-//    }
+    @Test
+    public void testSetAndGetServer() {
+        sut.setServer("server");
+        assertEquals("server", sut.getServer());
+    }
 
     @Test
     public void testGetHttpServer() {

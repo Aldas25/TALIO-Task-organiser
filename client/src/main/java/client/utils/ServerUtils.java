@@ -105,6 +105,10 @@ public class ServerUtils {
         this.server = server;
     }
 
+    public String getServer() {
+        return this.server;
+    }
+
     /**
      * Connects session to the same port as the server.
      */
