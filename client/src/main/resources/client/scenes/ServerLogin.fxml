@@ -61,7 +61,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="serverURLTextField" layoutX="105.0" layoutY="117.0" prefHeight="26.0" prefWidth="173.0" promptText="http://localhost:8080/" style="-fx-text-fill: #626C88;" text="http://localhost:8080/">
+            <TextField fx:id="serverURLTextField" layoutX="105.0" layoutY="117.0" prefHeight="26.0" prefWidth="173.0" promptText="localhost:8080/" style="-fx-text-fill: #626C88;" text="localhost:8080/">
                <font>
                   <Font size="13.0" />
                </font>

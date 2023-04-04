@@ -38,6 +38,9 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 public class ServerUtils {
 
+    private final String httpPrefix = "http://";
+    private final String webSocketPrefix = "ws://";
+    private final String webSocketSuffix = "websocket";
     private String server = null;
 
 
@@ -83,20 +86,30 @@ public class ServerUtils {
         session.send(dest, o);
     }
 
+    public String getHttpServer() {
+        return httpPrefix + server;
+    }
+
+    public String getWebSocketServer() {
+        String url = webSocketPrefix + server;
+        if (url.charAt(url.length()-1) != '/') url += "/";
+        url += webSocketSuffix;
+        return url;
+    }
+
     /**
      * Sets server to correct URL, and prints response
      * @param server the Server URL
      */
     public void setServer(String server) {
         this.server = server;
-        System.out.println("Server set to: " + server);
     }
 
     /**
      * Connects session to the same port as the server.
      */
     public void setSession(){
-        session = connect("ws://localhost:8080/websocket");
+        session = connect(getWebSocketServer());
     }
 
     /**
@@ -106,7 +119,7 @@ public class ServerUtils {
     public boolean isServerOk() {
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(server).path("status")
+                    .target(getHttpServer()).path("status")
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .get(Boolean.class);
@@ -122,7 +135,7 @@ public class ServerUtils {
      */
     public boolean checkAdminPassword(String enteredPassword) {
         return ClientBuilder.newClient(new ClientConfig())
-                    .target(server).path("/api/admin/checkPassword")
+                    .target(getHttpServer()).path("/api/admin/checkPassword")
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .post(Entity.entity(enteredPassword, APPLICATION_JSON), boolean.class);
@@ -136,7 +149,7 @@ public class ServerUtils {
      */
     public List<CardList> getCardListForBoard(Board board) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/boards/" + board.id + "/lists")
+                .target(getHttpServer()).path("api/boards/" + board.id + "/lists")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<CardList>>() {});
@@ -163,7 +176,7 @@ public class ServerUtils {
      */
     public CardList addCardList(CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/lists")
+                .target(getHttpServer()).path("api/lists")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(list, APPLICATION_JSON), CardList.class);
@@ -176,7 +189,7 @@ public class ServerUtils {
      */
     public CardList updateCardListTitle(CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/lists/" + list.id)
+                .target(getHttpServer()).path("api/lists/" + list.id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(list, APPLICATION_JSON), CardList.class);
@@ -189,7 +202,7 @@ public class ServerUtils {
      */
     public Response removeCardList(CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/lists/" + list.id)
+                .target(getHttpServer()).path("api/lists/" + list.id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
@@ -212,7 +225,7 @@ public class ServerUtils {
      */
     public Tag addTag(Tag tag){
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/tags/" + tag.id)
+                .target(getHttpServer()).path("api/tags/" + tag.id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
@@ -225,7 +238,7 @@ public class ServerUtils {
      */
     public Tag updateTag(Tag tag){
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/tags/" + tag.id)
+                .target(getHttpServer()).path("api/tags/" + tag.id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(tag, APPLICATION_JSON), Tag.class);
@@ -249,7 +262,7 @@ public class ServerUtils {
      */
     public Response removeCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("/api/cards/" + card.id)
+                .target(getHttpServer()).path("/api/cards/" + card.id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
@@ -262,7 +275,7 @@ public class ServerUtils {
      */
     public List<Card> getCardsForList(CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/lists/" + list.id + "/cards")
+                .target(getHttpServer()).path("api/lists/" + list.id + "/cards")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<Card>>() {});
@@ -277,7 +290,8 @@ public class ServerUtils {
      */
     public Card moveCardToList(Card card, CardList list, int newPos) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/cards/" + card.id + "/list/" + list.id + "/" + newPos)
+                .target(getHttpServer())
+                .path("api/cards/" + card.id + "/list/" + list.id + "/" + newPos)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -290,7 +304,7 @@ public class ServerUtils {
      */
     public Response removeBoard(Board board){
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/boards/" + board.id)
+                .target(getHttpServer()).path("api/boards/" + board.id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
@@ -303,7 +317,7 @@ public class ServerUtils {
      */
     public Board updateBoardTitle(Board board){
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/boards/" + board.id)
+                .target(getHttpServer()).path("api/boards/" + board.id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(board, APPLICATION_JSON), Board.class);
@@ -315,7 +329,7 @@ public class ServerUtils {
      */
     public List<Board> getBoards () {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/boards")
+                .target(getHttpServer()).path("api/boards")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<Board>>() {});
@@ -324,7 +338,7 @@ public class ServerUtils {
 
     public Board getBoardbyInviteKey(String enteredKey){
         Response response = ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/boards/byKey/" + enteredKey)
+                .target(getHttpServer()).path("api/boards/byKey/" + enteredKey)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get();
