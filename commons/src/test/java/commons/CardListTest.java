@@ -10,9 +10,16 @@ class CardListTest {
 
     @Test
     public void checkConstructor() {
-        var p = new CardList("title", new ArrayList<>());
+        CardList p = new CardList("title", new ArrayList<>());
         assertEquals("title", p.title);
+        assertEquals(new ArrayList<Card>(), p.cards);
+    }
 
+    @Test
+    public void checkEmptyConstructor() {
+        CardList list = new CardList();
+        assertNull(list.title);
+        assertNull(list.cards);
     }
 
     @Test
@@ -30,6 +37,8 @@ class CardListTest {
     void testEqualsHashCode() {
         var p = new CardList("title", new ArrayList<>());
         var q = new CardList("title", new ArrayList<>());
+        p.id = 5;
+        q.id = 5;
         assertEquals(p, q);
         assertEquals(p.hashCode(), q.hashCode());
     }

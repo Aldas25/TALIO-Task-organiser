@@ -36,13 +36,11 @@ public class CardList {
     public boolean equals(Object obj) {
         return obj != null && obj.getClass() == this.getClass()
                 && ((CardList) obj).id == this.id;
-        //return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
         return (int)id;
-        //return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
