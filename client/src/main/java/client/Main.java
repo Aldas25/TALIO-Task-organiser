@@ -42,14 +42,8 @@ public class Main extends Application {
         var adminListOverview = load (
                 AdminCardListOverviewCtrl.class, "client", "scenes", "AdminCardListOverview.fxml"
         );
-        var addCard = load(
-                AddCardCtrl.class, "client", "scenes", "AddCard.fxml"
-        );
         var serverLogin = load(
                 ServerLoginCtrl.class, "client", "scenes", "ServerLogin.fxml"
-        );
-        var serverSignUp = load (
-                ServerSignUpCtrl.class, "client", "scenes", "ServerSignUp.fxml"
         );
         var helpScreen = load (
                 HelpScreenCtrl.class, "client", "scenes", "HelpScreen.fxml"
@@ -74,16 +68,18 @@ public class Main extends Application {
         var joinBoard = load (
                 BoardJoinCtrl.class, "client", "scenes", "JoinBoard.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+
         mainCtrl.loadBoardOverview(boardOverview);
         mainCtrl.loadAdminBoardScene(adminBoardOverview);
         mainCtrl.loadCardDeleteConfirmationScene (cardDeleteConfirmation);
         mainCtrl.loadCardListDeleteConfirmationScene (cardListDeleteConfirmation);
         mainCtrl.loadBoardDeleteConfirmationScene (boardDeleteConfirmation);
         mainCtrl.loadJoinBoardScene(joinBoard);
+
         mainCtrl.loadAdminBoardDeleteConfirmationScene(adminBoardDeleteConfirmation);
         mainCtrl.loadAdminCardListOverview(adminListOverview);
-        mainCtrl.initialize(primaryStage, listOverview, addCard, serverLogin, serverSignUp,
-                            helpScreen);
+
+        mainCtrl.initialize(primaryStage, listOverview, serverLogin, helpScreen);
     }
 
     public static <T> Pair<T, Parent> load(Class<T> c, String... parts) {

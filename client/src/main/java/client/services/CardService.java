@@ -9,19 +9,9 @@ public class CardService {
 
     private final ServerUtils server;
 
-    private Card currentCard;
-
     @Inject
     public CardService(ServerUtils server) {
         this.server = server;
-    }
-
-    public Card getCurrentCard(){
-        return this.currentCard;
-    }
-
-    public void setCurrentCard(Card card){
-        this.currentCard = card;
     }
 
     public void addCardToList(CardList list, String cardTitle) {
@@ -29,8 +19,8 @@ public class CardService {
         server.addCard(card, list);
     }
 
-    public void updateTitleCurrentCard(String newTitle) {
-        currentCard.title = newTitle;
-        server.updateCardTitle(currentCard);
+    public void updateCardTitle(Card card, String newTitle) {
+        card.title = newTitle;
+        server.updateCardTitle(card);
     }
 }

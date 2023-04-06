@@ -1,35 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="cardAnchorPane" onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragEntered="#onDragEntered" onDragOver="#onDragOver" prefHeight="56.0" prefWidth="243.0" style="-fx-background-color: d1dae6; -fx-background-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardTemplateCtrl">
+<AnchorPane fx:id="cardAnchorPane" onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragEntered="#onDragEntered" onDragOver="#onDragOver" prefHeight="65.0" prefWidth="243.0" style="-fx-background-color: d1dae6; -fx-background-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardTemplateCtrl">
    <children>
-      <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#3c4867" layoutX="2.0" layoutY="31.0" pickOnBounds="true" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="156.0">
+      <TextField fx:id="cardTitleTextField" alignment="CENTER" layoutX="28.0" layoutY="13.0" onKeyPressed="#updateCardTitle" prefHeight="28.0" prefWidth="189.0" style="-fx-background-color: d1dae6; -fx-text-fill: #3c4867;">
          <font>
-            <Font size="20.0" />
+            <Font size="18.0" />
          </font>
-         <cursor>
-            <Cursor fx:constant="MOVE" />
-         </cursor>
-      </Text>
-      <HBox layoutY="42.0" prefHeight="21.0" prefWidth="243.0" />
-      <Button fx:id="editCardButton" layoutX="159.0" layoutY="9.0" mnemonicParsing="false" onAction="#editCard" onMouseEntered="#editCardButtonOnMouseEntered" onMouseExited="#editCardButtonOnMouseExited" prefHeight="30.0" prefWidth="50.0" style="-fx-background-color: #7D88A6; -fx-border-color: #3c4867;" text="edit" textFill="#3c4867">
-         <font>
-            <Font size="13.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <ImageView fx:id="deleteImageView" fitHeight="22.0" fitWidth="29.0" layoutX="214.0" layoutY="14.0" onMouseClicked="#showPopUp" onMouseEntered="#deleteImageViewOnMouseEntered" onMouseExited="#deleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
+      </TextField>
+      <ImageView fx:id="deleteImageView" fitHeight="22.0" fitWidth="29.0" layoutX="215.0" layoutY="22.0" onMouseClicked="#showPopUp" onMouseEntered="#deleteImageViewOnMouseEntered" onMouseExited="#deleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../java/client/images/card/delete2.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="dotImageView" fitHeight="22.0" fitWidth="29.0" layoutX="3.0" layoutY="22.0" onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragEntered="#onDragEntered" onDragOver="#onDragOver" onMouseEntered="#dotImageViewOnMouseEntered" onMouseExited="#dotImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../java/client/images/card/dots1.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

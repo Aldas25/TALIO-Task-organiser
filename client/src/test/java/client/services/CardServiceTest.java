@@ -24,15 +24,8 @@ class CardServiceTest {
     }
 
     @Test
-    public void testGetCurrentCardNull(){
-        assertNull(sut.getCurrentCard());
-    }
-
-    @Test
-    public void testSetCurrentCard(){
-        Card c = new Card("title");
-        sut.setCurrentCard(c);
-        assertEquals(c,sut.getCurrentCard());
+    public void testConstructor() {
+        assertNotNull(sut);
     }
 
     @Test
@@ -43,21 +36,25 @@ class CardServiceTest {
 
         sut.addCardToList(list,"title");
 
-
         List<Card> expected = List.of(c);
+        // check that there is a new card in the server
         assertEquals(expected, server.getCardsForList(list));
+
+        // check for server log (indirect behaviour)
         assertTrue(server.log.contains("addCard 0 0 title"));
         assertTrue(server.log.contains("getCardsForList 0"));
     }
 
     @Test
-    public void testUpdateTitleCurrentCard(){
-        Card c = new Card("title");
-        sut.setCurrentCard(c);
-        sut.updateTitleCurrentCard("newTitle");
-        assertEquals("newTitle",sut.getCurrentCard().title);
-        assertTrue(server.log.contains("updateCardTitle 0 newTitle"));
-    }
+    public void testUpdateCardTitle() {
+        Card card = new Card("Title");
+        card.id = 5;
+        sut.updateCardTitle(card, "New title");
 
+        assertEquals("New title", card.title);
+
+        // also check for called server methods (indirect behaviour)
+        assertTrue(server.log.contains("updateCardTitle 5 New title"));
+    }
 
 }

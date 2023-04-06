@@ -45,9 +45,7 @@ public class MyModule implements Module {
     private void bindControllers(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CardListOverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AddCardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ServerLoginCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(ServerSignUpCtrl.class).in(Scopes.SINGLETON);
         binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminBoardOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(HelpScreenCtrl.class).in(Scopes.SINGLETON);

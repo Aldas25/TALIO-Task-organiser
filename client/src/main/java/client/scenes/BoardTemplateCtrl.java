@@ -26,9 +26,6 @@ public class BoardTemplateCtrl implements Initializable {
     private Board board;
 
     @FXML
-    private ImageView joinImageView;
-
-    @FXML
     private TextField updateBoardNameField;
     @FXML
     private Button viewBoardButton;
