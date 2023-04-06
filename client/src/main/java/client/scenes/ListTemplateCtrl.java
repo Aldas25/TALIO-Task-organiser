@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.services.BoardService;
+import client.services.CardService;
 import client.services.ListService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
@@ -28,8 +29,8 @@ public class ListTemplateCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
     private final BoardService boardService;
-
     private final ListService listService;
+    private final CardService cardService;
 
     private CardList list;
     @FXML
@@ -43,11 +44,13 @@ public class ListTemplateCtrl implements Initializable {
 
     @Inject
     public ListTemplateCtrl(MainCtrl mainCtrl, ServerUtils server,
-                            BoardService boardService, ListService listService) {
+                            BoardService boardService, ListService listService,
+                            CardService cardService, CardTemplateCtrl cardTemplateCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.boardService = boardService;
         this.listService = listService;
+        this.cardService = cardService;
     }
 
     @Override
@@ -75,14 +78,13 @@ public class ListTemplateCtrl implements Initializable {
 
     public void updateCardListTitle(KeyEvent event) {
         if(event.getCode().equals(KeyCode.ENTER)){
-            //list.title = updateListNameField.getText();
             String newTitle = updateListNameField.getText();
             listService.updateListTitle(list, newTitle);
         }
     }
 
     public void addCard() {
-        mainCtrl.showAddCard(list);
+        cardService.addCardToList(list, "New Card");
     }
 
     public void showListPopUp() {

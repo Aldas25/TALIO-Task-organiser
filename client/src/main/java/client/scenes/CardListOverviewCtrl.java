@@ -35,7 +35,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import org.springframework.http.HttpStatus;
 
 public class CardListOverviewCtrl implements Initializable {
@@ -158,8 +157,8 @@ public class CardListOverviewCtrl implements Initializable {
         cardTemplateCtrl.start(card, listTemplateCtrl);
 
         // retrieve name of the Card from the Text Box
-        Text cardText = (Text) cardNode.getChildren().get(0);
-        cardText.setText(card.title); // set the name of the Card
+        TextField cardTextField = (TextField) cardNode.getChildren().get(0);
+        cardTextField.setText(card.title); // set the name of the Card
         return cardNode;
     }
 

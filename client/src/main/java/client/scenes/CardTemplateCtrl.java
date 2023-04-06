@@ -1,13 +1,13 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
+import client.services.CardService;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
-import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -21,27 +21,32 @@ import java.util.ResourceBundle;
 public class CardTemplateCtrl implements Initializable {
 
     private final MainCtrl mainCtrl;
-    private final ServerUtils server;
     private Card card;
     private ListTemplateCtrl currentListCtrl;
     private Board board;
 
+    private final CardService cardService;
+
     @FXML
     private AnchorPane cardAnchorPane;
     @FXML
-    private Button editCardButton;
+    private TextField cardTitleTextField;
     @FXML
     private ImageView deleteImageView;
+    @FXML
+    private ImageView dotImageView;
 
     @Inject
-    public CardTemplateCtrl(MainCtrl mainCtrl, ServerUtils server) {
+    public CardTemplateCtrl(MainCtrl mainCtrl,
+                            CardService cardService) {
         this.mainCtrl = mainCtrl;
-        this.server = server;
+        this.cardService = cardService;
     }
 
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetDeleteImageView();
+        resetDotsImageView();
     }
 
     public void start(Card card, ListTemplateCtrl currentListCtrl){
@@ -53,6 +58,12 @@ public class CardTemplateCtrl implements Initializable {
         File deleteFile = new File ("client/src/main/java/client/images/card/delete2.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         deleteImageView.setImage(deleteImage);
+    }
+
+    public void resetDotsImageView() {
+        File dotFile = new File ("client/src/main/java/client/images/card/dots1.png");
+        Image dotImage = new Image (dotFile.toURI().toString());
+        dotImageView.setImage(dotImage);
     }
 
     public void setCard(Card card) {
@@ -79,6 +90,10 @@ public class CardTemplateCtrl implements Initializable {
         this.board = board;
     }
 
+    public void setTitle (String title) {
+        cardTitleTextField.setText(title);
+    }
+
     public void showPopUp () {
         mainCtrl.showCardDeleteConfirmation(card, board);
     }
@@ -90,12 +105,17 @@ public class CardTemplateCtrl implements Initializable {
      */
     public void onDragDetected(MouseEvent event) {
         // firstly change color of card (visual aid for the user)
-        cardAnchorPane.setStyle("-fx-background-color: #BFC6D9");
+        cardAnchorPane.setStyle("-fx-background-color: #BFC6D9; -fx-background-radius: 6");
+        cardTitleTextField.setStyle("-fx-background-color: #BFC6D9; -fx-text-fill: #3c4867");
 
-        // secondly, change the background of the delete icon to match the new card color
+        // secondly, change the background of the icons to match the new card color
         File deleteFile = new File ("client/src/main/java/client/images/card/delete5.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         deleteImageView.setImage(deleteImage);
+
+        File dotFile = new File ("client/src/main/java/client/images/card/dots3.png");
+        Image dotImage = new Image (dotFile.toURI().toString());
+        dotImageView.setImage(dotImage);
 
         Dragboard db = cardAnchorPane.startDragAndDrop(TransferMode.ANY);
         mainCtrl.setDraggableCardCtrl(this);
@@ -124,10 +144,12 @@ public class CardTemplateCtrl implements Initializable {
             mainCtrl.showListOverview();
         } else {
             // reset card color
-            cardAnchorPane.setStyle("-fx-background-color: #D1DAE6");
+            cardAnchorPane.setStyle("-fx-background-color: #D1DAE6; -fx-background-radius: 6");
+            cardTitleTextField.setStyle("-fx-background-color: #D1DAE6; -fx-text-fill: #3c4867");
 
-            // reset the background color of the delete icon
+            // reset the background color of the icons
             resetDeleteImageView();
+            resetDotsImageView();
         }
 
         event.consume();
@@ -167,16 +189,12 @@ public class CardTemplateCtrl implements Initializable {
 
         event.consume();
     }
-    public void editCard(){
-        mainCtrl.showUpdateCard(currentListCtrl.getList(), card);
-    }
 
-    public void editCardButtonOnMouseEntered (MouseEvent event) {
-        editCardButton.setStyle("-fx-background-color: #b0bfd4; -fx-border-color: #3c4867");
-    }
-
-    public void editCardButtonOnMouseExited (MouseEvent event) {
-        editCardButton.setStyle("-fx-background-color: #7D88A6; -fx-border-color: #3c4867");
+    public void updateCardTitle(KeyEvent event){
+        if(!event.getCode().equals(KeyCode.ENTER))
+            return;
+        String newCardTitle = cardTitleTextField.getText();
+        cardService.updateCardTitle(card, newCardTitle);
     }
 
     public void deleteImageViewOnMouseEntered (MouseEvent event) {
@@ -187,5 +205,15 @@ public class CardTemplateCtrl implements Initializable {
 
     public void deleteImageViewOnMouseExited (MouseEvent event) {
         resetDeleteImageView();
+    }
+
+    public void dotImageViewOnMouseEntered (MouseEvent event) {
+        File dotFile = new File ("client/src/main/java/client/images/card/dots2.png");
+        Image dotImage = new Image (dotFile.toURI().toString());
+        dotImageView.setImage(dotImage);
+    }
+
+    public void dotImageViewOnMouseExited (MouseEvent event) {
+        resetDotsImageView();
     }
 }

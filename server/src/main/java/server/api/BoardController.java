@@ -91,10 +91,11 @@ public class BoardController {
 
         CardList saved = cardListRepo.save(cardList);
         Board board = repo.findById(id).get();
+        board.lists = removeDuplicateLists(board.lists);
         board.lists.add(saved);
-        repo.save(board);
+        Board savedBoard = repo.save(board);
 
-        return ResponseEntity.ok(cardList);
+        return ResponseEntity.ok(saved);
     }
 
     @GetMapping("/{id}/lists")
@@ -104,12 +105,16 @@ public class BoardController {
         }
 
         Board board = repo.findById(id).get();
-        List<CardList> cardList = board.lists
+        List<CardList> cardList = removeDuplicateLists(board.lists);
+
+        return ResponseEntity.ok(cardList);
+    }
+
+    public List<CardList> removeDuplicateLists(List<CardList> lists) {
+        return lists
                 .stream()
                 .distinct()
                 .collect(Collectors.toList());
-
-        return ResponseEntity.ok(cardList);
     }
 
     @DeleteMapping("/{id}")

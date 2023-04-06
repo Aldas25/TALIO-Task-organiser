@@ -39,14 +39,8 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private CardListOverviewCtrl listOverviewCtrl;
     private Scene listOverviewScene;
 
-    private AddCardCtrl addCardCtrl;
-    private Scene addCardScene;
-
     private ServerLoginCtrl serverLoginCtrl;
     private Scene serverLoginScene;
-
-    private ServerSignUpCtrl serverSignUpCtrl;
-    private Scene serverSignUpScene;
 
     private AdminBoardOverviewCtrl adminBoardOverviewCtrl;
     private Scene adminBoardOverviewScene;
@@ -103,9 +97,7 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     public void initialize(
             Stage primaryStage,
             Pair<CardListOverviewCtrl, Parent> listOverview,
-            Pair<AddCardCtrl, Parent> addCard,
             Pair<ServerLoginCtrl, Parent> serverLogin,
-            Pair<ServerSignUpCtrl, Parent> serverSignUp,
             Pair<HelpScreenCtrl, Parent> helpScreen
     ) {
         this.primaryStage = primaryStage;
@@ -113,14 +105,8 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         this.listOverviewCtrl = listOverview.getKey();
         this.listOverviewScene = new Scene(listOverview.getValue());
 
-        this.addCardCtrl = addCard.getKey();
-        this.addCardScene = new Scene(addCard.getValue());
-
         this.serverLoginCtrl = serverLogin.getKey();
         this.serverLoginScene = new Scene(serverLogin.getValue());
-
-        this.serverSignUpCtrl = serverSignUp.getKey();
-        this.serverSignUpScene = new Scene(serverSignUp.getValue());
 
         this.helpScreenCtrl = helpScreen.getKey();
         this.helpScreenScene = new Scene(helpScreen.getValue());
@@ -202,7 +188,8 @@ public class MainCtrl implements EventHandler<KeyEvent>{
      */
     public void setKeyShortcuts() {
         listOverviewScene.setOnKeyPressed(this);
-        addCardScene.setOnKeyPressed(this);
+        boardOverviewScene.setOnKeyPressed(this);
+        adminBoardOverviewScene.setOnKeyPressed(this);
     }
 
     public void showListOverview() {
@@ -217,30 +204,9 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         adminCardListOverviewCtrl.refresh();
     }
 
-    public void showAddCard(CardList list) {
-        primaryStage.setTitle("Add new card");
-        primaryStage.setScene(addCardScene);
-        addCardCtrl.setList(list);
-        addCardCtrl.refresh();
-    }
-
-    public void showUpdateCard(CardList list, Card card) {
-        primaryStage.setTitle("Edit a card");
-        primaryStage.setScene(addCardScene);
-        addCardCtrl.setList(list);
-        addCardCtrl.setCard(card);
-        addCardCtrl.refresh();
-    }
-
     public void showServerLogin() {
         primaryStage.setTitle("Login");
         primaryStage.setScene(serverLoginScene);
-        // serverLoginCtrl.refresh();
-    }
-
-    public void showServerSignUp() {
-        primaryStage.setTitle("Sign Up");
-        primaryStage.setScene(serverSignUpScene);
     }
 
     public void showAdminBoardOverview(){
