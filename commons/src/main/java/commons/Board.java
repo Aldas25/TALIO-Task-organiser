@@ -17,7 +17,7 @@ public class Board {
 
     public String inviteKey;
 
-    @OneToMany (fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+    @OneToMany (fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     public List<CardList> lists;
 
     public String title;

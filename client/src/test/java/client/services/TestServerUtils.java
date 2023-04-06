@@ -63,9 +63,10 @@ public class TestServerUtils extends ServerUtils {
     }
 
     @Override
-    public void addBoard(Board board){
+    public Board addBoard(Board board){
         log.add("addBoard "+ board.id + " " + board.title);
         boards.add(board);
+        return board;
     }
 
     @Override

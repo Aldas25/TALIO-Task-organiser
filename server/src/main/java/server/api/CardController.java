@@ -50,11 +50,10 @@ public class CardController {
     }
 
     @MessageMapping("/cards/delete")// /app/cards/delete
-    @SendTo("/topic/cards/delete")
-    public Long deleteCardMessage(Long id){
-        deleteCard(id);
-        msgs.convertAndSend("/topic/cards/delete", id);
-        return id;
+    @SendTo("/topic/lists/update")
+    public void deleteCardMessage(Long id){
+        ResponseEntity responseEntity = deleteCard(id);
+        msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
     }
 
     @DeleteMapping("/{id}")
@@ -72,14 +71,13 @@ public class CardController {
     }
 
     @MessageMapping("/cards/update")// /app/cards/update
-    @SendTo("/topic/cards/update")
-    public Card updateCardMessage(CustomPair<Long, Card> pair){
+    @SendTo("/topic/lists/update")
+    public void updateCardMessage(CustomPair<Long, Card> pair){
         Long id = pair.getId();
         Card card = pair.getVar();
 
-        updateCardTitle(id, card);
-        msgs.convertAndSend("/topic/cards/update", card);
-        return card;
+        ResponseEntity responseEntity = updateCardTitle(id, card);
+        msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
     }
 
     @PutMapping("/{id}")

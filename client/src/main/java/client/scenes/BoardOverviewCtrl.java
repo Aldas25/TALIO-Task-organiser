@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.springframework.http.HttpStatus;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -73,8 +74,10 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void start() {
-        server.registerForMessages("/topic/boards/add", Board.class, board -> {
-            Platform.runLater(() -> refresh());
+        server.registerForMessages("/topic/boards/update", HttpStatus.class, httpStatus -> {
+            if (httpStatus.equals(HttpStatus.OK)){
+                Platform.runLater(() -> refresh());
+            }
         });
     }
 
@@ -102,6 +105,7 @@ public class BoardOverviewCtrl implements Initializable {
 
     public void addOnMouseClicked () {
         boardService.addBoard("New Board");
+        refresh();
     }
 
     /**

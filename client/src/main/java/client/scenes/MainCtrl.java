@@ -190,7 +190,6 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         joinedBoardsService.readJoinedBoardsFromFile();
         listOverviewCtrl.start();
         boardOverviewCtrl.start();
-        addCardCtrl.start();
         showBoardOverview();
     }
 

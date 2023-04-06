@@ -113,14 +113,6 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void addMessageTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.addMessage(board);
-
-        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/boards/add"));
-    }
-
-    @Test
     public void addListMessageTest () {
         Board board = new Board ("b1", new ArrayList<>());
         boardCtrl.add(board);
@@ -128,7 +120,7 @@ public class BoardControllerTest {
         CardList list = new CardList("l1", new ArrayList<>());
         boardCtrl.addListMessage(new CustomPair<>(board.id, list));
 
-        assertTrue (msgs.calledMethods.contains("convertAndSend /topic/lists/add"));
+        assertTrue (msgs.calledMethods.contains("convertAndSend /topic/lists/update"));
     }
 
     @Test

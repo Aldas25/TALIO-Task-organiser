@@ -31,19 +31,11 @@ public class AddCardCtrl {
     @FXML
     private ColorPicker colorPicker;
 
-
-
     @Inject
     public AddCardCtrl(MainCtrl mainCtrl, ServerUtils server, CardService cardService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.cardService = cardService;
-    }
-
-    /**
-     * start() method is invoked when client connects to a valid server.
-     */
-    public void start(){
     }
 
     public void setList(CardList list) {
@@ -73,11 +65,10 @@ public class AddCardCtrl {
     public void addOrUpdateCard() {
         if(cardService.getCurrentCard() == null){
             addCard();
-//            mainCtrl.showListOverview();
-            return;
         }
-
-        updateCard();
+        else{
+            updateCard();
+        }
         mainCtrl.showListOverview();
     }
 
