@@ -11,14 +11,25 @@ public class BoardTest {
 
     @Test
     public void checkConstructor() {
-        var p = new Board("b1", new ArrayList<>());
-        assertEquals("b1", p.title);
+        Board b = new Board("b1", new ArrayList<>());
+        assertEquals("b1", b.title);
+        assertEquals(new ArrayList<CardList>(), b.lists);
+        assertNotNull(b.inviteKey);
+        assertEquals(4, b.inviteKey.length());
+    }
+
+    @Test
+    public void checkEmptyConstructor() {
+        Board b = new Board();
+        assertNull(b.title);
+        assertNull(b.lists);
+        assertNull(b.inviteKey);
     }
 
     @Test
     void notEqualsHashCode() {
-        var p = new Board("b1", new ArrayList<>());
-        var q = new Board("b2", new ArrayList<>());
+        Board p = new Board("b1", new ArrayList<>());
+        Board q = new Board("b2", new ArrayList<>());
         p.id = 0;
         q.id = 1;
         assertNotEquals(p, q);
@@ -28,15 +39,17 @@ public class BoardTest {
 
     @Test
     void testEqualsHashCode() {
-        var p = new Board("b1", new ArrayList<>());
-        var q = new Board("b1", new ArrayList<>());
+        Board p = new Board("b1", new ArrayList<>());
+        Board q = new Board("b1", new ArrayList<>());
+        p.id = 5;
+        q.id = 5;
         assertEquals(p, q);
         assertEquals(p.hashCode(), q.hashCode());
     }
 
     @Test
     void testToString() {
-        var actual = new Board( "b1", new ArrayList<>()).toString();
+        String actual = new Board( "b1", new ArrayList<>()).toString();
         assertTrue(actual.contains(Board.class.getSimpleName()));
         assertTrue(actual.contains("\n"));
         assertTrue(actual.contains("b1"));
