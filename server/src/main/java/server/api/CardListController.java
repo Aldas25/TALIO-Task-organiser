@@ -61,14 +61,13 @@ public class CardListController {
     }
 
     @MessageMapping("/cards/add")// /app/cards/add
-    @SendTo("/topic/cards/add")
-    public Card addCardMessage(CustomPair<Long, Card> pair){
+    @SendTo("/topic/lists/update")
+    public void addCardMessage(CustomPair<Long, Card> pair){
         Long id = pair.getId();
         Card card = pair.getVar();
 
-        addCard(id, card);
-        msgs.convertAndSend("/topic/cards/add", card);
-        return card;
+        ResponseEntity responseEntity = addCard(id, card);
+        msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
     }
 
     @PostMapping("/{id}/cards")
@@ -93,11 +92,10 @@ public class CardListController {
     }
 
     @MessageMapping("/lists/delete")// /app/lists/delete
-    @SendTo("/topic/lists/delete")
-    public Long deleteListMessage(Long id){
-        deleteList(id);
-        msgs.convertAndSend("/topic/lists/delete", id);
-        return id;
+    @SendTo("/topic/lists/update")
+    public void deleteListMessage(Long id){
+        ResponseEntity responseEntity = deleteList(id);
+        msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
     }
 
     @DeleteMapping("/{id}")
@@ -111,12 +109,11 @@ public class CardListController {
         return ResponseEntity.ok().build();
     }
 
-    @MessageMapping("/lists/update")// /app/cards/update
+    @MessageMapping("/lists/update")// /app/lists/update
     @SendTo("/topic/lists/update")
-    public CardList deleteCardMessage(CustomPair<Long, CardList> pair) {
-        updateListTitle(pair.getId(), pair.getVar());
-        msgs.convertAndSend("/topic/cards/delete", pair.getVar());
-        return pair.getVar();
+    public void deleteCardMessage(CustomPair<Long, CardList> pair) {
+        ResponseEntity responseEntity = updateListTitle(pair.getId(), pair.getVar());
+        msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
     }
 
     @PutMapping("/{id}")
@@ -155,6 +152,7 @@ public class CardListController {
         boardRepo.save(board);
         return ResponseEntity.ok().build();
     }
+
     public ResponseEntity removeCardListFromItsBoard(long id) {
         CardList cardList = repo.findById(id).get();
         var boardResponse = getBoard(id);
@@ -165,6 +163,7 @@ public class CardListController {
         boardRepo.save(prevBoard);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/{id}/board")
     public ResponseEntity<Board> getBoard(@PathVariable("id") long id){
         if (id < 0 || !repo.existsById(id))

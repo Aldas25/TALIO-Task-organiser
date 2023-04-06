@@ -169,10 +169,16 @@ public class ServerUtils {
 
     /**
      * Adds board to server
+     *
      * @param board the board to be added
+     * @return board that has been added
      */
-    public void addBoard(Board board) {
-        send("/app/boards/add", board);
+    public Board addBoard(Board board) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(getHttpServer()).path("api/boards")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
     /**

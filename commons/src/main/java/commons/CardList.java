@@ -19,7 +19,7 @@ public class CardList {
      * EAGER fetching tells Hibernate to get the related entities with the initial query.
      * In this case, Hibernate will get cardList when doing queries with cards.
      */
-    @OneToMany (fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+    @OneToMany (fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     public List<Card> cards;
 
     @SuppressWarnings("unused")

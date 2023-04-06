@@ -44,14 +44,6 @@ public class BoardController {
         return ResponseEntity.ok(repo.findById(id).get());
     }
 
-    @MessageMapping("/boards/add")// /app/boards/add
-    @SendTo("/topic/boards/add")
-    public Board addMessage(Board board){
-        add(board);
-        msgs.convertAndSend("/topic/boards/add", board);
-        return board;
-    }
-
     @PostMapping(path = {"", "/" })
     public ResponseEntity<Board> add(@RequestBody Board board) {
         if (isNullOrEmpty(board.title)) {
@@ -62,14 +54,13 @@ public class BoardController {
     }
 
     @MessageMapping("/lists/add")// /app/lists/add
-    @SendTo("/topic/lists/add")
-    public CardList addListMessage(CustomPair<Long, CardList> pair){
+    @SendTo("/topic/lists/update")
+    public void addListMessage(CustomPair<Long, CardList> pair){
         Long id = pair.getId();
         CardList list = pair.getVar();
 
-        addCardList(id, list);
-        msgs.convertAndSend("/topic/lists/add", list);
-        return list;
+        ResponseEntity responseEntity = addCardList(id, list);
+        msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
     }
 
     @PutMapping("/{id}")

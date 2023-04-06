@@ -244,7 +244,7 @@ public class CardControllerTest {
 
         cardCtrl.deleteCardMessage(card2.id);
 
-        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/cards/delete"));
+        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/lists/update"));
         assertEquals(1, list.cards.size());
     }
 
@@ -264,7 +264,7 @@ public class CardControllerTest {
 
         cardCtrl.updateCardMessage(new CustomPair<>(card.id, card2));
 
-        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/cards/update"));
+        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/lists/update"));
         assertEquals("c2", card.title);
     }
 
