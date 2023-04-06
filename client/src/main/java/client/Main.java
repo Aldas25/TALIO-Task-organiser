@@ -39,6 +39,9 @@ public class Main extends Application {
         var listOverview = load(
                 CardListOverviewCtrl.class, "client", "scenes", "CardListOverview.fxml"
         );
+        var adminListOverview = load (
+                AdminCardListOverviewCtrl.class, "client", "scenes", "AdminCardListOverview.fxml"
+        );
         var addCard = load(
                 AddCardCtrl.class, "client", "scenes", "AddCard.fxml"
         );
@@ -55,32 +58,30 @@ public class Main extends Application {
                 BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml"
         );
         var adminBoardOverview = load(
-                AdminBoardOverviewCtrl.class, "client", "scenes", "AdminBoardOverview.fxml"
-        );
+                AdminBoardOverviewCtrl.class, "client", "scenes", "AdminBoardOverview.fxml");
         var cardDeleteConfirmation = load(
                 CardDeleteConfirmationCtrl.class, "client", "scenes", "CardDeleteConfirmation.fxml"
         );
         var cardListDeleteConfirmation = load (
                 CardListDeleteConfirmationCtrl.class, "client", "scenes",
-                "CardListDeleteConfirmation.fxml"
-        );
+                "CardListDeleteConfirmation.fxml");
         var boardDeleteConfirmation = load (
                 BoardDeleteConfirmationCtrl.class, "client", "scenes",
-                "BoardDeleteConfirmation.fxml"
-        );
+                "BoardDeleteConfirmation.fxml");
+        var adminBoardDeleteConfirmation = load (
+                AdminBoardDeleteConfirmationCtrl.class, "client", "scenes",
+                "AdminBoardDeleteConfirmation.fxml");
         var joinBoard = load (
-                BoardJoinCtrl.class, "client", "scenes", "JoinBoard.fxml"
-        );
-
+                BoardJoinCtrl.class, "client", "scenes", "JoinBoard.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-
         mainCtrl.loadBoardOverview(boardOverview);
         mainCtrl.loadAdminBoardScene(adminBoardOverview);
         mainCtrl.loadCardDeleteConfirmationScene (cardDeleteConfirmation);
         mainCtrl.loadCardListDeleteConfirmationScene (cardListDeleteConfirmation);
         mainCtrl.loadBoardDeleteConfirmationScene (boardDeleteConfirmation);
         mainCtrl.loadJoinBoardScene(joinBoard);
-
+        mainCtrl.loadAdminBoardDeleteConfirmationScene(adminBoardDeleteConfirmation);
+        mainCtrl.loadAdminCardListOverview(adminListOverview);
         mainCtrl.initialize(primaryStage, listOverview, addCard, serverLogin, serverSignUp,
                             helpScreen);
     }

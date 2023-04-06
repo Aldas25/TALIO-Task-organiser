@@ -72,10 +72,22 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private BoardJoinCtrl boardJoinCtrl;
     private Scene joinBoardScene;
 
+    private AdminCardListOverviewCtrl adminCardListOverviewCtrl;
+    private Scene adminCardListOverviewScene;
+
+    private AdminBoardDeleteConfirmationCtrl adminBoardDeleteConfirmationCtrl;
+    private Scene adminBoardDeleteConfirmationScene;
+
+    private AdminListTemplateCtrl adminListTemplateCtrl;
+
+    private AdminCardTemplateCtrl adminCardTemplateCtrl;
+
 
     private Stage popUpCardConfirmStage;
     private Stage popUpCardListConfirmStage;
     private Stage popUpBoardConfirmStage;
+
+    private Stage adminPopUpBoardConfirmStage;
 
     private Stage popUpJoinBoardStage;
 
@@ -132,11 +144,24 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         this.adminBoardOverviewScene = new Scene(adminBoardOverview.getValue());
     }
 
+    public void loadAdminCardListOverview(
+            Pair<AdminCardListOverviewCtrl, Parent> adminCardListOverview){
+        this.adminCardListOverviewCtrl = adminCardListOverview.getKey();
+        this.adminCardListOverviewScene = new Scene(adminCardListOverview.getValue());
+    }
+
     public void loadCardDeleteConfirmationScene (
             Pair<CardDeleteConfirmationCtrl, Parent> cardDeleteConfirmation) {
 
         this.cardDeleteConfirmationCtrl = cardDeleteConfirmation.getKey();
         this.cardDeleteConfirmationScene = new Scene (cardDeleteConfirmation.getValue());
+    }
+
+    public void loadAdminBoardDeleteConfirmationScene (
+            Pair<AdminBoardDeleteConfirmationCtrl, Parent> adminBoardDeleteConfirmation){
+
+        this.adminBoardDeleteConfirmationCtrl = adminBoardDeleteConfirmation.getKey();
+        this.adminBoardDeleteConfirmationScene = new Scene(adminBoardDeleteConfirmation.getValue());
     }
 
     public void loadBoardDeleteConfirmationScene (
@@ -187,6 +212,12 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         listOverviewCtrl.refresh();
     }
 
+    public void showAdminListOverview(){
+        primaryStage.setTitle("Admin Card List Overview");
+        primaryStage.setScene(adminCardListOverviewScene);
+        adminCardListOverviewCtrl.refresh();
+    }
+
     public void showAddCard(CardList list) {
         primaryStage.setTitle("Add new card");
         primaryStage.setScene(addCardScene);
@@ -216,6 +247,7 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     public void showAdminBoardOverview(){
         primaryStage.setTitle("Admin Board Overview");
         primaryStage.setScene(adminBoardOverviewScene);
+        adminBoardOverviewCtrl.refresh();
     }
 
     public void showBoardOverview () {
@@ -268,6 +300,18 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
         popUpBoardConfirmStage.showAndWait();
     }
+
+    public void showAdminBoardDeleteConfirmation (Board board) {
+        adminBoardDeleteConfirmationCtrl.setBoardToBeDeleted(board);
+
+        adminPopUpBoardConfirmStage = new Stage();
+        adminPopUpBoardConfirmStage.setScene(adminBoardDeleteConfirmationScene);
+        adminPopUpBoardConfirmStage.setTitle("Confirm Delete");
+        adminPopUpBoardConfirmStage.initModality(Modality.APPLICATION_MODAL);
+        adminPopUpBoardConfirmStage.showAndWait();
+    }
+
+    public void closeAdminBoardDeleteConfirmation(){adminPopUpBoardConfirmStage.close();}
 
     public void closeBoardDeleteConfirmation () {
         popUpBoardConfirmStage.close();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="cardAnchorPane" prefHeight="56.0" prefWidth="243.0" style="-fx-background-color: d1dae6; -fx-background-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminCardTemplateCtrl">
+    <children>
+        <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#3c4867" layoutX="2.0" layoutY="31.0" pickOnBounds="true" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="156.0">
+            <font>
+                <Font size="20.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="DEFAULT" />
+            </cursor>
+        </Text>
+        <HBox layoutY="42.0" prefHeight="21.0" prefWidth="243.0" />
+    </children>
+    <cursor>
+        <Cursor fx:constant="DEFAULT" />
+    </cursor>
+</AnchorPane>

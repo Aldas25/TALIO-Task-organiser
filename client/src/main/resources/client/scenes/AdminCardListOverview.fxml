@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="518.0" prefWidth="650.0" style="-fx-background-color: ecece7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminCardListOverviewCtrl">
+    <center>
+        <BorderPane>
+            <center>
+                <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: #ecece7;">
+                    <content>
+                        <HBox fx:id="listContainer" prefHeight="487.0" prefWidth="653.0" spacing="5.0" style="-fx-background-color: ecece7;" />
+                    </content>
+                </ScrollPane>
+            </center>
+            <top>
+                <AnchorPane prefHeight="47.0" prefWidth="536.0" BorderPane.alignment="CENTER" />
+            </top>
+            <left>
+                <AnchorPane prefHeight="471.0" prefWidth="40.0" BorderPane.alignment="CENTER" />
+            </left>
+            <right>
+                <AnchorPane prefHeight="451.0" prefWidth="40.0" BorderPane.alignment="CENTER" />
+            </right>
+            <bottom>
+                <AnchorPane prefHeight="47.0" prefWidth="536.0" BorderPane.alignment="CENTER" />
+            </bottom>
+        </BorderPane>
+    </center>
+    <left>
+        <AnchorPane prefHeight="518.0" prefWidth="114.0" style="-fx-background-color: d1dae6; -fx-border-color: #6D85A8; -fx-border-width: 2; -fx-border-radius: 2;" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fx:id="disconnectImageView" fitHeight="50.0" fitWidth="67.0" layoutX="21.0" layoutY="217.0" onMouseClicked="#disconnectFromBoard" onMouseEntered="#disconnectOnMouseEntered" onMouseExited="#disconnectOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="219.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="25.0">
+                    <image>
+                        <Image url="@../../../java/client/images/card-list-overview/disconnect1.png" />
+                    </image>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </ImageView>
+                <Label layoutX="26.0" layoutY="313.0" prefHeight="20.0" prefWidth="67.0" text="GO BACK" textFill="#3c4867" AnchorPane.bottomAnchor="189.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Text fill="#3c4867" layoutX="21.0" layoutY="466.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INVITE KEY" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="21.0">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="inviteKeyField" editable="false" layoutX="22.0" layoutY="410.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="75.0" style="-fx-background-color: clear; -fx-text-fill: #76191c;" AnchorPane.bottomAnchor="67.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="20.0">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </TextField>
+            </children>
+        </AnchorPane>
+    </left>
+</BorderPane>
