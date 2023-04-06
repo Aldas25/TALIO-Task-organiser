@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="listAnchorPane" prefHeight="163.0" prefWidth="247.0" style="-fx-background-color: #6D85A8; -fx-background-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminListTemplateCtrl">
+    <children>
+        <TextField fx:id="updateListNameField" alignment="CENTER" editable="false" layoutX="1.0" layoutY="24.0" prefHeight="51.0" prefWidth="246.0" style="-fx-background-color: #6D85A8; -fx-text-fill: #151928;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </TextField>
+        <VBox fillWidth="false" layoutX="1.0" layoutY="88.0" prefHeight="88.0" prefWidth="246.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="88.0">
+         <children>
+            <Button fx:id="addCardButton" mnemonicParsing="false" style="-fx-background-color: d1dae6;" text="+" textAlignment="CENTER" textFill="#3c4867" visible="false">
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children></VBox>
+      <ImageView fx:id="deleteImageView" fitHeight="28.0" fitWidth="26.0" layoutX="231.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../java/client/images/list/delete1.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+    </children>
+</AnchorPane>

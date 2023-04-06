@@ -73,6 +73,7 @@ public class AddCardCtrl {
     public void addOrUpdateCard() {
         if(cardService.getCurrentCard() == null){
             addCard();
+//            mainCtrl.showListOverview();
             return;
         }
 
