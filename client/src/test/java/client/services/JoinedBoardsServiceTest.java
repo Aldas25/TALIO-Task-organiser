@@ -47,6 +47,36 @@ public class JoinedBoardsServiceTest {
     }
 
     @Test
+    public void testJoinedBoardEqualsBoardCorrect() {
+        JoinedBoardsService.JoinedBoard joinedBoard;
+        joinedBoard = sut.new JoinedBoard("url", "key");
+        Board board = new Board("Title", new ArrayList<>());
+        board.inviteKey = "key";
+        assertTrue(joinedBoard.equalsToBoard(board));
+        assertTrue(server.log.contains("getServer"));
+    }
+
+    @Test
+    public void testJoinedBoardEqualsBoardWrongServer() {
+        JoinedBoardsService.JoinedBoard joinedBoard;
+        joinedBoard = sut.new JoinedBoard("url_wrong", "key");
+        Board board = new Board("Title", new ArrayList<>());
+        board.inviteKey = "key";
+        assertFalse(joinedBoard.equalsToBoard(board));
+        assertTrue(server.log.contains("getServer"));
+    }
+
+    @Test
+    public void testJoinedBoardEqualsBoardWrongKey() {
+        JoinedBoardsService.JoinedBoard joinedBoard;
+        joinedBoard = sut.new JoinedBoard("url", "key_wrong");
+        Board board = new Board("Title", new ArrayList<>());
+        board.inviteKey = "key";
+        assertFalse(joinedBoard.equalsToBoard(board));
+        assertTrue(server.log.contains("getServer"));
+    }
+
+    @Test
     public void testGetBoardWrongServer() {
         JoinedBoardsService.JoinedBoard joinedBoard;
         joinedBoard = sut.new JoinedBoard("url_wrong", "key");
@@ -161,6 +191,41 @@ public class JoinedBoardsServiceTest {
         sut.readJoinedBoards(scanner);
         List<Board> boards = sut.getJoinedBoards();
 
+        assertEquals(1, boards.size());
+        assertEquals(5, boards.get(0).id);
+        assertEquals("key", boards.get(0).inviteKey);
+    }
+
+    @Test
+    public void testLeaveBoard() {
+        Board boardJoined = new Board("Board title", new ArrayList<>());
+        boardJoined.id = 5;
+        boardJoined.inviteKey = "key";
+
+        sut.joinBoard(boardJoined);
+        sut.leaveBoard(boardJoined);
+        List<Board> boards = sut.getJoinedBoards();
+
+        // the board that was joined should have been removed
+        assertEquals(0, boards.size());
+    }
+
+    @Test
+    public void testLeaveBoardNonExistingBoard() {
+        Board boardJoined = new Board("Board join", new ArrayList<>());
+        boardJoined.id = 5;
+        boardJoined.inviteKey = "key";
+
+        sut.joinBoard(boardJoined);
+
+        Board boardToLeave = new Board("Board leave", new ArrayList<>());
+        boardToLeave.id = 4;
+        boardToLeave.inviteKey = "key_wrong";
+
+        sut.leaveBoard(boardToLeave);
+
+        // the board that was joined should have been left in the list
+        List<Board> boards = sut.getJoinedBoards();
         assertEquals(1, boards.size());
         assertEquals(5, boards.get(0).id);
         assertEquals("key", boards.get(0).inviteKey);
