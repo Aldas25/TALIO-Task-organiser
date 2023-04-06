@@ -77,12 +77,26 @@ public class JoinedBoardsService {
         joinedBoards.add(new JoinedBoard(server.getServer(), board.inviteKey));
     }
 
+    public void leaveBoard(Board board) {
+        for (int i = 0; i < joinedBoards.size(); i++) {
+            if (joinedBoards.get(i).equalsToBoard(board)) {
+                joinedBoards.remove(i);
+                return;
+            }
+        }
+    }
+
     public void joinBoardAndSave(Board board) {
         joinBoard(board);
         writeJoinedBoardsToFile();
     }
 
-    class JoinedBoard implements Serializable {
+    public void leaveBoardAndSave(Board board) {
+        leaveBoard(board);
+        writeJoinedBoardsToFile();
+    }
+
+    class JoinedBoard {
 
         private final String url;
         private final String key;
@@ -90,6 +104,11 @@ public class JoinedBoardsService {
         public JoinedBoard(String url, String key) {
             this.url = url;
             this.key = key;
+        }
+
+        public boolean equalsToBoard(Board board) {
+            return (server.getServer().equals(this.url)
+                    && board.inviteKey.equals(key));
         }
 
         public Optional<Board> getBoard() {

@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.services.BoardService;
+import client.services.JoinedBoardsService;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ public class BoardTemplateCtrl implements Initializable {
     private MainCtrl mainCtrl;
     private ServerUtils server;
     private BoardService boardService;
+    private JoinedBoardsService joinedBoardsService;
 
     private Board board;
 
@@ -31,14 +33,18 @@ public class BoardTemplateCtrl implements Initializable {
     @FXML
     private Button viewBoardButton;
     @FXML
+    private Button leaveBoardButton;
+    @FXML
     private ImageView boardDeleteImageView;
 
     @Inject
     public BoardTemplateCtrl (MainCtrl mainCtrl, ServerUtils server,
-                              BoardService boardService) {
+                              BoardService boardService,
+                              JoinedBoardsService joinedBoardsService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.boardService = boardService;
+        this.joinedBoardsService = joinedBoardsService;
     }
 
     @Override
@@ -80,6 +86,19 @@ public class BoardTemplateCtrl implements Initializable {
     public void viewBoardButtonOnAction() {
         boardService.setCurrentBoard(board);
         mainCtrl.showListOverview();
+    }
+
+    public void leaveBoardButtonOnMouseEntered () {
+        leaveBoardButton.setStyle("-fx-background-color: #b0bfd4; -fx-border-radius: 6");
+    }
+
+    public void leaveBoardButtonOnMouseExited () {
+        leaveBoardButton.setStyle("-fx-background-color: #d1dae6; -fx-border-radius: 6");
+    }
+
+    public void leaveBoardButtonOnAction() {
+        joinedBoardsService.leaveBoardAndSave(board);
+        mainCtrl.showBoardOverview();
     }
 
     public void showBoardPopUp(){
