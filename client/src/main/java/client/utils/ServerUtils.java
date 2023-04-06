@@ -20,6 +20,8 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import commons.*;
@@ -168,20 +170,6 @@ public class ServerUtils {
     }
 
     /**
-     * Adds board to server
-     *
-     * @param board the board to be added
-     * @return board that has been added
-     */
-    public Board addBoard(Board board) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer()).path("api/boards")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(board, APPLICATION_JSON), Board.class);
-    }
-
-    /**
      * Adds a new list to current board
      * @param board the board
      * @param cardList the card list to add
@@ -255,6 +243,53 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);
+    }
+
+    private final ExecutorService exec = Executors.newSingleThreadExecutor();
+
+    /**
+     * @param consumer functional interface that is used to consume data
+     */
+    public void registerForUpdates(Consumer<Board> consumer) {
+        // create a new thread, so it can run in the background
+        // (otherwise the application would just wait for updates and block everything else)
+        exec.submit(() ->
+        {
+            // everything here runs in a different thread
+            // as long as the thread is uninterrupted we are polling it constantly
+            while(!Thread.interrupted()){
+                var res =  ClientBuilder.newClient(new ClientConfig())
+                        .target(getHttpServer())
+                        .path("api/boards/admin/update")
+                        .request(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .get(Response.class);
+
+                // if there is NO CONTENT (status code 204) we continue
+                if(res.getStatus() == 204){
+                    continue;
+                }
+                var board = res.readEntity(Board.class);
+                consumer.accept(board);
+            }
+        });
+    }
+
+    public void stop(){
+        exec.shutdownNow();
+    }
+    /**
+     * Adds board to server
+     *
+     * @param board the board to be added
+     * @return board that has been added
+     */
+    public Board addBoard(Board board) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(getHttpServer()).path("api/boards")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
     /**

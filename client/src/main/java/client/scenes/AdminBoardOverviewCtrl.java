@@ -5,6 +5,7 @@ import client.services.BoardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -43,6 +44,15 @@ public class AdminBoardOverviewCtrl implements Initializable {
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetDisconnectImageView();
+    }
+
+    /**
+     * start() method is invoked when client connects to a valid server.
+     */
+    public void start(){
+        server.registerForUpdates(board ->{
+            Platform.runLater(() -> refresh());
+        });
     }
 
     public void resetDisconnectImageView () {
@@ -89,4 +99,9 @@ public class AdminBoardOverviewCtrl implements Initializable {
             boardContainer.getChildren().add(boardNode);
         }
     }
+
+    public void stop(){
+        server.stop();
+    }
+
 }
