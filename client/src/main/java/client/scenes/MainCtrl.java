@@ -171,12 +171,18 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         this.joinBoardScene = new Scene(joinBoard.getValue());
     }
 
-    public void start() {
+    public void startClient() {
         server.setSession();
         joinedBoardsService.readJoinedBoardsFromFile();
         listOverviewCtrl.start();
         boardOverviewCtrl.start();
-        showBoardOverview();
+    }
+
+    public void startAdmin() {
+        server.setSession();
+        // joinedBoardsService.readJoinedBoardsFromFile();
+        adminBoardOverviewCtrl.start();
+        adminCardListOverviewCtrl.start();
     }
 
      /**

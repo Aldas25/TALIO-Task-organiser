@@ -1,15 +1,20 @@
 package server.api;
 
 import commons.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,23 +49,48 @@ public class BoardController {
         return ResponseEntity.ok(repo.findById(id).get());
     }
 
+    private Map<Object, Consumer<Board>> listeners = new HashMap<>();
+
+    /**
+     * We wrap in DeferredResult which makes this request asynchronous.
+     * This method is in the waiting state once called.
+     * @return board that was updated
+     */
+    @GetMapping("/admin/update")
+    public DeferredResult<ResponseEntity<Board>> getUpdates(){
+        var noContent =
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        // it will take up to 5s to get an answer
+        var res = new DeferredResult<ResponseEntity<Board>>(5000L, noContent);
+
+        // when we call this method the waiting is over,
+        // we wait for who is first: setResult() called or timeout.
+
+        // we will be notified when someone calls the consumer
+        var key = new Object();
+        listeners.put(key, board ->{
+            res.setResult(ResponseEntity.ok(board));
+        });
+
+        // once we have listener we remove it, so we would be prepared for another listener.
+        res.onCompletion(() -> {
+            listeners.remove(key);
+        });
+
+        return res;
+    }
+
     @PostMapping(path = {"", "/" })
     public ResponseEntity<Board> add(@RequestBody Board board) {
         if (isNullOrEmpty(board.title)) {
             return ResponseEntity.badRequest().build();
         }
         Board saved = repo.save(board);
+
+        listeners.forEach((key, listener) -> listener.accept(board));
+
         return ResponseEntity.ok(saved);
-    }
-
-    @MessageMapping("/lists/add")// /app/lists/add
-    @SendTo("/topic/lists/update")
-    public void addListMessage(CustomPair<Long, CardList> pair){
-        Long id = pair.getId();
-        CardList list = pair.getVar();
-
-        ResponseEntity responseEntity = addCardList(id, list);
-        msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
     }
 
     @PutMapping("/{id}")
@@ -76,7 +106,19 @@ public class BoardController {
         boardFromRepo.title = board.title;
         Board saved = repo.save(boardFromRepo);
 
+        listeners.forEach((key, listener) -> listener.accept(board));
+
         return ResponseEntity.ok(saved);
+    }
+
+    @MessageMapping("/lists/add")// /app/lists/add
+    @SendTo("/topic/lists/update")
+    public void addListMessage(CustomPair<Long, CardList> pair){
+        Long id = pair.getId();
+        CardList list = pair.getVar();
+
+        ResponseEntity responseEntity = addCardList(id, list);
+        msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
     }
 
     @PostMapping("/{id}/lists")
@@ -124,6 +166,9 @@ public class BoardController {
         }
 
         repo.deleteById(id);
+
+        listeners.forEach((key, listener) -> listener.accept(getById(id).getBody()));
+
         return ResponseEntity.ok().build();
     }
 

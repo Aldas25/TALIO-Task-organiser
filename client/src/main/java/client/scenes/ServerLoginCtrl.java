@@ -88,7 +88,8 @@ public class ServerLoginCtrl implements Initializable {
 
         if (server.isServerOk()) {
             loginMessageLabel.setText(null);
-            mainCtrl.start();
+            mainCtrl.startClient();
+            mainCtrl.showBoardOverview();
         } else {
             loginMessageLabel.setText("Please type in a valid server address.");
         }
@@ -125,9 +126,9 @@ public class ServerLoginCtrl implements Initializable {
         }
         else{
             loginMessageLabel.setText(null);
+            mainCtrl.startAdmin();
             openAdminScreen();
         }
-
     }
 
 

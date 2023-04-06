@@ -34,6 +34,14 @@ public class Main extends Application {
         launch();
     }
 
+    /**
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     *
+     * Whenever application is asked to stop we stop the thread.
+     */
     @Override
     public void start(Stage primaryStage) {
         var listOverview = load(
@@ -75,11 +83,11 @@ public class Main extends Application {
         mainCtrl.loadCardListDeleteConfirmationScene (cardListDeleteConfirmation);
         mainCtrl.loadBoardDeleteConfirmationScene (boardDeleteConfirmation);
         mainCtrl.loadJoinBoardScene(joinBoard);
-
         mainCtrl.loadAdminBoardDeleteConfirmationScene(adminBoardDeleteConfirmation);
         mainCtrl.loadAdminCardListOverview(adminListOverview);
 
         mainCtrl.initialize(primaryStage, listOverview, serverLogin, helpScreen);
+        primaryStage.setOnCloseRequest(e -> { adminBoardOverview.getKey().stop(); });
     }
 
     public static <T> Pair<T, Parent> load(Class<T> c, String... parts) {

@@ -21,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.springframework.http.HttpStatus;
 
 public class AdminCardListOverviewCtrl implements Initializable {
 
@@ -62,25 +63,12 @@ public class AdminCardListOverviewCtrl implements Initializable {
      * start() method is invoked when client connects to a valid server.
      */
     public void start(){
-        server.registerForMessages("/topic/lists/add", CardList.class, list -> {
-            Platform.runLater(() -> refresh());
-        });
-        server.registerForMessages("/topic/lists/delete", long.class, id -> {
-            Platform.runLater(() -> refresh());
-        });
-        server.registerForMessages("/topic/lists/update", CardList.class, cardList -> {
-            Platform.runLater(() -> refresh());
+        server.registerForMessages("/topic/lists/update", HttpStatus.class, httpStatus -> {
+            if (httpStatus.equals(HttpStatus.OK)){
+                Platform.runLater(() -> refresh());
+            }
         });
         server.registerForMessages("/topic/cards/move", CardList.class, cardList -> {
-            Platform.runLater(() -> refresh());
-        });
-        server.registerForMessages("/topic/cards/delete", long.class, id -> {
-            Platform.runLater(() -> refresh());
-        });
-        server.registerForMessages("/topic/cards/add", Card.class, card -> {
-            Platform.runLater(() -> refresh());
-        });
-        server.registerForMessages("/topic/cards/update", Card.class, card -> {
             Platform.runLater(() -> refresh());
         });
     }
