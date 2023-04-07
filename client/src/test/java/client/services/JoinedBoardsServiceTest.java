@@ -40,6 +40,17 @@ public class JoinedBoardsServiceTest {
     }
 
     @Test
+    public void testGetFilenameNull() {
+        assertNull(sut.getFilename());
+    }
+
+    @Test
+    public void testSetFilename() {
+        sut.setFilename("file");
+        assertEquals("client/file.txt", sut.getFilename());
+    }
+
+    @Test
     public void testJoinedBoardToString() {
         JoinedBoardsService.JoinedBoard joinedBoard;
         joinedBoard = sut.new JoinedBoard("url", "key");

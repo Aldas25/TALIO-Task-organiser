@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.services.JoinedBoardsService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -9,14 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.net.URL;
@@ -26,6 +24,7 @@ public class ServerLoginCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final JoinedBoardsService joinedBoardsService;
 
     @FXML
     private Label loginMessageLabel;
@@ -39,17 +38,18 @@ public class ServerLoginCtrl implements Initializable {
     @FXML
     private TextField serverURLTextField;
     @FXML
+    private TextField filenameTextField;
+    @FXML
     private Button loginButton;
 
     @FXML Button adminButton;
 
-
-    DropShadow shadow = new DropShadow(5.0, Color.color(0.185,0.199,0.217));
-
     @Inject
-    public ServerLoginCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public ServerLoginCtrl(ServerUtils server, MainCtrl mainCtrl,
+                           JoinedBoardsService joinedBoardsService) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.joinedBoardsService = joinedBoardsService;
     }
 
     /**
@@ -86,13 +86,22 @@ public class ServerLoginCtrl implements Initializable {
         String serverURL = serverURLTextField.getText();
         server.setServer(serverURL);
 
-        if (server.isServerOk()) {
-            loginMessageLabel.setText(null);
-            mainCtrl.startClient();
-            mainCtrl.showBoardOverview();
-        } else {
+        if (!server.isServerOk()) {
             loginMessageLabel.setText("Please type in a valid server address.");
+            return;
         }
+
+        loginMessageLabel.setText(null);
+        String filename = filenameTextField.getText();
+
+        if (filename.isBlank()) {
+            loginMessageLabel.setText("Please type in a name for the file.");
+            return;
+        }
+
+        joinedBoardsService.setFilename(filename);
+        mainCtrl.startClient();
+        mainCtrl.showBoardOverview();
     }
 
 
