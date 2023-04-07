@@ -53,7 +53,7 @@ public class AdminCardListOverviewCtrl implements Initializable {
 
     public void resetDisconnectImageView () {
         File disconnectFile = new
-                File ("client/src/main/java/client/images/card-list-overview/disconnect1.png");
+                File ("client/src/main/resources/client/images/card-list-overview/disconnect1.png");
         Image disconnectImage = new Image (disconnectFile.toURI().toString());
         disconnectImageView.setImage(disconnectImage);
     }
@@ -173,7 +173,7 @@ public class AdminCardListOverviewCtrl implements Initializable {
 
     public void disconnectOnMouseEntered() {
         File disconnectFile = new
-                File ("client/src/main/java/client/images/card-list-overview/disconnect2.png");
+                File ("client/src/main/resources/client/images/card-list-overview/disconnect2.png");
         Image disconnectImage = new Image (disconnectFile.toURI().toString());
         disconnectImageView.setImage(disconnectImage);
     }
@@ -181,8 +181,6 @@ public class AdminCardListOverviewCtrl implements Initializable {
     public void disconnectOnMouseExited() {
         resetDisconnectImageView();
     }
-
-
 
     public void showInviteKey(){
         String inviteKey = boardService.getBoardInviteKey();

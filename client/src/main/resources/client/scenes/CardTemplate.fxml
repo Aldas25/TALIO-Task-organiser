@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="cardAnchorPane" onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragEntered="#onDragEntered" onDragOver="#onDragOver" prefHeight="65.0" prefWidth="243.0" style="-fx-background-color: d1dae6; -fx-background-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardTemplateCtrl">
+<AnchorPane fx:id="cardAnchorPane" onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragEntered="#onDragEntered" onDragOver="#onDragOver" prefHeight="67.0" prefWidth="244.0" style="-fx-background-color: d1dae6; -fx-background-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardTemplateCtrl">
    <children>
       <TextField fx:id="cardTitleTextField" alignment="CENTER" layoutX="28.0" layoutY="13.0" onKeyPressed="#updateCardTitle" prefHeight="28.0" prefWidth="189.0" style="-fx-background-color: d1dae6; -fx-text-fill: #3c4867;">
          <font>
@@ -16,7 +17,7 @@
       </TextField>
       <ImageView fx:id="deleteImageView" fitHeight="22.0" fitWidth="29.0" layoutX="215.0" layoutY="22.0" onMouseClicked="#showPopUp" onMouseEntered="#deleteImageViewOnMouseEntered" onMouseExited="#deleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/card/delete2.png" />
+            <Image url="@../../../resources/client/images/card/delete2.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -24,12 +25,17 @@
       </ImageView>
       <ImageView fx:id="dotImageView" fitHeight="22.0" fitWidth="29.0" layoutX="3.0" layoutY="22.0" onMouseEntered="#dotImageViewOnMouseEntered" onMouseExited="#dotImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/card/dots1.png" />
+            <Image url="@../../../resources/client/images/card/dots1.png" />
          </image>
          <cursor>
-            <Cursor fx:constant="HAND" />
+            <Cursor fx:constant="DEFAULT" />
          </cursor>
       </ImageView>
+      <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="45.0" prefHeight="19.0" prefWidth="234.0" textFill="#76191c">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
    </children>
    <cursor>
       <Cursor fx:constant="MOVE" />

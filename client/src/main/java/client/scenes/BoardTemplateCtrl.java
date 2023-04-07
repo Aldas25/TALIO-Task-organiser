@@ -7,9 +7,12 @@ import commons.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -33,6 +36,8 @@ public class BoardTemplateCtrl implements Initializable {
     private Button leaveBoardButton;
     @FXML
     private ImageView boardDeleteImageView;
+    @FXML
+    private Label warningLabel;
 
     @Inject
     public BoardTemplateCtrl (MainCtrl mainCtrl, ServerUtils server,
@@ -54,13 +59,13 @@ public class BoardTemplateCtrl implements Initializable {
     }
 
     public void resetDeleteImageView() {
-        File deleteFile = new File ("client/src/main/java/client/images/board/delete1.png");
+        File deleteFile = new File ("client/src/main/resources/client/images/board/delete1.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         boardDeleteImageView.setImage(deleteImage);
     }
 
     public void boardDeleteImageViewOnMouseEntered () {
-        File deleteFile = new File ("client/src/main/java/client/images/board/delete2.png");
+        File deleteFile = new File ("client/src/main/resources/client/images/board/delete2.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         boardDeleteImageView.setImage(deleteImage);
     }
@@ -102,9 +107,12 @@ public class BoardTemplateCtrl implements Initializable {
         mainCtrl.showBoardDeleteConfirmation(board);
     }
 
-    public void updateBoardTitle() {
-        board.title = updateBoardNameField.getText();
-        server.updateBoardTitle(board);
+    public void updateBoardTitle(KeyEvent event) {
+        warningLabel.setText("Press ENTER to confirm.");
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            warningLabel.setText(null);
+            board.title = updateBoardNameField.getText();
+            server.updateBoardTitle(board);
+        }
     }
-
 }

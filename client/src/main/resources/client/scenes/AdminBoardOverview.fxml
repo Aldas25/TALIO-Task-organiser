@@ -19,7 +19,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
                <image>
-                  <Image url="@../../../java/client/images/board-overview/disconnect1.png" />
+                  <Image url="@../images/admin-board-overview/disconnect1.png" />
                </image>
             </ImageView>
             <Label layoutX="17.0" layoutY="443.0" prefHeight="20.0" prefWidth="95.0" text="DISCONNECT" textFill="#3c4867" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="6.0">

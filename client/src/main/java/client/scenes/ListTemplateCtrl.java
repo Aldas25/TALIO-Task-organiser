@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,6 +42,8 @@ public class ListTemplateCtrl implements Initializable {
     private Button addCardButton;
     @FXML
     private ImageView deleteImageView;
+    @FXML
+    private Label warningLabel;
 
     @Inject
     public ListTemplateCtrl(MainCtrl mainCtrl, ServerUtils server,
@@ -59,7 +62,7 @@ public class ListTemplateCtrl implements Initializable {
     }
 
     public void resetDeleteImageView() {
-        File deleteFile = new File ("client/src/main/java/client/images/list/delete1.png");
+        File deleteFile = new File ("client/src/main/resources/client/images/list/delete1.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         deleteImageView.setImage(deleteImage);
     }
@@ -77,7 +80,9 @@ public class ListTemplateCtrl implements Initializable {
     }
 
     public void updateCardListTitle(KeyEvent event) {
+        warningLabel.setText("Press ENTER to confirm.");
         if(event.getCode().equals(KeyCode.ENTER)){
+            warningLabel.setText(null);
             String newTitle = updateListNameField.getText();
             listService.updateListTitle(list, newTitle);
         }
@@ -116,7 +121,7 @@ public class ListTemplateCtrl implements Initializable {
             updateListNameField.setStyle("-fx-background-color: #3c4867; -fx-text-fill: #E6E8F0");
 
             // change background color of the 'delete image'
-            File deleteFile = new File ("client/src/main/java/client/images/list/delete2.png");
+            File deleteFile = new File ("client/src/main/resources/client/images/list/delete2.png");
             Image deleteImage = new Image (deleteFile.toURI().toString());
             deleteImageView.setImage(deleteImage);
         }
@@ -262,7 +267,7 @@ public class ListTemplateCtrl implements Initializable {
     }
 
     public void deleteImageViewOnMouseEntered (MouseEvent event) {
-        File deleteFile = new File ("client/src/main/java/client/images/list/delete3.png");
+        File deleteFile = new File ("client/src/main/resources/client/images/list/delete3.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         deleteImageView.setImage(deleteImage);
     }

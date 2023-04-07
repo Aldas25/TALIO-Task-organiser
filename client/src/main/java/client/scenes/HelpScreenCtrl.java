@@ -62,39 +62,48 @@ public class HelpScreenCtrl implements Initializable {
      */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
-        File kFile = new File ("client/src/main/java/client/images/help-screen/keyboard.png");
+        File kFile = new
+                File ("client/src/main/resources/client/images/help-screen/keyboard.png");
         Image keyboardImage = new Image (kFile.toURI().toString());
         keyboardImageView.setImage(keyboardImage);
 
-        File qFile = new File ("client/src/main/java/client/images/help-screen/question_mark.png");
+        File qFile = new
+                File ("client/src/main/resources/client/images/help-screen/question_mark.png");
         Image qImage = new Image(qFile.toURI().toString());
         qImageView.setImage(qImage);
 
-        File shiftFile = new File ("client/src/main/java/client/images/help-screen/shift_key.png");
+        File shiftFile = new
+                File ("client/src/main/resources/client/images/help-screen/shift_key.png");
         Image shiftImage = new Image (shiftFile.toURI().toString());
         shiftKeyImageView.setImage(shiftImage);
 
-        File upFile = new File ("client/src/main/java/client/images/help-screen/up_key.png");
+        File upFile = new
+                File ("client/src/main/resources/client/images/help-screen/up_key.png");
         Image upImage = new Image (upFile.toURI().toString());
         upKeyImageView.setImage(upImage);
 
-        File downFile = new File ("client/src/main/java/client/images/help-screen/down_key.png");
+        File downFile = new
+                File ("client/src/main/resources/client/images/help-screen/down_key.png");
         Image downImage = new Image (downFile.toURI().toString());
         downKeyImageView.setImage(downImage);
 
-        File eFile = new File ("client/src/main/java/client/images/help-screen/e_key.png");
+        File eFile = new
+                File ("client/src/main/resources/client/images/help-screen/e_key.png");
         Image eImage = new Image (eFile.toURI().toString());
         eKeyImageView.setImage(eImage);
 
-        File delFile = new File ("client/src/main/java/client/images/help-screen/del_key.png");
+        File delFile = new
+                File ("client/src/main/resources/client/images/help-screen/del_key.png");
         Image delImage = new Image (delFile.toURI().toString());
         delKeyImageView.setImage(delImage);
 
-        File bFile = new File("client/src/main/java/client/images/help-screen/backspace_key.png");
+        File bFile = new
+                File("client/src/main/resources/client/images/help-screen/backspace_key.png");
         Image backspaceImage = new Image (bFile.toURI().toString());
         backspaceKeyImageView.setImage(backspaceImage);
 
-        File enterFile = new File ("client/src/main/java/client/images/help-screen/enter_key.png");
+        File enterFile = new
+                File ("client/src/main/resources/client/images/help-screen/enter_key.png");
         Image enterImage = new Image (enterFile.toURI().toString());
         enterKeyImageView.setImage(enterImage);
 
@@ -102,19 +111,23 @@ public class HelpScreenCtrl implements Initializable {
     }
 
     public void finishInitialize() {
-        File escFile = new File ("client/src/main/java/client/images/help-screen/esc_key.png");
+        File escFile = new
+                File ("client/src/main/resources/client/images/help-screen/esc_key.png");
         Image escImage = new Image (escFile.toURI().toString());
         escKeyImageView.setImage(escImage);
 
-        File tFile = new File ("client/src/main/java/client/images/help-screen/t_key.png");
+        File tFile = new
+                File ("client/src/main/resources/client/images/help-screen/t_key.png");
         Image tImage = new Image (tFile.toURI().toString());
         tKeyImageView.setImage(tImage);
 
-        File cFile = new File ("client/src/main/java/client/images/help-screen/c_key.png");
+        File cFile = new
+                File ("client/src/main/resources/client/images/help-screen/c_key.png");
         Image cImage = new Image (cFile.toURI().toString());
         cKeyImageView.setImage(cImage);
 
-        File arrowFile = new File ("client/src/main/java/client/images/help-screen/arrow_keys.png");
+        File arrowFile = new
+                File ("client/src/main/resources/client/images/help-screen/arrow_keys.png");
         Image arrowImage = new Image (arrowFile.toURI().toString());
         arrowKeysImageView.setImage(arrowImage);
     }

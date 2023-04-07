@@ -29,7 +29,7 @@
          </children></VBox>
       <ImageView fx:id="deleteImageView" fitHeight="28.0" fitWidth="26.0" layoutX="231.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@../../../java/client/images/list/delete1.png" />
+            <Image url="@../images/list/delete1.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

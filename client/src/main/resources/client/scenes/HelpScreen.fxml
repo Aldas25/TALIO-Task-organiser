@@ -6,14 +6,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="700.0" prefWidth="520.0" style="-fx-background-color: ecece7;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.HelpScreenCtrl">
    <children>
       <AnchorPane prefHeight="82.0" prefWidth="520.0" style="-fx-background-color: #6D85A8;">
          <children>
             <ImageView fx:id="keyboardImageView" fitHeight="42.0" fitWidth="69.0" layoutX="23.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../java/client/images/help-screen/keyboard.png" />
+                  <Image url="@../../../resources/client/images/help-screen/keyboard.png" />
                </image>
             </ImageView>
             <Label layoutX="118.0" layoutY="21.0" prefHeight="41.0" prefWidth="207.0" text="Keyboard Shortcuts" textFill="#ecece7">
@@ -30,7 +29,7 @@
       </Label>
       <ImageView fx:id="qImageView" fitHeight="41.0" fitWidth="60.0" layoutX="385.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/question_mark.png" />
+            <Image url="@../../../resources/client/images/help-screen/question_mark.png" />
          </image>
       </ImageView>
       <Label layoutX="65.0" layoutY="172.0" prefHeight="32.0" prefWidth="200.0" text="Change Order of Tasks" textFill="#3c4867">
@@ -40,7 +39,7 @@
       </Label>
       <ImageView fx:id="upKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="336.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/up_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/up_key.png" />
          </image>
       </ImageView>
       <Label layoutX="65.0" layoutY="222.0" prefHeight="32.0" prefWidth="200.0" text="Edit Task Title" textFill="#3c4867">
@@ -50,7 +49,7 @@
       </Label>
       <ImageView fx:id="eKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="385.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/e_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/e_key.png" />
          </image>
       </ImageView>
       <Label layoutX="65.0" layoutY="272.0" prefHeight="32.0" prefWidth="200.0" text="Delete Task" textFill="#3c4867">
@@ -60,7 +59,7 @@
       </Label>
       <ImageView fx:id="backspaceKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="434.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/backspace_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/backspace_key.png" />
          </image>
       </ImageView>
       <Label layoutX="65.0" layoutY="322.0" prefHeight="32.0" prefWidth="200.0" text="Open Task Details" textFill="#3c4867">
@@ -70,7 +69,7 @@
       </Label>
       <ImageView fx:id="enterKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="385.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/enter_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/enter_key.png" />
          </image>
       </ImageView>
       <Label layoutX="65.0" layoutY="372.0" prefHeight="32.0" prefWidth="200.0" text="Close Task Details" textFill="#3c4867">
@@ -80,7 +79,7 @@
       </Label>
       <ImageView fx:id="escKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="385.0" layoutY="370.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/esc_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/esc_key.png" />
          </image>
       </ImageView>
       <Label layoutX="65.0" layoutY="422.0" prefHeight="32.0" prefWidth="200.0" text="Pop-up for Adding Tasks" textFill="#3c4867">
@@ -90,7 +89,7 @@
       </Label>
       <ImageView fx:id="tKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="385.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/t_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/t_key.png" />
          </image>
       </ImageView>
       <Label layoutX="65.0" layoutY="472.0" prefHeight="32.0" prefWidth="218.0" text="Pop-up for Colour Preset Selection" textFill="#3c4867">
@@ -100,7 +99,7 @@
       </Label>
       <ImageView fx:id="cKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="385.0" layoutY="470.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/c_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/c_key.png" />
          </image>
       </ImageView>
       <Label layoutX="65.0" layoutY="522.0" prefHeight="32.0" prefWidth="200.0" text="Activate Shortcuts" textFill="#3c4867">
@@ -120,17 +119,17 @@
       </Label>
       <ImageView fx:id="arrowKeysImageView" fitHeight="48.0" fitWidth="79.0" layoutX="376.0" layoutY="614.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/arrow_keys.png" />
+            <Image url="@../../../resources/client/images/help-screen/arrow_keys.png" />
          </image>
       </ImageView>
       <ImageView fx:id="shiftKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="244.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/shift_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/shift_key.png" />
          </image>
       </ImageView>
       <ImageView fx:id="downKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="434.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/down_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/down_key.png" />
          </image>
       </ImageView>
       <Label layoutX="316.0" layoutY="173.0" text="+" textFill="#3c4867">
@@ -145,7 +144,7 @@
       </Label>
       <ImageView fx:id="delKeyImageView" fitHeight="41.0" fitWidth="60.0" layoutX="336.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../java/client/images/help-screen/del_key.png" />
+            <Image url="@../../../resources/client/images/help-screen/del_key.png" />
          </image>
       </ImageView>
       <Label layoutX="404.0" layoutY="275.0" text="OR" textFill="#3c4867">

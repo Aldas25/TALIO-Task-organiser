@@ -57,7 +57,8 @@ public class AdminBoardOverviewCtrl implements Initializable {
 
     public void resetDisconnectImageView () {
         File disconnectFile = new
-                File ("client/src/main/java/client/images/admin-board-overview/disconnect1.png");
+                File ("client/src/main/resources/client" +
+                "/images/admin-board-overview/disconnect1.png");
         Image disconnectImage = new Image (disconnectFile.toURI().toString());
         disconnectImageView.setImage(disconnectImage);
     }
@@ -68,7 +69,8 @@ public class AdminBoardOverviewCtrl implements Initializable {
 
     public void disconnectOnMouseEntered (MouseEvent event) {
         File disconnectFile = new
-                File ("client/src/main/java/client/images/admin-board-overview/disconnect2.png");
+                File ("client/src/main/resources/client" +
+                "/images/admin-board-overview/disconnect2.png");
         Image disconnectImage = new Image (disconnectFile.toURI().toString());
         disconnectImageView.setImage(disconnectImage);
     }
