@@ -149,13 +149,8 @@ public class ListTemplateCtrl implements Initializable {
         boolean success = false;
 
         if (cardCtrl != null && cardCtrl.getCard() != null) {
-            //mainCtrl.showListOverview(board);
-            // mainCtrl.showListOverview();
-            server.send("/topic/cards/move", list);
             success = true;
         }
-
-        mainCtrl.setCurrentDraggedOverListCtrl(null);
 
         event.setDropCompleted(success);
         event.consume();
@@ -197,7 +192,8 @@ public class ListTemplateCtrl implements Initializable {
         int position = childrenList.size()-1; // insert before the end
         // the last item is "add card" button
         childrenList.add(position, cardAnchorPane);
-        server.moveCardToList(draggedCardCtrl.getCard(),list,position);
+        //server.moveCardToList(draggedCardCtrl.getCard(),list,position);
+        mainCtrl.setDragNewPosition(position);
     }
 
     /**
@@ -253,7 +249,8 @@ public class ListTemplateCtrl implements Initializable {
         // insert card to this list
         // the last item is "add card" button
         childrenList.add(position, cardAnchorPane);
-        server.moveCardToList(draggedCardCtrl.getCard(),list,position);
+        //server.moveCardToList(draggedCardCtrl.getCard(),list,position);
+        mainCtrl.setDragNewPosition(position);
     }
 
     public void addCardButtonOnMouseEntered (MouseEvent event) {

@@ -22,7 +22,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView fx:id="dotImageView" fitHeight="22.0" fitWidth="29.0" layoutX="3.0" layoutY="22.0" onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragEntered="#onDragEntered" onDragOver="#onDragOver" onMouseEntered="#dotImageViewOnMouseEntered" onMouseExited="#dotImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="dotImageView" fitHeight="22.0" fitWidth="29.0" layoutX="3.0" layoutY="22.0" onMouseEntered="#dotImageViewOnMouseEntered" onMouseExited="#dotImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../java/client/images/card/dots1.png" />
          </image>

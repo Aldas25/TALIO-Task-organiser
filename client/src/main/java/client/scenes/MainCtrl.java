@@ -50,6 +50,7 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
     private CardTemplateCtrl draggableCardCtrl;
     private ListTemplateCtrl currentDraggedOverListCtrl;
+    private int dragNewPosition;
 
     private HelpScreenCtrl helpScreenCtrl;
     private Scene helpScreenScene;
@@ -351,5 +352,13 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         popUpHelpStage.initModality(Modality.APPLICATION_MODAL);
 
         popUpHelpStage.showAndWait();
+    }
+
+    public int getDragNewPosition() {
+        return dragNewPosition;
+    }
+
+    public void setDragNewPosition(int dragNewPosition) {
+        this.dragNewPosition = dragNewPosition;
     }
 }

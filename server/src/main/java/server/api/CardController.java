@@ -97,6 +97,18 @@ public class CardController {
         return ResponseEntity.ok(saved);
     }
 
+    @MessageMapping("/cards/move")// /app/cards/move
+    @SendTo("/topic/lists/update")
+    public CardList moveCardMessage(CustomPair<Card, CustomPair<CardList, Integer>> pair){
+        Card card = pair.getId();
+        CardList list = pair.getVar().getId();
+        Integer newPos = pair.getVar().getVar();
+
+        ResponseEntity responseEntity = moveCard(card.id, list.id, newPos);
+        msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
+        return list;
+    }
+
     @PutMapping("/{id}/list/{listId}/{newPos}")
     public ResponseEntity<Card> moveCard(
             @PathVariable("id") long id,

@@ -234,15 +234,18 @@ public class ServerUtils {
      * @param card The card to be moved
      * @param list The list where it goes
      * @param newPos Its position in the list
-     * @return The Card that was moved
      */
-    public Card moveCardToList(Card card, CardList list, int newPos) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer())
-                .path("api/cards/" + card.id + "/list/" + list.id + "/" + newPos)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(card, APPLICATION_JSON), Card.class);
+    public void moveCardToList(Card card, CardList list, int newPos) {
+        send(
+                "/app/cards/move",
+                new CustomPair(card, new CustomPair(list, newPos))
+        );
+//        return ClientBuilder.newClient(new ClientConfig())
+//                .target(getHttpServer())
+//                .path("api/cards/" + card.id + "/list/" + list.id + "/" + newPos)
+//                .request(APPLICATION_JSON)
+//                .accept(APPLICATION_JSON)
+//                .put(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
     private final ExecutorService exec = Executors.newSingleThreadExecutor();
