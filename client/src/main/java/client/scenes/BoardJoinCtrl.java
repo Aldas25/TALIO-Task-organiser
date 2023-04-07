@@ -95,7 +95,4 @@ public class BoardJoinCtrl {
         joinError.setText("");
         enterInviteKeyField.clear();
     }
-
-
-
 }

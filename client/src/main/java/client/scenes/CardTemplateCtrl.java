@@ -9,6 +9,7 @@ import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,6 +39,8 @@ public class CardTemplateCtrl implements Initializable {
     private ImageView deleteImageView;
     @FXML
     private ImageView dotImageView;
+    @FXML
+    private Label warningLabel;
 
     @Inject
     public CardTemplateCtrl(MainCtrl mainCtrl,
@@ -60,13 +63,13 @@ public class CardTemplateCtrl implements Initializable {
     }
 
     public void resetDeleteImageView() {
-        File deleteFile = new File ("client/src/main/java/client/images/card/delete2.png");
+        File deleteFile = new File ("client/src/main/resources/client/images/card/delete2.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         deleteImageView.setImage(deleteImage);
     }
 
     public void resetDotsImageView() {
-        File dotFile = new File ("client/src/main/java/client/images/card/dots1.png");
+        File dotFile = new File ("client/src/main/resources/client/images/card/dots1.png");
         Image dotImage = new Image (dotFile.toURI().toString());
         dotImageView.setImage(dotImage);
     }
@@ -114,11 +117,11 @@ public class CardTemplateCtrl implements Initializable {
         cardTitleTextField.setStyle("-fx-background-color: #BFC6D9; -fx-text-fill: #3c4867");
 
         // secondly, change the background of the icons to match the new card color
-        File deleteFile = new File ("client/src/main/java/client/images/card/delete5.png");
+        File deleteFile = new File ("client/src/main/resources/client/images/card/delete5.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         deleteImageView.setImage(deleteImage);
 
-        File dotFile = new File ("client/src/main/java/client/images/card/dots3.png");
+        File dotFile = new File ("client/src/main/resources/client/images/card/dots3.png");
         Image dotImage = new Image (dotFile.toURI().toString());
         dotImageView.setImage(dotImage);
 
@@ -203,14 +206,16 @@ public class CardTemplateCtrl implements Initializable {
     }
 
     public void updateCardTitle(KeyEvent event){
-        if(!event.getCode().equals(KeyCode.ENTER))
-            return;
-        String newCardTitle = cardTitleTextField.getText();
-        cardService.updateCardTitle(card, newCardTitle);
+        warningLabel.setText("Press ENTER to confirm.");
+        if(event.getCode().equals(KeyCode.ENTER)) {
+            warningLabel.setText(null);
+            String newCardTitle = cardTitleTextField.getText();
+            cardService.updateCardTitle(card, newCardTitle);
+        }
     }
 
     public void deleteImageViewOnMouseEntered (MouseEvent event) {
-        File deleteFile = new File ("client/src/main/java/client/images/card/delete4.png");
+        File deleteFile = new File ("client/src/main/resources/client/images/card/delete4.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         deleteImageView.setImage(deleteImage);
     }
@@ -220,7 +225,7 @@ public class CardTemplateCtrl implements Initializable {
     }
 
     public void dotImageViewOnMouseEntered (MouseEvent event) {
-        File dotFile = new File ("client/src/main/java/client/images/card/dots2.png");
+        File dotFile = new File ("client/src/main/resources/client/images/card/dots2.png");
         Image dotImage = new Image (dotFile.toURI().toString());
         dotImageView.setImage(dotImage);
     }

@@ -49,13 +49,13 @@ public class AdminBoardTemplateCtrl implements Initializable {
     }
 
     public void resetDeleteImageView() {
-        File deleteFile = new File ("client/src/main/java/client/images/board/delete1.png");
+        File deleteFile = new File ("client/src/main/resources/client/images/board/delete1.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         boardDeleteImageView.setImage(deleteImage);
     }
 
     public void boardDeleteImageViewOnMouseEntered () {
-        File deleteFile = new File ("client/src/main/java/client/images/board/delete2.png");
+        File deleteFile = new File ("client/src/main/resources/client/images/board/delete2.png");
         Image deleteImage = new Image (deleteFile.toURI().toString());
         boardDeleteImageView.setImage(deleteImage);
     }

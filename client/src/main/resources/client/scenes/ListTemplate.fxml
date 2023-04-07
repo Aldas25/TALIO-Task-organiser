@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,7 +12,7 @@
 
 <AnchorPane fx:id="listAnchorPane" onDragDropped="#onDragDropped" onDragEntered="#onDragEntered" onDragExited="#onDragExited" onDragOver="#onDragOver" prefHeight="163.0" prefWidth="247.0" style="-fx-background-color: #6D85A8; -fx-background-radius: 6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ListTemplateCtrl">
    <children>
-      <TextField fx:id="updateListNameField" alignment="CENTER" layoutX="1.0" layoutY="24.0" onKeyPressed="#updateCardListTitle" prefHeight="51.0" prefWidth="246.0" style="-fx-background-color: #6D85A8; -fx-text-fill: #151928;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
+      <TextField fx:id="updateListNameField" alignment="CENTER" layoutX="1.0" layoutY="17.0" onKeyPressed="#updateCardListTitle" prefHeight="51.0" prefWidth="246.0" style="-fx-background-color: #6D85A8; -fx-text-fill: #151928;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="17.0">
          <font>
             <Font size="24.0" />
          </font>
@@ -29,11 +30,16 @@
 
       <ImageView fx:id="deleteImageView" fitHeight="28.0" fitWidth="26.0" layoutX="221.0" layoutY="5.0" onMouseClicked="#showListPopUp" onMouseEntered="#deleteImageViewOnMouseEntered" onMouseExited="#deleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="221.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
          <image>
-            <Image url="@../../../java/client/images/list/delete1.png" />
+            <Image url="@../../../resources/client/images/list/delete1.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="62.0" prefHeight="19.0" prefWidth="234.0" textFill="#76191c">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

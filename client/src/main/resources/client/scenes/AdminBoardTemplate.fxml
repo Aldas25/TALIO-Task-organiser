@@ -28,7 +28,7 @@
         </Button>
         <ImageView fx:id="boardDeleteImageView" fitHeight="28.0" fitWidth="26.0" layoutX="410.0" layoutY="8.0" onMouseClicked="#showAdminBoardPopUp" onMouseEntered="#boardDeleteImageViewOnMouseEntered" onMouseExited="#boardDeleteImageViewOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="73.4285717010498" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="8.0">
             <image>
-                <Image url="@../../../java/client/images/board/delete1.png" />
+                <Image url="@../../../resources/client/images/board/delete1.png" />
             </image>
             <cursor>
                 <Cursor fx:constant="HAND" />

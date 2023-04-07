@@ -42,7 +42,7 @@
             <children>
                 <ImageView fx:id="disconnectImageView" fitHeight="50.0" fitWidth="67.0" layoutX="21.0" layoutY="217.0" onMouseClicked="#disconnectFromBoard" onMouseEntered="#disconnectOnMouseEntered" onMouseExited="#disconnectOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="219.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="25.0">
                     <image>
-                        <Image url="@../../../java/client/images/card-list-overview/disconnect1.png" />
+                        <Image url="@../../../resources/client/images/card-list-overview/disconnect1.png" />
                     </image>
                     <cursor>
                         <Cursor fx:constant="HAND" />

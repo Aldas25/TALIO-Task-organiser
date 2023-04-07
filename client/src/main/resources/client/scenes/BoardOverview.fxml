@@ -16,7 +16,7 @@
          <children>
             <ImageView fx:id="addImageView" fitHeight="50.0" fitWidth="67.0" layoutX="25.0" layoutY="56.0" onMouseClicked="#addOnMouseClicked" onMouseEntered="#addOnMouseEntered" onMouseExited="#addOnMouseExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="21.821426391601562" AnchorPane.topAnchor="56.0">
                <image>
-                  <Image url="@../../../java/client/images/board-overview/add1.png" />
+                  <Image url="@../../../resources/client/images/board-overview/add1.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -32,7 +32,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
                <image>
-                  <Image url="@../../../java/client/images/board-overview/join1.png" />
+                  <Image url="@../../../resources/client/images/board-overview/join1.png" />
                </image>
             </ImageView>
             <Label layoutX="43.0" layoutY="280.0" prefHeight="20.0" prefWidth="38.0" text="JOIN" textFill="#3c4867" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="278.0">
@@ -45,7 +45,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
                <image>
-                  <Image url="@../../../java/client/images/board-overview/disconnect1.png" />
+                  <Image url="@../../../resources/client/images/board-overview/disconnect1.png" />
                </image>
             </ImageView>
             <Label layoutX="19.0" layoutY="443.0" prefHeight="20.0" prefWidth="95.0" text="DISCONNECT" textFill="#3c4867" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="6.0">

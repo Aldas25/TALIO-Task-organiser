@@ -55,20 +55,21 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void resetAddImageView () {
-        File addFile = new File ("client/src/main/java/client/images/board-overview/add1.png");
+        File addFile = new File ("client/src/main/resources/client/images/board-overview/add1.png");
         Image addImage = new Image (addFile.toURI().toString());
         addImageView.setImage(addImage);
     }
 
     public void resetJoinImageView () {
-        File joinFile = new File ("client/src/main/java/client/images/board-overview/join1.png");
+        File joinFile = new
+                File ("client/src/main/resources/client/images/board-overview/join1.png");
         Image joinImage = new Image (joinFile.toURI().toString());
         joinImageView.setImage(joinImage);
     }
 
     public void resetDisconnectImageView () {
         File disconnectFile = new
-                File ("client/src/main/java/client/images/board-overview/disconnect1.png");
+                File ("client/src/main/resources/client/images/board-overview/disconnect1.png");
         Image disconnectImage = new Image (disconnectFile.toURI().toString());
         disconnectImageView.setImage(disconnectImage);
     }
@@ -124,7 +125,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void addOnMouseEntered () {
-        File addFile = new File ("client/src/main/java/client/images/board-overview/add2.png");
+        File addFile = new File ("client/src/main/resources/client/images/board-overview/add2.png");
         Image addImage = new Image (addFile.toURI().toString());
         addImageView.setImage(addImage);
     }
@@ -134,7 +135,8 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void joinOnMouseEntered () {
-        File joinFile = new File ("client/src/main/java/client/images/board-overview/join2.png");
+        File joinFile = new
+                File ("client/src/main/resources/client/images/board-overview/join2.png");
         Image joinImage = new Image (joinFile.toURI().toString());
         joinImageView.setImage(joinImage);
     }
@@ -145,7 +147,7 @@ public class BoardOverviewCtrl implements Initializable {
 
     public void disconnectOnMouseEntered () {
         File disconnectFile = new
-                File ("client/src/main/java/client/images/board-overview/disconnect2.png");
+                File ("client/src/main/resources/client/images/board-overview/disconnect2.png");
         Image disconnectImage = new Image (disconnectFile.toURI().toString());
         disconnectImageView.setImage(disconnectImage);
     }

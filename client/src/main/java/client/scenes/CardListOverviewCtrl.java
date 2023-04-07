@@ -68,13 +68,14 @@ public class CardListOverviewCtrl implements Initializable {
 
     public void resetDisconnectImageView () {
         File disconnectFile = new
-                File ("client/src/main/java/client/images/card-list-overview/disconnect1.png");
+                File ("client/src/main/resources/client/images/card-list-overview/disconnect1.png");
         Image disconnectImage = new Image (disconnectFile.toURI().toString());
         disconnectImageView.setImage(disconnectImage);
     }
 
     public void resetAddImageView () {
-        File addFile = new File ("client/src/main/java/client/images/card-list-overview/add1.png");
+        File addFile = new
+                File ("client/src/main/resources/client/images/card-list-overview/add1.png");
         Image addImage = new Image (addFile.toURI().toString());
         addImageView.setImage(addImage);
     }
@@ -169,7 +170,7 @@ public class CardListOverviewCtrl implements Initializable {
 
     public void disconnectOnMouseEntered() {
         File disconnectFile = new
-                File ("client/src/main/java/client/images/card-list-overview/disconnect2.png");
+                File ("client/src/main/resources/client/images/card-list-overview/disconnect2.png");
         Image disconnectImage = new Image (disconnectFile.toURI().toString());
         disconnectImageView.setImage(disconnectImage);
     }
@@ -179,7 +180,8 @@ public class CardListOverviewCtrl implements Initializable {
     }
 
     public void addOnMouseEntered() {
-        File addFile = new File ("client/src/main/java/client/images/card-list-overview/add2.png");
+        File addFile = new
+                File ("client/src/main/resources/client/images/card-list-overview/add2.png");
         Image addImage = new Image (addFile.toURI().toString());
         addImageView.setImage(addImage);
     }
