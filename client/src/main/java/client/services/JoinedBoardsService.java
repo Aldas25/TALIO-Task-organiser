@@ -14,12 +14,22 @@ import java.util.stream.Collectors;
 public class JoinedBoardsService {
 
     private final ServerUtils server;
-    private final String filename = "client/joinedBoards.txt";
+    private String filename;
     private List<JoinedBoard> joinedBoards = new ArrayList<>();
 
     @Inject
     public JoinedBoardsService(ServerUtils server) {
         this.server = server;
+    }
+
+    public String getFilename() {
+        return this.filename;
+    }
+
+    public void setFilename(String filename) {
+        String filePrefix = "client/";
+        String fileSuffix = ".txt";
+        this.filename = filePrefix + filename + fileSuffix;
     }
 
     public void readJoinedBoardsFromFile() {
