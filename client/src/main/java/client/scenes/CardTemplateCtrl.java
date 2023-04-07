@@ -1,9 +1,11 @@
 package client.scenes;
 
 import client.services.CardService;
+import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
+import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -24,6 +26,7 @@ public class CardTemplateCtrl implements Initializable {
     private Card card;
     private ListTemplateCtrl currentListCtrl;
     private Board board;
+    private final ServerUtils server;
 
     private final CardService cardService;
 
@@ -38,9 +41,11 @@ public class CardTemplateCtrl implements Initializable {
 
     @Inject
     public CardTemplateCtrl(MainCtrl mainCtrl,
-                            CardService cardService) {
+                            CardService cardService,
+                            ServerUtils server) {
         this.mainCtrl = mainCtrl;
         this.cardService = cardService;
+        this.server = server;
     }
 
     @Override
@@ -136,13 +141,20 @@ public class CardTemplateCtrl implements Initializable {
      * @param event mouse event information
      */
     public void onDragDone(DragEvent event) {
-        mainCtrl.setDraggableCardCtrl(null);
 
         // check if it was successful drag
-        if (event.getTransferMode() == TransferMode.MOVE) {
-            // refresh if the drag was done
-            mainCtrl.showListOverview();
-        } else {
+        //if (TransferMode.MOVE.equals(event.getTransferMode())) {
+        CardList list = mainCtrl.getCurrentDraggedOverListCtrl().getList();
+        mainCtrl.setDraggableCardCtrl(null);
+        mainCtrl.setCurrentDraggedOverListCtrl(null);
+        server.moveCardToList(
+                card,
+                list,
+                mainCtrl.getDragNewPosition()
+        );
+        // refresh if the drag was done
+        //mainCtrl.showListOverview();
+        /*} else {
             // reset card color
             cardAnchorPane.setStyle("-fx-background-color: #D1DAE6; -fx-background-radius: 6");
             cardTitleTextField.setStyle("-fx-background-color: #D1DAE6; -fx-text-fill: #3c4867");
@@ -150,7 +162,7 @@ public class CardTemplateCtrl implements Initializable {
             // reset the background color of the icons
             resetDeleteImageView();
             resetDotsImageView();
-        }
+        }*/
 
         event.consume();
     }

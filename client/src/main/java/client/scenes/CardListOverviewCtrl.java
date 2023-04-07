@@ -88,9 +88,6 @@ public class CardListOverviewCtrl implements Initializable {
                 Platform.runLater(() -> refresh());
             }
         });
-        server.registerForMessages("/topic/cards/move", CardList.class, cardList -> {
-            Platform.runLater(() -> refresh());
-        });
     }
 
     /**
