@@ -93,6 +93,13 @@ public class BoardController {
         return ResponseEntity.ok(saved);
     }
 
+    @MessageMapping("/boards/update")// /app/lists/update
+    @SendTo("/topic/boards/update")
+    public void updateBoardTitleMessage(CustomPair<Long, Board> pair) {
+        ResponseEntity responseEntity = updateBoardTitle(pair.getId(), pair.getVar());
+        msgs.convertAndSend("/topic/boards/update", responseEntity.getStatusCode());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Board> updateBoardTitle(
             @PathVariable("id") long id,
@@ -157,6 +164,13 @@ public class BoardController {
                 .stream()
                 .distinct()
                 .collect(Collectors.toList());
+    }
+
+    @MessageMapping("/boards/delete")
+    @SendTo("/topic/boards/update")
+    public void deleteBoardMessage(Long id){
+        ResponseEntity responseEntity = deleteBoard(id);
+        msgs.convertAndSend(("/topic/boards/update"), responseEntity.getStatusCode());
     }
 
     @DeleteMapping("/{id}")

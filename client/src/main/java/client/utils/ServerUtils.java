@@ -295,31 +295,20 @@ public class ServerUtils {
                 .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
-    /**
-     * Removes a board from server
-     * @param board The board that needs to be removed
-     * @return A server Response
-     */
-    public Response removeBoard(Board board){
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer()).path("api/boards/" + board.id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .delete();
-    }
 
     /**
-     * Updates the title of a Board
-     * @param board The board that needs to change
-     * @return The changed board
+     * Remove board from server
+     * @param board to be removed
      */
-    public Board updateBoardTitle(Board board){
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(getHttpServer()).path("api/boards/" + board.id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(board, APPLICATION_JSON), Board.class);
-    }
+    public void removeBoard(Board board){send("/app/boards/delete", board.id);}
+
+
+    /**
+     * Update board title in server
+     * @param board to be updated
+     */
+    public void updateBoardTitle(Board board){
+        send("/app/boards/update", new CustomPair<Long, Board>(board.id, board));}
 
     /**
      * Retrieves all boards
