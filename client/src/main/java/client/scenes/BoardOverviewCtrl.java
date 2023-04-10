@@ -3,20 +3,19 @@ package client.scenes;
 import client.Main;
 import client.services.JoinedBoardsService;
 import client.services.BoardService;
+import client.utils.ImageUtils;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.springframework.http.HttpStatus;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -27,6 +26,7 @@ public class BoardOverviewCtrl implements Initializable {
     private final ServerUtils server;
     private final BoardService boardService;
     private final JoinedBoardsService joinedBoardsService;
+    private final ImageUtils imageUtils;
 
     @FXML
     private ImageView addImageView;
@@ -40,11 +40,13 @@ public class BoardOverviewCtrl implements Initializable {
     @Inject
     public BoardOverviewCtrl (MainCtrl mainCtrl, ServerUtils server,
                               BoardService boardService,
-                              JoinedBoardsService joinedBoardsService) {
+                              JoinedBoardsService joinedBoardsService,
+                              ImageUtils imageUtils) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.boardService = boardService;
         this.joinedBoardsService = joinedBoardsService;
+        this.imageUtils = imageUtils;
     }
 
     @Override
@@ -55,29 +57,21 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void resetAddImageView () {
-        File addFile = new File ("client/src/main/resources/client/images/board-overview/add1.png");
-        Image addImage = new Image (addFile.toURI().toString());
-        addImageView.setImage(addImage);
+        imageUtils.loadImage(addImageView, "board-overview/add1.png");
     }
 
     public void resetJoinImageView () {
-        File joinFile = new
-                File ("client/src/main/resources/client/images/board-overview/join1.png");
-        Image joinImage = new Image (joinFile.toURI().toString());
-        joinImageView.setImage(joinImage);
+        imageUtils.loadImage(joinImageView, "board-overview/join1.png");
     }
 
     public void resetDisconnectImageView () {
-        File disconnectFile = new
-                File ("client/src/main/resources/client/images/board-overview/disconnect1.png");
-        Image disconnectImage = new Image (disconnectFile.toURI().toString());
-        disconnectImageView.setImage(disconnectImage);
+        imageUtils.loadImage(disconnectImageView, "board-overview/disconnect1.png");
     }
 
     public void start() {
         server.registerForMessages("/topic/boards/update", HttpStatus.class, httpStatus -> {
             if (httpStatus.equals(HttpStatus.OK)){
-                Platform.runLater(() -> refresh());
+                Platform.runLater(this::refresh);
             }
         });
     }
@@ -111,7 +105,6 @@ public class BoardOverviewCtrl implements Initializable {
 
     /**
      * Allows the user to join boards based on ID.
-     *
      * Currently non-functional. When the user clicks on the image,
      * a text field is supposed to appear where the user may type in
      * the ID of the desired Board and then show the Board in the List.
@@ -125,9 +118,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void addOnMouseEntered () {
-        File addFile = new File ("client/src/main/resources/client/images/board-overview/add2.png");
-        Image addImage = new Image (addFile.toURI().toString());
-        addImageView.setImage(addImage);
+        imageUtils.loadImage(addImageView, "board-overview/add2.png");
     }
 
     public void addOnMouseExited () {
@@ -135,10 +126,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void joinOnMouseEntered () {
-        File joinFile = new
-                File ("client/src/main/resources/client/images/board-overview/join2.png");
-        Image joinImage = new Image (joinFile.toURI().toString());
-        joinImageView.setImage(joinImage);
+        imageUtils.loadImage(joinImageView, "board-overview/join2.png");
     }
 
     public void joinOnMouseExited () {
@@ -146,10 +134,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void disconnectOnMouseEntered () {
-        File disconnectFile = new
-                File ("client/src/main/resources/client/images/board-overview/disconnect2.png");
-        Image disconnectImage = new Image (disconnectFile.toURI().toString());
-        disconnectImageView.setImage(disconnectImage);
+        imageUtils.loadImage(disconnectImageView, "board-overview/disconnect2.png");
     }
 
     public void disconnectOnMouseExited () {

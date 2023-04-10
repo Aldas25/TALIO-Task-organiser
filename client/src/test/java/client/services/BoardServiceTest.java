@@ -95,6 +95,19 @@ public class BoardServiceTest {
         assertTrue(server.log.contains("getCardListForBoard 0"));
     }
 
+    @Test
+    public void testUpdateBoardTitle() {
+        Board board = new Board("Old title", new ArrayList<>());
+        board.id = 5;
+        sut.updateBoardTitle(board, "New title");
+        assertEquals("New title", board.title);
+
+        // Check that server was called
+        assertTrue(server.log.contains("updateBoardTitle 5 New title"));
+    }
+
+    // We need to create a subclass for this service because the superclass JoinedBoardsService
+    // uses IO with files operations. Thus, we cannot just use it blindly.
     class TestJoinedBoardsService extends JoinedBoardsService {
 
         public List<String> log = new ArrayList<>();

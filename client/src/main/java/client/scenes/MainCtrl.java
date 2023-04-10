@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.services.DeleteService;
 import client.services.JoinedBoardsService;
 import commons.Board;
 import commons.Card;
@@ -33,6 +34,7 @@ import javafx.util.Pair;
 public class MainCtrl implements EventHandler<KeyEvent>{
 
     private final ServerUtils server;
+    private final DeleteService deleteService;
 
     private Stage primaryStage;
 
@@ -73,11 +75,6 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private AdminBoardDeleteConfirmationCtrl adminBoardDeleteConfirmationCtrl;
     private Scene adminBoardDeleteConfirmationScene;
 
-    private AdminListTemplateCtrl adminListTemplateCtrl;
-
-    private AdminCardTemplateCtrl adminCardTemplateCtrl;
-
-
     private Stage popUpCardConfirmStage;
     private Stage popUpCardListConfirmStage;
     private Stage popUpBoardConfirmStage;
@@ -89,9 +86,11 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     private final JoinedBoardsService joinedBoardsService;
 
     @Inject
-    public MainCtrl(ServerUtils server, JoinedBoardsService joinedBoardsService) {
+    public MainCtrl(ServerUtils server, JoinedBoardsService joinedBoardsService,
+                    DeleteService deleteService) {
         this.server = server;
         this.joinedBoardsService = joinedBoardsService;
+        this.deleteService = deleteService;
     }
 
 
@@ -181,7 +180,6 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
     public void startAdmin() {
         server.setSession();
-        // joinedBoardsService.readJoinedBoardsFromFile();
         adminBoardOverviewCtrl.start();
         adminCardListOverviewCtrl.start();
     }
@@ -189,7 +187,6 @@ public class MainCtrl implements EventHandler<KeyEvent>{
      /**
      * Every time a key is pressed, go to the handle method
      *      and determine which shortcut it corresponds to.
-     *
      * As a note, certain shortcuts only correspond to certain Scenes.
      * All Scenes that should have shortcuts should be represented within this method.
      */
@@ -228,9 +225,8 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         boardOverviewCtrl.refresh();
     }
 
-    public void showCardDeleteConfirmation (Card card, Board board) {
-        cardDeleteConfirmationCtrl.setCardToBeDeleted(card);
-        cardDeleteConfirmationCtrl.setBoard(board);
+    public void showCardDeleteConfirmation (Card card) {
+        deleteService.setObjectToDelete(card);
 
         popUpCardConfirmStage = new Stage();
         popUpCardConfirmStage.setScene(cardDeleteConfirmationScene);
@@ -246,7 +242,7 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     }
 
     public void showCardListDeleteConfirmation (CardList cardList) {
-        cardListDeleteConfirmationCtrl.setCardListToBeDeleted(cardList);
+        deleteService.setObjectToDelete(cardList);
 
         popUpCardListConfirmStage = new Stage();
         popUpCardListConfirmStage.setScene(cardListDeleteConfirmationScene);
@@ -262,7 +258,7 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     }
 
     public void showBoardDeleteConfirmation (Board board) {
-        boardDeleteConfirmationCtrl.setBoardToBeDeleted(board);
+        deleteService.setObjectToDelete(board);
 
         popUpBoardConfirmStage = new Stage();
         popUpBoardConfirmStage.setScene(boardDeleteConfirmationScene);
@@ -274,7 +270,7 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     }
 
     public void showAdminBoardDeleteConfirmation (Board board) {
-        adminBoardDeleteConfirmationCtrl.setBoardToBeDeleted(board);
+        deleteService.setObjectToDelete(board);
 
         adminPopUpBoardConfirmStage = new Stage();
         adminPopUpBoardConfirmStage.setScene(adminBoardDeleteConfirmationScene);
@@ -324,7 +320,6 @@ public class MainCtrl implements EventHandler<KeyEvent>{
     /**
      * Check which shortcut corresponds to the key combination
      *      that has just been pressed.
-     *
      * It overrides the handle method in the EventHandler interface.
      *
      * @param event the event which occurred
@@ -340,7 +335,6 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
     /**
      * The method that deals specifically with the "?" shortcut.
-     *
      * Creates a new pop-up that contains the Help Screen and stays open
      *      until the user closes the window.
      */

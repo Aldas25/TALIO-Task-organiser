@@ -15,13 +15,13 @@
  */
 package client.scenes;
 
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import client.Main;
 import client.services.BoardService;
+import client.utils.ImageUtils;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -30,7 +30,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -42,6 +41,7 @@ public class CardListOverviewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final BoardService boardService;
+    private final ImageUtils imageUtils;
 
     @FXML
     private TextField inviteKeyField;
@@ -54,10 +54,11 @@ public class CardListOverviewCtrl implements Initializable {
 
     @Inject
     public CardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl,
-                                BoardService boardService) {
+                                BoardService boardService, ImageUtils imageUtils) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.boardService = boardService;
+        this.imageUtils = imageUtils;
     }
 
     @Override
@@ -67,17 +68,11 @@ public class CardListOverviewCtrl implements Initializable {
     }
 
     public void resetDisconnectImageView () {
-        File disconnectFile = new
-                File ("client/src/main/resources/client/images/card-list-overview/disconnect1.png");
-        Image disconnectImage = new Image (disconnectFile.toURI().toString());
-        disconnectImageView.setImage(disconnectImage);
+        imageUtils.loadImage(disconnectImageView, "card-list-overview/disconnect1.png");
     }
 
     public void resetAddImageView () {
-        File addFile = new
-                File ("client/src/main/resources/client/images/card-list-overview/add1.png");
-        Image addImage = new Image (addFile.toURI().toString());
-        addImageView.setImage(addImage);
+        imageUtils.loadImage(addImageView, "card-list-overview/add1.png");
     }
 
     /**
@@ -86,7 +81,7 @@ public class CardListOverviewCtrl implements Initializable {
     public void start(){
         server.registerForMessages("/topic/lists/update", HttpStatus.class, httpStatus -> {
             if (httpStatus.equals(HttpStatus.OK)){
-                Platform.runLater(() -> refresh());
+                Platform.runLater(this::refresh);
             }
         });
     }
@@ -169,10 +164,7 @@ public class CardListOverviewCtrl implements Initializable {
     }
 
     public void disconnectOnMouseEntered() {
-        File disconnectFile = new
-                File ("client/src/main/resources/client/images/card-list-overview/disconnect2.png");
-        Image disconnectImage = new Image (disconnectFile.toURI().toString());
-        disconnectImageView.setImage(disconnectImage);
+        imageUtils.loadImage(disconnectImageView, "card-list-overview/disconnect2.png");
     }
 
     public void disconnectOnMouseExited() {
@@ -180,10 +172,7 @@ public class CardListOverviewCtrl implements Initializable {
     }
 
     public void addOnMouseEntered() {
-        File addFile = new
-                File ("client/src/main/resources/client/images/card-list-overview/add2.png");
-        Image addImage = new Image (addFile.toURI().toString());
-        addImageView.setImage(addImage);
+        imageUtils.loadImage(addImageView, "card-list-overview/add2.png");
     }
 
     public void addOnMouseExited() {

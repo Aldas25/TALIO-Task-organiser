@@ -1,18 +1,15 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
-import commons.CardList;
+import client.services.DeleteService;
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 
 import javax.inject.Inject;
 
 public class CardListDeleteConfirmationCtrl {
-    private final MainCtrl mainCtrl;
-    private final ServerUtils server;
 
-    private CardList cardListToBeDeleted;
+    private final MainCtrl mainCtrl;
+    private final DeleteService deleteService;
 
     @FXML
     private Button cancelButton;
@@ -20,13 +17,9 @@ public class CardListDeleteConfirmationCtrl {
     private Button confirmButton;
 
     @Inject
-    public CardListDeleteConfirmationCtrl (MainCtrl mainCtrl, ServerUtils server) {
+    public CardListDeleteConfirmationCtrl (MainCtrl mainCtrl, DeleteService deleteService) {
         this.mainCtrl = mainCtrl;
-        this.server = server;
-    }
-
-    public void setCardListToBeDeleted (CardList list) {
-        this.cardListToBeDeleted = list;
+        this.deleteService = deleteService;
     }
 
     public void cancelButtonOnAction () {
@@ -35,26 +28,25 @@ public class CardListDeleteConfirmationCtrl {
 
     public void confirmButtonOnAction () {
         // delete the list itself
-        server.removeCardList(cardListToBeDeleted);
-        this.cardListToBeDeleted = null;
+        deleteService.deleteSelectedObject();
 
         // close the pop-up
         mainCtrl.closeCardListDeleteConfirmation();
     }
 
-    public void cancelButtonOnMouseEntered (MouseEvent event) {
+    public void cancelButtonOnMouseEntered () {
         cancelButton.setStyle("-fx-background-color: #B05656");
     }
 
-    public void cancelButtonOnMouseExited (MouseEvent event) {
+    public void cancelButtonOnMouseExited () {
         cancelButton.setStyle("-fx-background-color: #DD6C6C");
     }
 
-    public void confirmButtonOnMouseEntered (MouseEvent event) {
+    public void confirmButtonOnMouseEntered () {
         confirmButton.setStyle("-fx-background-color: #90A07B");
     }
 
-    public void confirmButtonOnMouseExited (MouseEvent event) {
+    public void confirmButtonOnMouseExited () {
         confirmButton.setStyle("-fx-background-color: #B5C99A");
     }
 }

@@ -1,7 +1,7 @@
 package client.scenes;
 
 import client.Main;
-import client.services.BoardService;
+import client.utils.ImageUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
@@ -9,13 +9,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,8 +21,7 @@ public class AdminBoardOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
-    private final BoardService boardService;
+    private final ImageUtils imageUtils;
 
     @FXML
     private ImageView disconnectImageView;
@@ -35,10 +31,10 @@ public class AdminBoardOverviewCtrl implements Initializable {
 
     @Inject
     public AdminBoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl,
-                                  BoardService boardService) {
+                                  ImageUtils imageUtils) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-        this.boardService = boardService;
+        this.imageUtils = imageUtils;
     }
 
     @Override
@@ -50,32 +46,22 @@ public class AdminBoardOverviewCtrl implements Initializable {
      * start() method is invoked when client connects to a valid server.
      */
     public void start(){
-        server.registerForUpdates(board ->{
-            Platform.runLater(() -> refresh());
-        });
+        server.registerForUpdates(board -> Platform.runLater(this::refresh));
     }
 
     public void resetDisconnectImageView () {
-        File disconnectFile = new
-                File ("client/src/main/resources/client" +
-                "/images/admin-board-overview/disconnect1.png");
-        Image disconnectImage = new Image (disconnectFile.toURI().toString());
-        disconnectImageView.setImage(disconnectImage);
+        imageUtils.loadImage(disconnectImageView, "admin-board-overview/disconnect1.png");
     }
 
     public void disconnectFromServer(){
         mainCtrl.disconnectFromServer();
     }
 
-    public void disconnectOnMouseEntered (MouseEvent event) {
-        File disconnectFile = new
-                File ("client/src/main/resources/client" +
-                "/images/admin-board-overview/disconnect2.png");
-        Image disconnectImage = new Image (disconnectFile.toURI().toString());
-        disconnectImageView.setImage(disconnectImage);
+    public void disconnectOnMouseEntered () {
+        imageUtils.loadImage(disconnectImageView, "admin-board-overview/disconnect2.png");
     }
 
-    public void disconnectOnMouseExited (MouseEvent event) {
+    public void disconnectOnMouseExited () {
         resetDisconnectImageView();
     }
 

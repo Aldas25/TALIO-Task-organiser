@@ -1,9 +1,8 @@
 package client.scenes;
 
-import client.services.BoardService;
 import client.services.CardService;
 import client.services.ListService;
-import client.utils.ServerUtils;
+import client.utils.ImageUtils;
 import com.google.inject.Inject;
 import commons.CardList;
 import javafx.fxml.FXML;
@@ -12,26 +11,22 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ListTemplateCtrl implements Initializable {
 
     private final MainCtrl mainCtrl;
-    private final ServerUtils server;
-    private final BoardService boardService;
     private final ListService listService;
     private final CardService cardService;
+    private final ImageUtils imageUtils;
 
     private CardList list;
     @FXML
@@ -46,14 +41,12 @@ public class ListTemplateCtrl implements Initializable {
     private Label warningLabel;
 
     @Inject
-    public ListTemplateCtrl(MainCtrl mainCtrl, ServerUtils server,
-                            BoardService boardService, ListService listService,
-                            CardService cardService, CardTemplateCtrl cardTemplateCtrl) {
+    public ListTemplateCtrl(MainCtrl mainCtrl,  ListService listService,
+                            CardService cardService, ImageUtils imageUtils) {
         this.mainCtrl = mainCtrl;
-        this.server = server;
-        this.boardService = boardService;
         this.listService = listService;
         this.cardService = cardService;
+        this.imageUtils = imageUtils;
     }
 
     @Override
@@ -62,9 +55,7 @@ public class ListTemplateCtrl implements Initializable {
     }
 
     public void resetDeleteImageView() {
-        File deleteFile = new File ("client/src/main/resources/client/images/list/delete1.png");
-        Image deleteImage = new Image (deleteFile.toURI().toString());
-        deleteImageView.setImage(deleteImage);
+        imageUtils.loadImage(deleteImageView, "list/delete1.png");
     }
 
     public void start(CardList list){
@@ -121,9 +112,7 @@ public class ListTemplateCtrl implements Initializable {
             updateListNameField.setStyle("-fx-background-color: #3c4867; -fx-text-fill: #E6E8F0");
 
             // change background color of the 'delete image'
-            File deleteFile = new File ("client/src/main/resources/client/images/list/delete2.png");
-            Image deleteImage = new Image (deleteFile.toURI().toString());
-            deleteImageView.setImage(deleteImage);
+            imageUtils.loadImage(deleteImageView, "list/delete2.png");
         }
         event.consume();
     }
@@ -151,12 +140,7 @@ public class ListTemplateCtrl implements Initializable {
      */
     public void onDragDropped(DragEvent event) {
         CardTemplateCtrl cardCtrl = mainCtrl.getDraggableCardCtrl();
-        boolean success = false;
-
-        if (cardCtrl != null && cardCtrl.getCard() != null) {
-            success = true;
-        }
-
+        boolean success = cardCtrl != null && cardCtrl.getCard() != null;
         event.setDropCompleted(success);
         event.consume();
     }
@@ -258,21 +242,19 @@ public class ListTemplateCtrl implements Initializable {
         mainCtrl.setDragNewPosition(position);
     }
 
-    public void addCardButtonOnMouseEntered (MouseEvent event) {
+    public void addCardButtonOnMouseEntered () {
         addCardButton.setStyle("-fx-background-color: #b0bfd4");
     }
 
-    public void addCardButtonOnMouseExited (MouseEvent event) {
+    public void addCardButtonOnMouseExited () {
         addCardButton.setStyle("-fx-background-color: #d1dae6");
     }
 
-    public void deleteImageViewOnMouseEntered (MouseEvent event) {
-        File deleteFile = new File ("client/src/main/resources/client/images/list/delete3.png");
-        Image deleteImage = new Image (deleteFile.toURI().toString());
-        deleteImageView.setImage(deleteImage);
+    public void deleteImageViewOnMouseEntered () {
+        imageUtils.loadImage(deleteImageView, "list/delete3.png");
     }
 
-    public void deleteImageViewOnMouseExited (MouseEvent event) {
+    public void deleteImageViewOnMouseExited () {
         resetDeleteImageView();
     }
 

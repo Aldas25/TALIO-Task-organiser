@@ -80,4 +80,24 @@ public class TestServerUtils extends ServerUtils {
         log.add("updateListTitle " + list.title);
     }
 
+    @Override
+    public void removeCard(Card card) {
+        log.add("removeCard " + card.id + " " + card.title);
+    }
+
+    @Override
+    public void removeCardList(CardList list) {
+        log.add("removeCardList " + list.id + " " + list.title);
+    }
+
+    @Override
+    public void removeBoard(Board board) {
+        log.add("removeBoard " + board.id + " " + board.title);
+    }
+
+    @Override
+    public void updateBoardTitle(Board board) {
+        log.add("updateBoardTitle " + board.id + " " + board.title);
+    }
+
 }
