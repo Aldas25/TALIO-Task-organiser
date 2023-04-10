@@ -13,9 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import javafx.event.ActionEvent;
-import javafx.scene.input.MouseEvent;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -110,17 +107,15 @@ public class ServerLoginCtrl implements Initializable {
      *      If yes, connect to the server
      *      If no, give a warning to the user
      *
-     * @param event On button click
      */
-    public void loginButtonOnAction (ActionEvent event) {
+    public void loginButtonOnAction () {
         connectToServer();
     }
 
     /**
      * Button to enter admin screen
-     * @param event On button click
      */
-    public void adminButtonOnAction(ActionEvent event){
+    public void adminButtonOnAction(){
         String serverURL = serverURLTextField.getText();
         server.setServer(serverURL);
 
@@ -141,19 +136,19 @@ public class ServerLoginCtrl implements Initializable {
     }
 
 
-    public void loginButtonOnMouseEntered (MouseEvent event) {
+    public void loginButtonOnMouseEntered () {
         loginButton.setStyle("-fx-background-color: #b0bfd4");
     }
 
-    public void loginButtonOnMouseExited (MouseEvent event) {
+    public void loginButtonOnMouseExited () {
         loginButton.setStyle("-fx-background-color: #d1dae6");
     }
 
-    public void adminButtonOnMouseEntered (MouseEvent event) {
+    public void adminButtonOnMouseEntered () {
         adminButton.setStyle("-fx-background-color: #b0bfd4");
     }
 
-    public void adminButtonOnMouseExited (MouseEvent event) {
+    public void adminButtonOnMouseExited () {
         adminButton.setStyle("-fx-background-color: #d1dae6");
     }
 }

@@ -1,12 +1,10 @@
 package client.scenes;
 
-import client.services.BoardService;
 import client.services.JoinedBoardsService;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
@@ -16,7 +14,6 @@ public class BoardJoinCtrl {
 
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
-    private final BoardService boardService;
     private final JoinedBoardsService joinedBoardsService;
 
     private String enteredKey;
@@ -33,11 +30,9 @@ public class BoardJoinCtrl {
 
     @Inject
     public BoardJoinCtrl(MainCtrl mainCtrl, ServerUtils server,
-                         BoardService boardService,
                          JoinedBoardsService joinedBoardsService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-        this.boardService = boardService;
         this.joinedBoardsService = joinedBoardsService;
     }
 
@@ -54,8 +49,6 @@ public class BoardJoinCtrl {
             return;
         }
 
-//        boardService.setCurrentBoard(boardToJoin);
-//        mainCtrl.showListOverview();
         joinedBoardsService.joinBoardAndSave(boardToJoin);
         closeAndClear();
         mainCtrl.showBoardOverview();
@@ -74,19 +67,19 @@ public class BoardJoinCtrl {
         this.enteredKey = enterInviteKeyField.getText();
     }
 
-    public void cancelButtonOnMouseEntered (MouseEvent event) {
+    public void cancelButtonOnMouseEntered () {
         cancelButton.setStyle("-fx-background-color: #B05656");
     }
 
-    public void cancelButtonOnMouseExited (MouseEvent event) {
+    public void cancelButtonOnMouseExited () {
         cancelButton.setStyle("-fx-background-color: #DD6C6C");
     }
 
-    public void joinButtonOnMouseEntered (MouseEvent event) {
+    public void joinButtonOnMouseEntered () {
         joinButton.setStyle("-fx-background-color: #90A07B");
     }
 
-    public void joinButtonOnMouseExited (MouseEvent event) {
+    public void joinButtonOnMouseExited () {
         joinButton.setStyle("-fx-background-color: #B5C99A");
     }
 

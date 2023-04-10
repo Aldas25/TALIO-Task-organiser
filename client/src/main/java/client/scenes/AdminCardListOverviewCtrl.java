@@ -1,33 +1,32 @@
 package client.scenes;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import client.Main;
 import client.services.BoardService;
-import com.google.inject.Inject;
-
+import client.utils.ImageUtils;
 import client.utils.ServerUtils;
-import commons.*;
+import com.google.inject.Inject;
+import commons.Card;
+import commons.CardList;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import org.springframework.http.HttpStatus;
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class AdminCardListOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final BoardService boardService;
+    private final ImageUtils imageUtils;
 
     @FXML
     private TextField inviteKeyField;
@@ -35,15 +34,14 @@ public class AdminCardListOverviewCtrl implements Initializable {
     private HBox listContainer;
     @FXML
     private ImageView disconnectImageView;
-    @FXML
-    private ImageView addImageView;
 
     @Inject
     public AdminCardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl,
-                                BoardService boardService) {
+                                BoardService boardService, ImageUtils imageUtils) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.boardService = boardService;
+        this.imageUtils = imageUtils;
     }
 
     @Override
@@ -52,10 +50,7 @@ public class AdminCardListOverviewCtrl implements Initializable {
     }
 
     public void resetDisconnectImageView () {
-        File disconnectFile = new
-                File ("client/src/main/resources/client/images/card-list-overview/disconnect1.png");
-        Image disconnectImage = new Image (disconnectFile.toURI().toString());
-        disconnectImageView.setImage(disconnectImage);
+        imageUtils.loadImage(disconnectImageView, "card-list-overview/disconnect1.png");
     }
 
 
@@ -65,7 +60,7 @@ public class AdminCardListOverviewCtrl implements Initializable {
     public void start(){
         server.registerForMessages("/topic/lists/update", HttpStatus.class, httpStatus -> {
             if (httpStatus.equals(HttpStatus.OK)){
-                Platform.runLater(() -> refresh());
+                Platform.runLater(this::refresh);
             }
         });
     }
@@ -110,7 +105,7 @@ public class AdminCardListOverviewCtrl implements Initializable {
         listBox.setSpacing(10); // set spacing between the cards within a list
 
         for (Card card : server.getCardsForList(cardList)) {
-            AnchorPane cardNode = loadCardNode(card, adminListTemplateCtrl);
+            AnchorPane cardNode = loadCardNode(card);
             listBox.getChildren().add(cardNode); // add this card to the children of the VBox
         }
 
@@ -122,20 +117,18 @@ public class AdminCardListOverviewCtrl implements Initializable {
     /**
      * Loads the anchor pane of the card
      * @param card The selected card
-     * @param adminListTemplateCtrl The list controller
      * @return The anchor pane of the card
      */
-    public AnchorPane loadCardNode(Card card, AdminListTemplateCtrl adminListTemplateCtrl) {
+    public AnchorPane loadCardNode(Card card) {
         var adminCardTemplate =
                 Main.load(AdminCardTemplateCtrl.class, "client", "scenes",
                         "AdminCardTemplate.fxml");
 
-        AdminCardTemplateCtrl adminCardTemplateCtrl = adminCardTemplate.getKey();
         AnchorPane cardNode = (AnchorPane) adminCardTemplate.getValue();
-        adminCardTemplateCtrl.start(card, adminListTemplateCtrl);
+        //adminCardTemplateCtrl.start(card, adminListTemplateCtrl);
 
         // retrieve name of the Card from the Text Box
-        Text cardText = (Text) cardNode.getChildren().get(0);
+        TextField cardText = (TextField) cardNode.getChildren().get(0);
         cardText.setText(card.title); // set the name of the Card
 
 //        cardNode = addTags(cardNode, card);
@@ -147,35 +140,8 @@ public class AdminCardListOverviewCtrl implements Initializable {
         mainCtrl.showAdminBoardOverview();
     }
 
-//    /**
-//     * Adds the tags of the card to the HBOX
-//     * @param cardNode The card node
-//     * @param card The actual card
-//     * @return The anchor pane of the card
-//     */
-//    public AnchorPane addTags(AnchorPane cardNode, Card card){
-//        HBox tagBox = (HBox) cardNode.getChildren().get(1);
-//        for(Tag tag : card.tagList){
-//            var tagTemplate =
-//                    Main.load(TagTemplateCtrl.class,
-//                            "client", "scenes", "TagTemplate.fxml");
-//            AnchorPane tagNode = (AnchorPane) tagTemplate.getValue();
-//            tagNode.setStyle("-fx-background-color: " + tag.color + ";" +
-//                    "-fx-background-radius: 5;");
-//            Text tagTitle = (Text) tagNode.getChildren().get(0);
-//            tagTitle.setText(tag.title);
-//            tagBox.setSpacing(5);
-//            tagBox.getChildren().add(tagNode);
-//        }
-//
-//        return cardNode;
-//    }
-
     public void disconnectOnMouseEntered() {
-        File disconnectFile = new
-                File ("client/src/main/resources/client/images/card-list-overview/disconnect2.png");
-        Image disconnectImage = new Image (disconnectFile.toURI().toString());
-        disconnectImageView.setImage(disconnectImage);
+        imageUtils.loadImage(disconnectImageView, "card-list-overview/disconnect2.png");
     }
 
     public void disconnectOnMouseExited() {

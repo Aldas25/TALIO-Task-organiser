@@ -1,25 +1,23 @@
 package client.scenes;
 
 import client.services.BoardService;
-import client.utils.ServerUtils;
+import client.utils.ImageUtils;
 import commons.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AdminBoardTemplateCtrl implements Initializable {
 
-    private MainCtrl mainCtrl;
-    private ServerUtils server;
-    private BoardService boardService;
+    private final MainCtrl mainCtrl;
+    private final BoardService boardService;
+    private final ImageUtils imageUtils;
 
     private Board board;
 
@@ -32,11 +30,11 @@ public class AdminBoardTemplateCtrl implements Initializable {
     private ImageView boardDeleteImageView;
 
     @Inject
-    public AdminBoardTemplateCtrl (MainCtrl mainCtrl, ServerUtils server,
-                              BoardService boardService) {
+    public AdminBoardTemplateCtrl (MainCtrl mainCtrl,
+                              BoardService boardService, ImageUtils imageUtils) {
         this.mainCtrl = mainCtrl;
-        this.server = server;
         this.boardService = boardService;
+        this.imageUtils = imageUtils;
     }
 
     @Override
@@ -49,15 +47,11 @@ public class AdminBoardTemplateCtrl implements Initializable {
     }
 
     public void resetDeleteImageView() {
-        File deleteFile = new File ("client/src/main/resources/client/images/board/delete1.png");
-        Image deleteImage = new Image (deleteFile.toURI().toString());
-        boardDeleteImageView.setImage(deleteImage);
+        imageUtils.loadImage(boardDeleteImageView, "board/delete1.png");
     }
 
     public void boardDeleteImageViewOnMouseEntered () {
-        File deleteFile = new File ("client/src/main/resources/client/images/board/delete2.png");
-        Image deleteImage = new Image (deleteFile.toURI().toString());
-        boardDeleteImageView.setImage(deleteImage);
+        imageUtils.loadImage(boardDeleteImageView, "board/delete2.png");
     }
 
     public void boardDeleteImageViewOnMouseExited () {
@@ -85,8 +79,8 @@ public class AdminBoardTemplateCtrl implements Initializable {
     }
 
     public void updateBoardTitle() {
-        board.title = updateBoardNameField.getText();
-        server.updateBoardTitle(board);
+        String newTitle = updateBoardNameField.getText();
+        boardService.updateBoardTitle(board, newTitle);
     }
 
 }

@@ -16,41 +16,59 @@
 package client;
 
 import client.scenes.*;
-import client.services.BoardService;
-import client.services.CardService;
-import client.services.JoinedBoardsService;
-import client.services.ListService;
+import client.services.*;
+import client.utils.ImageUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
-
-        bindServices(binder);
-        bindControllers(binder);
+        List<Class> singletons = new ArrayList<>();
+        singletons.addAll(getUtilClasses());
+        singletons.addAll(getServiceClasses());
+        singletons.addAll(getSingletonControllerClasses());
+        singletons.forEach(aClass -> bindSingleton(binder, aClass));
     }
 
-    private void bindServices(Binder binder) {
-        binder.bind(BoardService.class).in(Scopes.SINGLETON);
-        binder.bind(CardService.class).in(Scopes.SINGLETON);
-        binder.bind(JoinedBoardsService.class).in(Scopes.SINGLETON);
-        binder.bind(ListService.class).in(Scopes.SINGLETON);
+    private List<Class> getUtilClasses() {
+        return List.of(
+                ServerUtils.class,
+                ImageUtils.class
+        );
     }
 
-    private void bindControllers(Binder binder) {
-        binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(CardListOverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(ServerLoginCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AdminBoardOverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(HelpScreenCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(CardDeleteConfirmationCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(CardListDeleteConfirmationCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(BoardDeleteConfirmationCtrl.class).in(Scopes.SINGLETON);
+    private List<Class> getServiceClasses() {
+        return List.of(
+                BoardService.class,
+                CardService.class,
+                JoinedBoardsService.class,
+                ListService.class,
+                DeleteService.class
+        );
+    }
+
+    private List<Class> getSingletonControllerClasses() {
+        return List.of(
+                MainCtrl.class,
+                CardListOverviewCtrl.class,
+                ServerLoginCtrl.class,
+                BoardOverviewCtrl.class,
+                AdminBoardOverviewCtrl.class,
+                HelpScreenCtrl.class,
+                CardDeleteConfirmationCtrl.class,
+                CardListDeleteConfirmationCtrl.class,
+                BoardDeleteConfirmationCtrl.class
+        );
+    }
+
+    private void bindSingleton(Binder binder, Class aClass) {
+        binder.bind(aClass).in(Scopes.SINGLETON);
     }
 }

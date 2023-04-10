@@ -2,29 +2,27 @@ package client.scenes;
 
 import client.services.BoardService;
 import client.services.JoinedBoardsService;
-import client.utils.ServerUtils;
+import client.utils.ImageUtils;
 import commons.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BoardTemplateCtrl implements Initializable {
 
-    private MainCtrl mainCtrl;
-    private ServerUtils server;
-    private BoardService boardService;
-    private JoinedBoardsService joinedBoardsService;
+    private final MainCtrl mainCtrl;
+    private final BoardService boardService;
+    private final JoinedBoardsService joinedBoardsService;
+    private final ImageUtils imageUtils;
 
     private Board board;
 
@@ -40,13 +38,14 @@ public class BoardTemplateCtrl implements Initializable {
     private Label warningLabel;
 
     @Inject
-    public BoardTemplateCtrl (MainCtrl mainCtrl, ServerUtils server,
+    public BoardTemplateCtrl (MainCtrl mainCtrl,
                               BoardService boardService,
-                              JoinedBoardsService joinedBoardsService) {
+                              JoinedBoardsService joinedBoardsService,
+                              ImageUtils imageUtils) {
         this.mainCtrl = mainCtrl;
-        this.server = server;
         this.boardService = boardService;
         this.joinedBoardsService = joinedBoardsService;
+        this.imageUtils = imageUtils;
     }
 
     @Override
@@ -59,15 +58,11 @@ public class BoardTemplateCtrl implements Initializable {
     }
 
     public void resetDeleteImageView() {
-        File deleteFile = new File ("client/src/main/resources/client/images/board/delete1.png");
-        Image deleteImage = new Image (deleteFile.toURI().toString());
-        boardDeleteImageView.setImage(deleteImage);
+        imageUtils.loadImage(boardDeleteImageView, "board/delete1.png");
     }
 
     public void boardDeleteImageViewOnMouseEntered () {
-        File deleteFile = new File ("client/src/main/resources/client/images/board/delete2.png");
-        Image deleteImage = new Image (deleteFile.toURI().toString());
-        boardDeleteImageView.setImage(deleteImage);
+        imageUtils.loadImage(boardDeleteImageView, "board/delete2.png");
     }
 
     public void boardDeleteImageViewOnMouseExited () {
@@ -111,8 +106,8 @@ public class BoardTemplateCtrl implements Initializable {
         warningLabel.setText("Press ENTER to confirm.");
         if (event.getCode().equals(KeyCode.ENTER)) {
             warningLabel.setText(null);
-            board.title = updateBoardNameField.getText();
-            server.updateBoardTitle(board);
+            String newTitle = updateBoardNameField.getText();
+            boardService.updateBoardTitle(board, newTitle);
         }
     }
 }
