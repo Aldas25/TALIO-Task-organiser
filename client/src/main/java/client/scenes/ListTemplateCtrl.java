@@ -40,6 +40,13 @@ public class ListTemplateCtrl implements Initializable {
     @FXML
     private Label warningLabel;
 
+    /**
+     * The constructor of this object
+     * @param mainCtrl Reference to MainCtrl
+     * @param listService Reference to ListService
+     * @param imageUtils Reference to ImageUtils
+     * @param cardService Reference to CardService
+     */
     @Inject
     public ListTemplateCtrl(MainCtrl mainCtrl,  ListService listService,
                             CardService cardService, ImageUtils imageUtils) {
@@ -49,6 +56,16 @@ public class ListTemplateCtrl implements Initializable {
         this.imageUtils = imageUtils;
     }
 
+    /**
+     *
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resourceBundle
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetDeleteImageView();
@@ -79,13 +96,20 @@ public class ListTemplateCtrl implements Initializable {
         }
     }
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void addCard() {
         cardService.addCardToList(list, "New Card");
     }
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void showListPopUp() {
         mainCtrl.showCardListDeleteConfirmation(list);
     }
+
 
     public Button getAddCardButton() {
         return addCardButton;
@@ -242,18 +266,30 @@ public class ListTemplateCtrl implements Initializable {
         mainCtrl.setDragNewPosition(position);
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void addCardButtonOnMouseEntered () {
         addCardButton.setStyle("-fx-background-color: #b0bfd4");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void addCardButtonOnMouseExited () {
         addCardButton.setStyle("-fx-background-color: #d1dae6");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void deleteImageViewOnMouseEntered () {
         imageUtils.loadImage(deleteImageView, "list/delete3.png");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void deleteImageViewOnMouseExited () {
         resetDeleteImageView();
     }

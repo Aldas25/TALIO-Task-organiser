@@ -52,6 +52,13 @@ public class CardListOverviewCtrl implements Initializable {
     @FXML
     private ImageView addImageView;
 
+    /**
+     * The constructor of this object
+     * @param mainCtrl Reference to MainCtrl
+     * @param server Reference to ServerUtils
+     * @param imageUtils Reference to ImageUtils
+     * @param boardService Reference to BoardService
+     */
     @Inject
     public CardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl,
                                 BoardService boardService, ImageUtils imageUtils) {
@@ -61,6 +68,16 @@ public class CardListOverviewCtrl implements Initializable {
         this.imageUtils = imageUtils;
     }
 
+    /**
+     *
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resourceBundle
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetDisconnectImageView();
@@ -130,7 +147,7 @@ public class CardListOverviewCtrl implements Initializable {
         }
 
         // adding "new list" button
-        listBox.getChildren().add(listTemplateCtrl.getAddCardButton());
+        listBox.getChildren().add(listTemplateCtrl. getAddCardButton());
 
         return listNode;
     }
@@ -167,18 +184,30 @@ public class CardListOverviewCtrl implements Initializable {
         imageUtils.loadImage(disconnectImageView, "card-list-overview/disconnect2.png");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void disconnectOnMouseExited() {
         resetDisconnectImageView();
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void addOnMouseEntered() {
         imageUtils.loadImage(addImageView, "card-list-overview/add2.png");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void addOnMouseExited() {
         resetAddImageView();
     }
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void showInviteKey(){
         String inviteKey = boardService.getBoardInviteKey();
         inviteKeyField.setText(inviteKey);

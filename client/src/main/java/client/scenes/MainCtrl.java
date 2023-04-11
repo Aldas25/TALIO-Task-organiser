@@ -85,6 +85,12 @@ public class MainCtrl implements EventHandler<KeyEvent>{
 
     private final JoinedBoardsService joinedBoardsService;
 
+    /**
+     * The constructor of this object
+     * @param server Reference to ServerUtils
+     * @param joinedBoardsService Reference to JoinedBoardsService
+     * @param deleteService Reference to DeleteService
+     */
     @Inject
     public MainCtrl(ServerUtils server, JoinedBoardsService joinedBoardsService,
                     DeleteService deleteService) {
@@ -93,7 +99,13 @@ public class MainCtrl implements EventHandler<KeyEvent>{
         this.deleteService = deleteService;
     }
 
-
+    /**
+     * Starts the scene
+     * @param primaryStage The primary scene
+     * @param listOverview The CardListOverview scene
+     * @param serverLogin  The ServerLogin scene
+     * @param helpScreen    The HelpScreen scene
+     */
     public void initialize(
             Stage primaryStage,
             Pair<CardListOverviewCtrl, Parent> listOverview,

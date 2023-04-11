@@ -5,18 +5,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CardTest {
 
+    /**
+     * Tests the constructor
+     */
     @Test
     public void checkConstructor() {
         Card p = new Card("card");
         assertEquals("card", p.title);
     }
 
+    /**
+     * Tests empty constructor
+     */
     @Test
     public void checkEmptyConstructor() {
         Card c = new Card();
         assertNull(c.title);
     }
 
+    /**
+     * Tests if HashCode is different for 2 different objects
+     */
     @Test
     void notEqualsHashCode() {
         Card a = new Card("card1");
@@ -27,6 +36,9 @@ class CardTest {
         assertNotEquals(a.hashCode(), b.hashCode());
     }
 
+    /**
+     * Tests if hashcode is the same for 2 equal objects
+     */
     @Test
     void testEqualsHashCode() {
         Card a = new Card("card");
@@ -37,6 +49,9 @@ class CardTest {
         assertEquals(a.hashCode(), b.hashCode());
     }
 
+    /**
+     * Tests if the toString prints the correct String
+     */
     @Test
     void testToString() {
         String actual = new Card("card").toString();

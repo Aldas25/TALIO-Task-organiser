@@ -40,6 +40,10 @@ public class HelpScreenCtrl implements Initializable {
     @FXML
     private ImageView arrowKeysImageView;
 
+    /**
+     * The constructor of this object
+     * @param imageUtils Reference to ImageUtils
+     */
     @Inject
     public HelpScreenCtrl(ImageUtils imageUtils) {
         this.imageUtils = imageUtils;
@@ -81,6 +85,11 @@ public class HelpScreenCtrl implements Initializable {
         loadImage(arrowKeysImageView, "arrow_keys.png");
     }
 
+    /**
+     * Loads an image
+     * @param imageView The ImageView
+     * @param file The file to laod
+     */
     private void loadImage(ImageView imageView, String file) {
         String prefix = "help-screen/";
         imageUtils.loadImage(imageView, prefix + file);

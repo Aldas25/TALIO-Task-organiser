@@ -35,6 +35,13 @@ public class AdminCardListOverviewCtrl implements Initializable {
     @FXML
     private ImageView disconnectImageView;
 
+    /**
+     * The constructor of this object
+     * @param mainCtrl Reference to MainCtrl
+     * @param server Reference to ServerUtils
+     * @param imageUtils Reference to ImageUtils
+     * @param boardService Reference to BoardService
+     */
     @Inject
     public AdminCardListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl,
                                 BoardService boardService, ImageUtils imageUtils) {
@@ -44,6 +51,16 @@ public class AdminCardListOverviewCtrl implements Initializable {
         this.imageUtils = imageUtils;
     }
 
+    /**
+     *
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resourceBundle
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetDisconnectImageView();
@@ -136,18 +153,30 @@ public class AdminCardListOverviewCtrl implements Initializable {
     }
 
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void disconnectFromBoard() {
         mainCtrl.showAdminBoardOverview();
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void disconnectOnMouseEntered() {
         imageUtils.loadImage(disconnectImageView, "card-list-overview/disconnect2.png");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void disconnectOnMouseExited() {
         resetDisconnectImageView();
     }
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void showInviteKey(){
         String inviteKey = boardService.getBoardInviteKey();
         inviteKeyField.setText(inviteKey);

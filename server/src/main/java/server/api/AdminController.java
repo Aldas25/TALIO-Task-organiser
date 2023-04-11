@@ -32,7 +32,7 @@ public class AdminController {
     /**
      * Returns all boards if password matches
      * @param enteredPassword the password chosen by user
-     * @return all of the boards or a fail
+     * @return All the boards or a fail
      */
     @GetMapping("/boards")
     public ResponseEntity<List<Board>> getAllBoards(@RequestBody String enteredPassword){

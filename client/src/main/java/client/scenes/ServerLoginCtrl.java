@@ -41,6 +41,12 @@ public class ServerLoginCtrl implements Initializable {
 
     @FXML Button adminButton;
 
+    /**
+     * The constructor of this object
+     * @param mainCtrl Reference to MainCtrl
+     * @param server Reference to ServerUtils
+     * @param joinedBoardsService Reference to JoinedBoardsService
+     */
     @Inject
     public ServerLoginCtrl(ServerUtils server, MainCtrl mainCtrl,
                            JoinedBoardsService joinedBoardsService) {
@@ -136,18 +142,30 @@ public class ServerLoginCtrl implements Initializable {
     }
 
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void loginButtonOnMouseEntered () {
         loginButton.setStyle("-fx-background-color: #b0bfd4");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void loginButtonOnMouseExited () {
         loginButton.setStyle("-fx-background-color: #d1dae6");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void adminButtonOnMouseEntered () {
         adminButton.setStyle("-fx-background-color: #b0bfd4");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void adminButtonOnMouseExited () {
         adminButton.setStyle("-fx-background-color: #d1dae6");
     }

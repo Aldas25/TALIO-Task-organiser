@@ -28,6 +28,12 @@ public class BoardJoinCtrl {
     private Button joinButton;
 
 
+    /**
+     * The constructor of this object
+     * @param mainCtrl Reference to MainCtrl
+     * @param server Reference to ServerUtils
+     * @param joinedBoardsService Reference to JoinedBoardsService
+     */
     @Inject
     public BoardJoinCtrl(MainCtrl mainCtrl, ServerUtils server,
                          JoinedBoardsService joinedBoardsService) {
@@ -36,6 +42,9 @@ public class BoardJoinCtrl {
         this.joinedBoardsService = joinedBoardsService;
     }
 
+    /**
+     * Tries to join a board
+     */
     public void tryJoin(){
         if(this.enteredKey.length() != 4){
             joinError.setText("Invalid Invite Key");
@@ -54,35 +63,59 @@ public class BoardJoinCtrl {
         mainCtrl.showBoardOverview();
     }
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void cancelButtonOnAction () {
         closeAndClear();
     }
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void joinButtonOnAction(){
         setEnteredKey();
         tryJoin();
     }
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void setEnteredKey(){
         this.enteredKey = enterInviteKeyField.getText();
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void cancelButtonOnMouseEntered () {
         cancelButton.setStyle("-fx-background-color: #B05656");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void cancelButtonOnMouseExited () {
         cancelButton.setStyle("-fx-background-color: #DD6C6C");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void joinButtonOnMouseEntered () {
         joinButton.setStyle("-fx-background-color: #90A07B");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void joinButtonOnMouseExited () {
         joinButton.setStyle("-fx-background-color: #B5C99A");
     }
 
+    /**
+     * Closes a board and clears text
+     */
     public void closeAndClear(){
         mainCtrl.closeJoinBoard();
         joinError.setText("");

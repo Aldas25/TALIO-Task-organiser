@@ -16,16 +16,27 @@ public class BoardDeleteConfirmationCtrl {
     @FXML
     private Button confirmButton;
 
+    /**
+     * The constructor of this object
+     * @param mainCtrl Reference to MainCtrl
+     * @param deleteService Reference to DeleteService
+     */
     @Inject
     public BoardDeleteConfirmationCtrl (MainCtrl mainCtrl, DeleteService deleteService) {
         this.mainCtrl = mainCtrl;
         this.deleteService = deleteService;
     }
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void cancelButtonOnAction () {
         mainCtrl.closeBoardDeleteConfirmation();
     }
 
+    /**
+     * Function called by button in JavaFX
+     */
     public void confirmButtonOnAction () {
         // delete the board itself
         deleteService.deleteSelectedObject();
@@ -37,18 +48,30 @@ public class BoardDeleteConfirmationCtrl {
         mainCtrl.closeBoardDeleteConfirmation();
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void cancelButtonOnMouseEntered () {
         cancelButton.setStyle("-fx-background-color: #B05656");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void cancelButtonOnMouseExited () {
         cancelButton.setStyle("-fx-background-color: #DD6C6C");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void confirmButtonOnMouseEntered () {
         confirmButton.setStyle("-fx-background-color: #90A07B");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void confirmButtonOnMouseExited () {
         confirmButton.setStyle("-fx-background-color: #B5C99A");
     }
