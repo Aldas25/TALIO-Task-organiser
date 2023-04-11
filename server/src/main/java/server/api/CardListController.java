@@ -75,7 +75,7 @@ public class CardListController {
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
-        if(isNullOrEmpty(card.title)){
+        if(card.title == null){
             return ResponseEntity.badRequest().build();
         }
 
