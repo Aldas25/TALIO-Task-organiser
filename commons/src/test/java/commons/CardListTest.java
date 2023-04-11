@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CardListTest {
 
+    /**
+     * Tests the constructor
+     */
     @Test
     public void checkConstructor() {
         CardList p = new CardList("title", new ArrayList<>());
@@ -15,6 +18,9 @@ class CardListTest {
         assertEquals(new ArrayList<Card>(), p.cards);
     }
 
+    /**
+     * Tests empty constructor
+     */
     @Test
     public void checkEmptyConstructor() {
         CardList list = new CardList();
@@ -22,6 +28,9 @@ class CardListTest {
         assertNull(list.cards);
     }
 
+    /**
+     * Tests if HashCode is different for 2 different objects
+     */
     @Test
     void notEqualsHashCode() {
         var p = new CardList("title", new ArrayList<>());
@@ -33,6 +42,9 @@ class CardListTest {
     }
 
 
+    /**
+     * Tests if hashcode is the same for 2 equal objects
+     */
     @Test
     void testEqualsHashCode() {
         var p = new CardList("title", new ArrayList<>());
@@ -43,6 +55,9 @@ class CardListTest {
         assertEquals(p.hashCode(), q.hashCode());
     }
 
+    /**
+     * Tests if the toString prints the correct String
+     */
     @Test
     void testToString() {
         var actual = new CardList( "title", new ArrayList<>()).toString();

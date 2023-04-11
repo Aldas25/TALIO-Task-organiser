@@ -29,6 +29,12 @@ public class AdminBoardOverviewCtrl implements Initializable {
     @FXML
     private VBox boardContainer;
 
+    /**
+     * The constructor of this object
+     * @param mainCtrl Reference to MainCtrl
+     * @param server Reference to ServerUtils
+     * @param imageUtils Reference to ImageUtils
+     */
     @Inject
     public AdminBoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl,
                                   ImageUtils imageUtils) {
@@ -37,6 +43,16 @@ public class AdminBoardOverviewCtrl implements Initializable {
         this.imageUtils = imageUtils;
     }
 
+    /**
+     *
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resourceBundle
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetDisconnectImageView();
@@ -49,22 +65,37 @@ public class AdminBoardOverviewCtrl implements Initializable {
         server.registerForUpdates(board -> Platform.runLater(this::refresh));
     }
 
+    /**
+     * Resets and disconnects ImageView
+     */
     public void resetDisconnectImageView () {
         imageUtils.loadImage(disconnectImageView, "admin-board-overview/disconnect1.png");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void disconnectFromServer(){
         mainCtrl.disconnectFromServer();
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void disconnectOnMouseEntered () {
         imageUtils.loadImage(disconnectImageView, "admin-board-overview/disconnect2.png");
     }
 
+    /**
+     * Function called by event in JavaFX
+     */
     public void disconnectOnMouseExited () {
         resetDisconnectImageView();
     }
 
+    /**
+     * Refreshes the BoardOverview
+     */
     public void refresh() {
         boardContainer.getChildren().clear();
 
@@ -88,6 +119,9 @@ public class AdminBoardOverviewCtrl implements Initializable {
         }
     }
 
+    /**
+     * Stops the server
+     */
     public void stop(){
         server.stop();
     }

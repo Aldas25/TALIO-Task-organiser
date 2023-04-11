@@ -37,6 +37,14 @@ public class BoardOverviewCtrl implements Initializable {
     @FXML
     private VBox boardContainer;
 
+    /**
+     * The constructor of this object
+     * @param mainCtrl Reference to MainCtrl
+     * @param server Reference to ServerUtils
+     * @param imageUtils Reference to ImageUtils
+     * @param joinedBoardsService Reference to JoinedBoardsService
+     * @param boardService Reference to BoardService
+     */
     @Inject
     public BoardOverviewCtrl (MainCtrl mainCtrl, ServerUtils server,
                               BoardService boardService,
@@ -49,6 +57,16 @@ public class BoardOverviewCtrl implements Initializable {
         this.imageUtils = imageUtils;
     }
 
+    /**
+     *
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resourceBundle
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetAddImageView();

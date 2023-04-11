@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CustomPairTest {
 
+    /**
+     * Tests the constructor
+     */
     @Test
     public void checkConstructor() {
         Card card = new Card();
@@ -17,6 +20,9 @@ class CustomPairTest {
         assertEquals(board, pair.var);
     }
 
+    /**
+     * Tests empty constructor
+     */
     @Test
     public void checkEmptyConstructor() {
         CustomPair pair = new CustomPair();
@@ -40,6 +46,9 @@ class CustomPairTest {
         assertEquals(board, pair.getVar());
     }
 
+    /**
+     * Tests if HashCode is different for 2 different objects and different id
+     */
     @Test
     void notEqualsHashCodeDifferentId() {
         Card card1 = new Card();
@@ -55,6 +64,9 @@ class CustomPairTest {
         assertNotEquals(pair1.hashCode(), pair2.hashCode());
     }
 
+    /**
+     * Tests if HashCode is different for 2 different objects and different var
+     */
     @Test
     void notEqualsHashCodeDifferentVar() {
         Card card = new Card();
@@ -69,6 +81,9 @@ class CustomPairTest {
         assertNotEquals(pair1.hashCode(), pair2.hashCode());
     }
 
+    /**
+     * Tests if HashCode is same for 2 equal objects
+     */
     @Test
     void testEqualsHashCode() {
         Card card = new Card();
@@ -78,7 +93,10 @@ class CustomPairTest {
         assertEquals(pair1, pair2);
         assertEquals(pair1.hashCode(), pair2.hashCode());
     }
-
+    
+    /**
+     * Tests if the toString prints the correct String
+     */
     @Test
     void testToString() {
         Card card = new Card("Card title");

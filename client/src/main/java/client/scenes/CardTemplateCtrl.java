@@ -40,6 +40,13 @@ public class CardTemplateCtrl implements Initializable {
     @FXML
     private Label warningLabel;
 
+    /**
+     * The constructor of this object
+     * @param mainCtrl Reference to MainCtrl
+     * @param server Reference to ServerUtils
+     * @param imageUtils Reference to ImageUtils
+     * @param cardService Reference to CardService
+     */
     @Inject
     public CardTemplateCtrl(MainCtrl mainCtrl,
                             CardService cardService,
@@ -51,6 +58,16 @@ public class CardTemplateCtrl implements Initializable {
         this.imageUtils = imageUtils;
     }
 
+    /**
+     *
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resourceBundle
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize (URL url, ResourceBundle resourceBundle) {
         resetDeleteImageView();

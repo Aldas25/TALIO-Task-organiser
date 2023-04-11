@@ -27,22 +27,39 @@ public class CardList {
         // for object mapper
     }
 
+    /**
+     * The constructor of CardList
+     * @param title The title of the CardList
+     * @param cards The list of cards in CardList
+     */
     public CardList(String title, List<Card> cards) {
         this.title = title;
         this.cards = cards;
     }
 
+    /**
+     * Equals method
+     * @param obj The object to check if equals
+     * @return True if equals, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         return obj != null && obj.getClass() == this.getClass()
                 && ((CardList) obj).id == this.id;
     }
 
+    /**
+     * Hash code function
+     * @return The hash value
+     */
     @Override
     public int hashCode() {
         return (int)id;
     }
 
+    /**
+     * @return The string version of this objet
+     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);

@@ -22,6 +22,11 @@ public class Board {
 
     public String title;
 
+    /**
+     * The constructor of Board
+     * @param title The title of the board
+     * @param lists The list of CardList in board
+     */
     public Board(String title, List<CardList> lists){
         this.title = title;
         this.lists = lists;
@@ -34,6 +39,9 @@ public class Board {
         // for object mapper
     }
 
+    /**
+     * Generates invite key to join board
+     */
     private void generateInviteKey(){
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder();
@@ -49,17 +57,29 @@ public class Board {
         this.inviteKey = randomString;
     }
 
+    /**
+     * Equals method
+     * @param obj the obj to check if equals
+     * @return true if equals, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         return obj != null && obj.getClass() == this.getClass()
                 && ((Board) obj).id == this.id;
     }
 
+    /**
+     * Hash code function
+     * @return The hash value
+     */
     @Override
     public int hashCode() {
         return (int)id;
     }
 
+    /**
+     * @return The string version of this objet
+     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
