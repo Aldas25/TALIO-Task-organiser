@@ -126,7 +126,7 @@ public class CardListControllerTest {
     }
 
     @Test
-    public void cannotAddCardWithEmptyTitleTest() {
+    public void canAddCardWithEmptyTitleTest() {
         Board board = new Board("b1", new ArrayList<>());
         boardCtrl.add(board);
 
@@ -134,7 +134,7 @@ public class CardListControllerTest {
         boardCtrl.addCardList(board.id, l);
 
         var actual = listCtrl.addCard(l.id,new Card( ""));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+        assertEquals(OK, actual.getStatusCode());
     }
 
     @Test
