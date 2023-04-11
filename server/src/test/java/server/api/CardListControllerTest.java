@@ -1,320 +1,269 @@
 package server.api;
-/*
-import commons.*;
+
+import commons.Board;
+import commons.Card;
+import commons.CardList;
+import commons.CustomPair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import server.services.BoardService;
+import server.services.CardListService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
-
- */
 
 public class CardListControllerTest {
-    /*
-    private TestCardListRepository cardListRepo;
+
+    private CardListController sut;
+    private CardListService cardListService;
+    private BoardService boardService;
     private TestBoardRepository boardRepo;
-    private CardListController listCtrl;
-    private BoardController boardCtrl;
+    private TestCardListRepository cardListRepo;
+    private TestCardRepository cardRepo;
     private TestSimpMessagingTemplate msgs;
 
     @BeforeEach
-    public void setup() {
-        TestCardRepository cardRepo = new TestCardRepository();
-
-        cardListRepo = new TestCardListRepository();
+    public void setUp() {
         boardRepo = new TestBoardRepository();
-        msgs = new TestSimpMessagingTemplate(null);
+        cardListRepo = new TestCardListRepository();
+        cardRepo = new TestCardRepository();
+        boardService = new BoardService(boardRepo, cardListRepo);
+        cardListService = new CardListService(cardListRepo, cardRepo, boardRepo);
+        msgs = new TestSimpMessagingTemplate();
 
-        listCtrl = new CardListController(cardListRepo, cardRepo, boardRepo, msgs);
-        boardCtrl = new BoardController(boardRepo, cardListRepo, msgs);
+        sut = new CardListController(cardListService, msgs);
+    }
+
+    private CardList constructList(long id) throws Exception {
+        Board board = new Board("Board", new ArrayList<>());
+        board.id = 1;
+        boardService.add(board);
+
+        CardList list = new CardList("New list", new ArrayList<>());
+        list.id = id;
+
+        boardService.addCardList(1, list);
+
+        return list;
+    }
+
+    private CardList constructList(long id, String title) throws Exception {
+        Board board = new Board("Board", new ArrayList<>());
+        board.id = 1;
+        boardService.add(board);
+
+        CardList list = new CardList(title, new ArrayList<>());
+        list.id = id;
+
+        boardService.addCardList(1, list);
+
+        return list;
     }
 
     @Test
-    public void cannotGetByInvalidIdTest() {
-        var actual = listCtrl.getById(-1L);
+    public void testGetAll() throws Exception {
+        CardList list = constructList(5); // should not throw exception
+        assertEquals(List.of(list), sut.getAll());
 
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+        // check that correct repo calls were made
+        assertCardListRepoCall("findAll");
     }
 
     @Test
-    public void cannotGetByNonExistentIdTest() {
-        var actual = listCtrl.getById(1L);
-
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    public void testGetByIdBad() {
+        ResponseEntity<CardList> actual = sut.getById(1L);
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void getByIdTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
+    public void testGetByIdOk() throws Exception {
+        CardList list = constructList(5); // should not throw exception
+        ResponseEntity<CardList> actual = sut.getById(5);
 
-        CardList l = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, l);
-        var actual = listCtrl.getById(l.id);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(list, actual.getBody());
 
-        assertEquals(OK, actual.getStatusCode());
-        assertEquals("l1", Objects.requireNonNull(actual.getBody()).title);
+        assertCardListRepoCall("findById");
     }
 
     @Test
-    public void getAllCardListsTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList cardList = new CardList("l1", new ArrayList<>());
-        List<CardList> expected = List.of(cardList);
-
-        boardCtrl.addCardList(board.id, new CardList("l1", new ArrayList<>()));
-
-        assertEquals(expected, listCtrl.getAll());
-        assertEquals(expected, cardListRepo.findAll());
+    public void testGetCardsForListBad() {
+        ResponseEntity<List<Card>> actual = sut.getCardsForList(1L);
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void cannotGetCardsFromInvalidListTest() {
-        var cardList = listCtrl.getCardsForList(-1L);
+    public void testGetCardsForListOk() throws Exception {
+        CardList list = constructList(5); // should not throw exception
 
-        assertEquals(BAD_REQUEST, cardList.getStatusCode());
+        // add first card to list
+        Card card1 = new Card("Card 1");
+        card1.id = 10;
+        cardListService.addCard(5L, card1);
+
+        // add second card to list
+        Card card2 = new Card("Card 2");
+        card2.id = 11;
+        cardListService.addCard(5L, card2);
+
+        // Check the method outcome
+        ResponseEntity<List<Card>> actual = sut.getCardsForList(5L);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(List.of(card1, card2), actual.getBody());
     }
 
     @Test
-    public void cannotGetCardsFromNonExistentListTest() {
-        var cardList = listCtrl.getCardsForList(1L);
-
-        assertEquals(BAD_REQUEST, cardList.getStatusCode());
+    public void testAddCardBad() {
+        ResponseEntity<Card> actual = sut.addCard(1L, new Card("Card"));
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void getCardsFromOneListTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
+    public void testAddCardOk() throws Exception {
+        CardList list = constructList(5); // should not throw exception
 
-        CardList l = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, l);
+        Card card = new Card("Card");
+        card.id = 10;
 
-        Card c = new Card("c1");
-        listCtrl.addCard(l.id, c);
+        ResponseEntity<Card> actual = sut.addCard(5L, card);
 
-        var cardList = listCtrl.getCardsForList(l.id);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(card, actual.getBody());
+        assertEquals(List.of(card), list.cards);
 
-        assertEquals(OK, cardList.getStatusCode());
-        assertEquals(List.of(c), cardList.getBody());
+        // check for correct repo behaviour
+        assertCardRepoCall("save");
+        assertCardListRepoCall("save");
+        assertEquals(List.of(card), cardRepo.cards);
+        assertEquals(1, cardListRepo.cardLists.size());
+        assertEquals(List.of(card), cardListRepo.cardLists.get(0).cards);
     }
 
     @Test
-    public void databaseIsUsedTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
+    public void testAddCardMessage() throws Exception {
+        CardList list = constructList(5); // should not throw exception
 
-        boardCtrl.addCardList(board.id, new CardList("l1", new ArrayList<>()));
-        boolean actual = cardListRepo.calledMethods.contains("save");
-        assertTrue(actual);
+        Card card = new Card("Card");
+        card.id = 10;
+
+        sut.addCardMessage(new CustomPair(5L, card));
+        assertMsgsCall("/topic/lists/update");
+
+        // check for correct repo behaviour
+        assertCardRepoCall("save");
+        assertCardListRepoCall("save");
+        assertEquals(List.of(card), cardRepo.cards);
+        assertEquals(1, cardListRepo.cardLists.size());
+        assertEquals(List.of(card), cardListRepo.cardLists.get(0).cards);
     }
 
     @Test
-    public void cannotAddCardWithNullTitleTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList l = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, l);
-
-        var actual = listCtrl.addCard(l.id,new Card(null));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    public void testDeleteListBad() {
+        ResponseEntity<Boolean> actual = sut.deleteList(1L);
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void canAddCardWithEmptyTitleTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
+    public void testDeleteListOk() throws Exception {
+        CardList list = constructList(5); // should not throw exception
+        ResponseEntity<Boolean> actual = sut.deleteList(5L);
 
-        CardList l = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, l);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertNull(actual.getBody());
 
-        var actual = listCtrl.addCard(l.id,new Card( ""));
-        assertEquals(OK, actual.getStatusCode());
+        // check that there is no list in the repo
+        assertCardListRepoCall("deleteById");
+        assertEquals(0, cardListRepo.cardLists.size());
+        assertEquals(1, boardRepo.boards.size());
+        assertEquals(0, boardRepo.boards.get(0).lists.size());
     }
 
     @Test
-    public void addOneCardTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
+    public void testDeleteListMessage() throws Exception {
+        CardList list = constructList(5); // should not throw exception
+        sut.deleteListMessage(5L);
 
-        CardList l = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, l);
+        assertMsgsCall("/topic/lists/update");
 
-        listCtrl.addCard(l.id, new Card("c1"));
-
-        var lists = cardListRepo.findAll();
-        var listWithCard = lists.get(0);
-        var actual = listWithCard.cards.get(0);
-
-        assertEquals("c1", actual.title);
+        // check that there is no list in the repo
+        assertCardListRepoCall("deleteById");
+        assertEquals(0, cardListRepo.cardLists.size());
+        assertEquals(1, boardRepo.boards.size());
+        assertEquals(0, boardRepo.boards.get(0).lists.size());
     }
 
     @Test
-    public void addCardNonExistentListTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-        Card card = new Card ("c1");
-
-        var actual = listCtrl.addCard(1L, card);
-
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    public void testUpdateListTitleBad() {
+        ResponseEntity<CardList> actual = sut.updateListTitle(
+                1L, new CardList("T", new ArrayList<>())
+        );
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void getCardsForNonExistentListTest () {
-        var actual = listCtrl.getCardsForList(1L);
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    public void testUpdateListTitleOk() throws Exception {
+        CardList list = constructList(5, "Old title"); // should not throw exception
+        ResponseEntity<CardList> actual = sut.updateListTitle(
+                5L, new CardList("New title", new ArrayList<>())
+        );
+
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(5L, actual.getBody().id);
+        assertEquals("New title", actual.getBody().title);
+
+        // check repo behaviour
+        assertCardListRepoCall("save");
+        assertEquals(1, cardListRepo.cardLists.size());
+        assertEquals("New title", cardListRepo.cardLists.get(0).title);
     }
 
     @Test
-    public void getCardsForListTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
+    public void testUpdateListTitleMessage() throws Exception {
+        CardList list = constructList(5, "Old title"); // should not throw exception
+        sut.updateListTitleMessage(
+                new CustomPair(5L, new CardList("New title", new ArrayList<>()))
+        );
 
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list);
+        assertMsgsCall("/topic/lists/update");
 
-        Card card1 = new Card ("c1");
-        listCtrl.addCard(list.id, card1);
-
-        var actual = listCtrl.getCardsForList(list.id);
-
-        assertEquals(OK, actual.getStatusCode());
-        assertEquals(List.of(card1), actual.getBody());
+        // check repo behaviour
+        assertCardListRepoCall("save");
+        assertEquals(1, cardListRepo.cardLists.size());
+        assertEquals("New title", cardListRepo.cardLists.get(0).title);
     }
 
     @Test
-    public void deleteNonExistentListTest () {
-        var actual = listCtrl.deleteList(1L);
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    public void testGetBoardBad() {
+        ResponseEntity<Board> actual = sut.getBoard(1L);
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void deleteListTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
+    public void testGetBoardOk() throws Exception {
+        CardList list = constructList(5); // should not throw exception
+        ResponseEntity<Board> actual = sut.getBoard(5L);
 
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        Board board = actual.getBody();
+        assertEquals(1L, board.id);
+        assertEquals("Board", board.title);
+        assertEquals(List.of(list), board.lists);
 
-        var deleteResponse = listCtrl.deleteList(list.id);
-
-        assertEquals(OK, deleteResponse.getStatusCode());
-        assertEquals(0, board.lists.size());
     }
 
-    @Test
-    public void updateNonExistentListTitleTest () {
-        var actual = listCtrl.updateListTitle(1L, new CardList("c1", null));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    private void assertCardListRepoCall(String expectedCall) {
+        assertTrue(cardListRepo.calledMethods.contains(expectedCall));
     }
 
-    @Test
-    public void updateListTitleTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list);
-
-        CardList list2 = new CardList("l2", new ArrayList<>());
-        var actual = listCtrl.updateListTitle(list.id, list2);
-
-        assertEquals(OK, actual.getStatusCode());
-        assertEquals("l2", list.title);
+    private void assertCardRepoCall(String expectedCall) {
+        assertTrue(cardRepo.calledMethods.contains(expectedCall));
     }
 
-    @Test
-    public void getBoardByBadIdTest () {
-        var actual = listCtrl.getBoard(1L);
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    private void assertMsgsCall(String destination) {
+        assertTrue(msgs.calledMethods.contains("convertAndSend " + destination));
     }
-
-    @Test
-    public void moveBadIdListTest () {
-        var actual = listCtrl.moveList(1L, 1L, 0);
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
-
-    @Test
-    public void moveBadBoardIdListTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list);
-
-        var actual = listCtrl.moveList(list.id, 7L, 0);
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
-
-    @Test
-    public void moveListTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list);
-
-        CardList list2 = new CardList("l2", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list2);
-
-        var actual = listCtrl.moveList(list.id, board.id, 1);
-
-        assertEquals(OK, actual.getStatusCode());
-        assertEquals("l2", board.lists.get(0).title);
-    }
-
-    @Test
-    public void addCardMessageTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list);
-
-        Card card = new Card ("c1");
-
-        listCtrl.addCardMessage(new CustomPair<>(list.id, card));
-
-        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/lists/update"));
-    }
-
-    @Test
-    public void deleteListMessageTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list);
-
-        listCtrl.deleteListMessage(list.id);
-
-        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/lists/update"));
-    }
-
-    @Test
-    public void deleteCardMessageTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list);
-
-        Card card = new Card ("c1");
-
-        listCtrl.deleteCardMessage(new CustomPair<>(list.id, list));
-
-        assertTrue(msgs.calledMethods.contains("convertAndSend /topic/lists/update"));
-    }
-
-     */
 }
