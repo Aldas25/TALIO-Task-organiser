@@ -50,7 +50,13 @@ public class TestCardListRepository implements CardListRepository {
 
     @Override
     public void deleteById(Long aLong) {
-
+        call("deleteById");
+        for (int i = 0; i < cardLists.size(); i++) {
+            if (cardLists.get(i).id == aLong) {
+                cardLists.remove(i);
+                return;
+            }
+        }
     }
 
     @Override
@@ -84,7 +90,6 @@ public class TestCardListRepository implements CardListRepository {
             }
         }
 
-        entity.id = cardLists.size();
         cardLists.add(entity);
         return entity;
     }
@@ -96,6 +101,7 @@ public class TestCardListRepository implements CardListRepository {
 
     @Override
     public Optional<CardList> findById(Long aLong) {
+        call("findById");
         for (CardList cardList : cardLists) {
             if (cardList.id == aLong) {
                 return Optional.of(cardList);
@@ -103,13 +109,11 @@ public class TestCardListRepository implements CardListRepository {
         }
         return Optional.empty();
     }
-    private Optional<CardList> find(Long id) {
-        return cardLists.stream().filter(q -> q.id == id).findFirst();
-    }
+
     @Override
     public boolean existsById(Long id) {
         call("existsById");
-        return find(id).isPresent();
+        return cardLists.stream().anyMatch(q -> q.id == id);
     }
 
     @Override
