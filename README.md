@@ -6,13 +6,13 @@
 
 ## Group members
 
-| Profile Picture                                                                                         | Name | Email |
-|---------------------------------------------------------------------------------------------------------|---|---|
-| <img src="docs/readme_profile_photos/Jan.jpg" width="50">                                                | Jan Maris | J.W.Maris@student.tudelft.nl |
-| <img src="docs/readme_profile_photos/aldas.jpg" width="50">                                             | Aldas Lenkšas | A.Lenksas@student.tudelft.nl |
-| <img src="docs/readme_profile_photos/aiste.jpg" width="50">                                                | Aistė Macijauskaitė | A.Macijauskaite@student.tudelft.nl |
-| <img src="docs/readme_profile_photos/leonardo.jpg" width="50">                                          | Leonardo Marcuzzi | L.Marcuzzi@student.tudelft.nl |
-| <img src="docs/readme_profile_photos/rebecca.jpg" width="50">                                           | Rebecca Andrei | N.R.Andrei@student.tudelft.nl |
+| Profile Picture                                                | Name | Email |
+|----------------------------------------------------------------|---|---|
+| <img src="docs/readme_profile_photos/Jan.jpg" width="50">      | Jan Maris | J.W.Maris@student.tudelft.nl |
+| <img src="docs/readme_profile_photos/aldas.jpg" width="50">    | Aldas Lenkšas | A.Lenksas@student.tudelft.nl |
+| <img src="docs/readme_profile_photos/aiste.jpg" width="50">    | Aistė Macijauskaitė | A.Macijauskaite@student.tudelft.nl |
+| <img src="docs/readme_profile_photos/leonardo.JPG" width="50"> | Leonardo Marcuzzi | L.Marcuzzi@student.tudelft.nl |
+| <img src="docs/readme_profile_photos/rebecca.jpg" width="50">  | Rebecca Andrei | N.R.Andrei@student.tudelft.nl |
 
 ## How to run it
 
