@@ -5,213 +5,282 @@ import commons.CardList;
 import commons.CustomPair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.async.DeferredResult;
+import server.services.BoardService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardControllerTest {
 
-    private TestBoardRepository boardRepo;
+    private BoardController sut;
+    private BoardService boardService;
     private TestSimpMessagingTemplate msgs;
-    private BoardController boardCtrl;
+    private TestBoardRepository boardRepo;
+    private TestCardListRepository cardListRepo;
 
     @BeforeEach
-    public void setup() {
-        TestCardRepository cardRepo = new TestCardRepository();
-        TestCardListRepository cardListRepo = new TestCardListRepository();
-
+    public void setUp() {
         boardRepo = new TestBoardRepository();
-        msgs = new TestSimpMessagingTemplate(null);
-        boardCtrl = new BoardController(boardRepo, cardListRepo, msgs);
+        cardListRepo = new TestCardListRepository();
+        msgs = new TestSimpMessagingTemplate();
+        boardService = new BoardService(boardRepo, cardListRepo);
+        sut = new BoardController(boardService, msgs);
+    }
+
+    // helper method for tests
+    private Board constructBoard(String title, int id) {
+        Board b = new Board(title, new ArrayList<>());
+        b.id = id;
+        return b;
+    }
+
+    // helper method for tests
+    private Board constructBoard(int id) {
+        Board b = new Board("Board", new ArrayList<>());
+        b.id = id;
+        return b;
     }
 
     @Test
-    public void cannotAddNullBoardTest() {
-        var actual = boardCtrl.add(new Board(null, new ArrayList<>()));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    public void testAddOk() {
+        Board b = constructBoard(1);
+        ResponseEntity<Board> actual = sut.add(b);
+
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(b, actual.getBody());
+
+        // check if correct repo calls were called
+        assertBoardRepoCall("save");
+        assertEquals(List.of(b), boardRepo.boards);
     }
 
     @Test
-    public void cannotAddEmptyBoardTest() {
-        var actual = boardCtrl.add(new Board("", new ArrayList<>()));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    public void testAddBad() {
+        Board b = constructBoard("", 1);
+        ResponseEntity<Board> actual = sut.add(b);
+
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void getByIdTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
+    public void testGetAll() {
+        Board b1 = constructBoard("Board 1", 1);
+        Board b2 = constructBoard("Board 2", 2);
+        sut.add(b1);
+        sut.add(b2);
 
-        var actual = boardCtrl.getById(board.id);
-
-        assertEquals("b1", Objects.requireNonNull(actual.getBody()).title);
+        assertEquals(List.of(b1, b2), sut.getAll());
+        assertBoardRepoCall("findAll");
     }
 
     @Test
-    public void getByBadIdTest () {
-        var actual = boardCtrl.getById(1L);
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    public void testGetByIdBad() {
+        Board b = constructBoard(1);
+        sut.add(b);
+        ResponseEntity<Board> actual = sut.getById(2);
+
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
+        assertBoardRepoCall("existsById");
     }
 
     @Test
-    public void getAllBoardsTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        List<Board> expected = List.of(board);
+    public void testGetByIdOk() {
+        Board b = constructBoard(1);
+        sut.add(b);
+        ResponseEntity<Board> actual = sut.getById(1);
 
-        boardCtrl.add(new Board("b1", new ArrayList<>()));
-
-        assertEquals(expected, boardCtrl.getAll());
-        assertEquals(expected, boardRepo.findAll());
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(b, actual.getBody());
+        assertBoardRepoCall("findById");
     }
 
     @Test
-    public void databaseIsUsedTest() {
-        boardCtrl.add(new Board("b1", new ArrayList<>()));
+    public void testUpdateBoardTitleOk() {
+        Board b = constructBoard("Old title", 1);
+        sut.add(b);
+        Board b2 = constructBoard("New title", 1);
+        ResponseEntity<Board> actual = sut.updateBoardTitle(1, b2);
 
-        boolean actual = boardRepo.calledMethods.contains("save");
-
-        assertTrue(actual);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals("New title", actual.getBody().title);
+        assertEquals(1, actual.getBody().id);
+        assertBoardRepoCall("save");
     }
 
     @Test
-    public void cannotAddCardListWithNullTitleTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
+    public void testUpdateBoardTitleMessage() {
+        Board b = constructBoard("Old title", 1);
+        sut.add(b);
+        Board b2 = constructBoard("New title", 1);
 
-        var actual = boardCtrl.addCardList(board.id, new CardList(null, new ArrayList<>()));
+        sut.updateBoardTitleMessage(new CustomPair(1L, b2));
+        assertMsgsCall("/topic/boards/update");
 
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
-
-    @Test
-    public void cannotAddCardListWithEmptyTitleTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        var actual = boardCtrl.addCardList(board.id, new CardList("", new ArrayList<>()));
-
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
-
-    @Test
-    public void addOneCardListTest() {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-        boardCtrl.addCardList(board.id, new CardList("l1", new ArrayList<>()));
-
-        var boards = boardRepo.findAll();
-        var boardWithList = boards.get(0);
-        var actual = boardWithList.lists.get(0);
-
-        assertEquals("l1", actual.title);
-    }
-
-    @Test
-    public void addListMessageTest () {
-        Board board = new Board ("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addListMessage(new CustomPair<>(board.id, list));
-
-        assertTrue (msgs.calledMethods.contains("convertAndSend /topic/lists/update"));
-    }
-
-    @Test
-    public void updateNonExistentBoardTitleTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        var actual = boardCtrl.updateBoardTitle(1L, board);
-
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
-
-    @Test
-    public void updateBoardTitleTest () {
-        Board board1 = new Board("b1", new ArrayList<>());
-        Board board2 = new Board("b2", new ArrayList<>());
-
-        boardCtrl.add(board1);
-
-        var actual = boardCtrl.updateBoardTitle(board1.id, board2);
-
-        assertEquals(OK, actual.getStatusCode());
-        assertEquals("b2", board1.title);
-    }
-
-    @Test
-    public void addCardListToNonExistentBoardTest () {
-        CardList list = new CardList("l1", new ArrayList<>());
-
-        var actual = boardCtrl.addCardList(1L, list);
-
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
-
-    @Test
-    public void getCardListsByBadIdTest () {
-        var actual = boardCtrl.getCardListsById(1L);
-
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
-
-    @Test
-    public void getCardListsByIdTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        CardList list = new CardList("l1", new ArrayList<>());
-        boardCtrl.addCardList(board.id, list);
-
-        var actual = boardCtrl.getCardListsById(board.id);
-
-        assertEquals(OK, actual.getStatusCode());
-        assertEquals(List.of(list), Objects.requireNonNull(actual.getBody()));
-    }
-
-    @Test
-    public void deleteBoardByBadIdTest () {
-        var actual = boardCtrl.deleteBoard(1L);
-
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
-    }
-
-    @Test
-    public void deleteBoardTest () {
-        Board board1 = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board1);
-
-        Board board2 = new Board("b2", new ArrayList<>());
-        boardCtrl.add(board2);
-
-        var actual = boardCtrl.deleteBoard(board1.id);
-
-        assertEquals(OK, actual.getStatusCode());
+        // check the behaviour of repository
         assertEquals(1, boardRepo.boards.size());
-        assertEquals("b2", boardRepo.boards.get(0).title);
+        Board bInRepo = boardRepo.boards.get(0);
+        assertEquals("New title", bInRepo.title);
+        assertEquals(1, bInRepo.id);
+        assertBoardRepoCall("save");
     }
 
     @Test
-    public void getBoardByBadInviteKeyTest () {
-        String inviteKey = "fdghjknm";
+    public void testUpdateBoardTitleBad() {
+        Board b = constructBoard("Old title", 1);
+        sut.add(b);
+        Board b2 = constructBoard("New title", 1);
+        ResponseEntity<Board> actual = sut.updateBoardTitle(2, b2);
 
-        var actual = boardCtrl.getBoardbyInviteKey(inviteKey);
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void getBoardByInviteKeyTest () {
-        Board board = new Board("b1", new ArrayList<>());
-        boardCtrl.add(board);
-
-        var actual = boardCtrl.getBoardbyInviteKey(board.inviteKey);
-
-        assertEquals(OK, actual.getStatusCode());
-        assertEquals("b1", Objects.requireNonNull(actual.getBody()).title);
+    public void testAddCardListBad() {
+        CardList list = new CardList("", new ArrayList<>());
+        ResponseEntity<CardList> actual = sut.addCardList(1, list);
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
     }
+
+    @Test
+    public void testAddCardListOk() {
+        Board b = constructBoard(1);
+        sut.add(b);
+
+        CardList list = new CardList("List", new ArrayList<>());
+        list.id = 2;
+
+        ResponseEntity<CardList> actual = sut.addCardList(1, list);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(list, actual.getBody());
+        assertEquals(List.of(list), b.lists);
+
+        // check if correct repository methods were called
+        assertCardListRepoCall("save");
+        assertBoardRepoCall("save");
+        assertEquals(1, boardRepo.boards.size());
+        assertEquals(1, cardListRepo.cardLists.size());
+    }
+
+    @Test
+    public void testAddCardListMessage() {
+        Board b = constructBoard(1);
+        sut.add(b);
+
+        CardList list = new CardList("List", new ArrayList<>());
+        list.id = 2;
+
+        sut.addListMessage(new CustomPair(1L, list));
+        assertEquals(List.of(list), b.lists);
+        assertMsgsCall("/topic/lists/update");
+
+        // check if correct repository methods were called
+        assertCardListRepoCall("save");
+        assertBoardRepoCall("save");
+        assertEquals(1, boardRepo.boards.size());
+        assertEquals(1, cardListRepo.cardLists.size());
+    }
+
+    @Test
+    public void testGetCardListsByIdOk() {
+        Board b = constructBoard(1);
+        sut.add(b);
+
+        CardList list = new CardList("List", new ArrayList<>());
+        list.id = 2;
+        sut.addCardList(1, list);
+
+        ResponseEntity<List<CardList>> actual = sut.getCardListsById(1);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(List.of(list), actual.getBody());
+        assertBoardRepoCall("findById");
+    }
+
+    @Test
+    public void testGetCardListsByIdBad() {
+        ResponseEntity<List<CardList>> actual = sut.getCardListsById(1);
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteBoardBad() {
+        ResponseEntity<Boolean> actual = sut.deleteBoard(1);
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteBoardOk() {
+        Board b = constructBoard(1);
+        sut.add(b);
+
+        ResponseEntity<Boolean> actual = sut.deleteBoard(1);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertNull(actual.getBody());
+
+        // check that board was deleted (correct repo calls were made)
+        assertBoardRepoCall("deleteById");
+        assertEquals(0, boardRepo.boards.size());
+    }
+
+    @Test
+    public void testDeleteBoardMessage() {
+        Board b = constructBoard(1);
+        sut.add(b);
+
+        sut.deleteBoardMessage(1L);
+        assertMsgsCall("/topic/boards/update");
+
+        // check that board was deleted (correct repo calls were made)
+        assertBoardRepoCall("deleteById");
+        assertEquals(0, boardRepo.boards.size());
+    }
+
+    @Test
+    public void testGetBoardByInviteKeyBad() {
+        ResponseEntity<Board> actual = sut.getBoardByInviteKey("AAAA");
+        assertEquals(HttpStatus.BAD_REQUEST, actual.getStatusCode());
+    }
+
+    @Test
+    public void testGetBoardByInviteKeyOk() {
+        Board b1 = constructBoard(1);
+        b1.inviteKey = "AAAA";
+        Board b2 = constructBoard(2);
+        b2.inviteKey = "BBBB";
+        sut.add(b1); // should not throw exception
+        sut.add(b2); // should not throw exception
+
+        ResponseEntity<Board> actual = sut.getBoardByInviteKey("BBBB");
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(b2, actual.getBody());
+        assertEquals("BBBB", actual.getBody().inviteKey);
+    }
+
+    @Test
+    public void testDeferredResultOk() {
+        Board b = constructBoard(1);
+        DeferredResult<ResponseEntity<Board>> actual = sut.getUpdates();
+        sut.add(b);
+
+        ResponseEntity<Board> result = (ResponseEntity<Board>) actual.getResult();
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(b, result.getBody());
+    }
+
+    private void assertBoardRepoCall(String expectedCall) {
+        assertTrue(boardRepo.calledMethods.contains(expectedCall));
+    }
+
+    private void assertCardListRepoCall(String expectedCall) {
+        assertTrue(cardListRepo.calledMethods.contains(expectedCall));
+    }
+
+    private void assertMsgsCall(String destination) {
+        assertTrue(msgs.calledMethods.contains("convertAndSend " + destination));
+    }
+    
 }

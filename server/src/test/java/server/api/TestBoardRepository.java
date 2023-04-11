@@ -50,7 +50,13 @@ public class TestBoardRepository implements BoardRepository {
 
     @Override
     public void deleteById(Long aLong) {
-
+        call("deleteById");
+        for (int i = 0; i < boards.size(); i++) {
+            if (boards.get(i).id == aLong) {
+                boards.remove(i);
+                return;
+            }
+        }
     }
 
     @Override
@@ -84,10 +90,8 @@ public class TestBoardRepository implements BoardRepository {
             }
         }
 
-        entity.id = boards.size();
         boards.add(entity);
         return entity;
-
     }
 
     @Override
@@ -97,6 +101,8 @@ public class TestBoardRepository implements BoardRepository {
 
     @Override
     public Optional<Board> findById(Long aLong) {
+        call("findById");
+
         for (Board board : boards) {
             if (board.id == aLong) {
                 return Optional.of(board);
@@ -105,14 +111,10 @@ public class TestBoardRepository implements BoardRepository {
         return Optional.empty();
     }
 
-    private Optional<Board> find(Long id) {
-        return boards.stream().filter(q -> q.id == id).findFirst();
-    }
-
     @Override
     public boolean existsById(Long id) {
         call("existsById");
-        return find(id).isPresent();
+        return boards.stream().anyMatch(q -> q.id == id);
     }
 
     @Override

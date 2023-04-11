@@ -1,6 +1,5 @@
 package server.api;
 
-import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 public class TestSimpMessagingTemplate extends SimpMessagingTemplate {
     public List<String> calledMethods = new ArrayList<>();
 
-    public TestSimpMessagingTemplate(MessageChannel messageChannel) {
+    public TestSimpMessagingTemplate() {
         super((message, timeout) -> false);
     }
 
