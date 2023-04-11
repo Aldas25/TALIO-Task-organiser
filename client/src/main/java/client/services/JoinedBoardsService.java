@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class JoinedBoardsService {
@@ -54,7 +55,7 @@ public class JoinedBoardsService {
             scanner.close();
         } catch (FileNotFoundException e) {
             this.joinedBoards = new ArrayList<>();
-            writeJoinedBoardsToFile();
+            writeJoinedBoardsToFileInThread();
         }
     }
 
@@ -74,6 +75,10 @@ public class JoinedBoardsService {
     /**
      * Writes joined boards to file
      */
+    public void writeJoinedBoardsToFileInThread() {
+        Executors.newSingleThreadExecutor().submit(this::writeJoinedBoardsToFile);
+    }
+
     public void writeJoinedBoardsToFile() {
         try {
             PrintWriter printWriter = new PrintWriter(new FileWriter(filename));
@@ -140,7 +145,7 @@ public class JoinedBoardsService {
      */
     public void joinBoardAndSave(Board board) {
         joinBoard(board);
-        writeJoinedBoardsToFile();
+        writeJoinedBoardsToFileInThread();
     }
 
     /**
@@ -149,7 +154,7 @@ public class JoinedBoardsService {
      */
     public void leaveBoardAndSave(Board board) {
         leaveBoard(board);
-        writeJoinedBoardsToFile();
+        writeJoinedBoardsToFileInThread();
     }
 
 
