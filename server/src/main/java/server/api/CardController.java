@@ -4,7 +4,6 @@ import java.util.List;
 
 import commons.CardList;
 import commons.CustomPair;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -12,41 +11,34 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import commons.Card;
-import server.database.CardListRepository;
-import server.database.CardRepository;
+import server.services.CardService;
 
 @RestController
 @RequestMapping("/api/cards")
 public class CardController {
 
-    private final CardRepository repo;
-
-    private final CardListRepository listRepo;
+    private final CardService cardService;
     private final SimpMessagingTemplate msgs;
 
-    public CardController(CardRepository repo,
-                          CardListRepository listRepo,
+    public CardController(CardService cardService,
                           SimpMessagingTemplate msgs) {
-        this.repo = repo;
-        this.listRepo = listRepo;
+        this.cardService = cardService;
         this.msgs = msgs;
     }
 
     @GetMapping(path = { "", "/" })
     public List<Card> getAll() {
-        return repo.findAll();
+        return cardService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Card> getById(@PathVariable("id") long id) {
-        if (id < 0 || !repo.existsById(id)) {
+        try {
+            Card card = cardService.getById(id);
+            return ResponseEntity.ok(card);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(repo.findById(id).get());
-    }
-
-    public static boolean isNullOrEmpty(String s) {
-        return s == null || s.isEmpty();
     }
 
     @MessageMapping("/cards/delete")// /app/cards/delete
@@ -57,17 +49,13 @@ public class CardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteCard(@PathVariable("id") Long id){
-        if (id < 0 || !repo.existsById(id)) {
+    public ResponseEntity deleteCard(@PathVariable("id") long id){
+        try {
+            cardService.deleteCard(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-
-        ResponseEntity removingResponse = removeCardFromItsList(id);
-        if (removingResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
-            return ResponseEntity.badRequest().build();
-
-        repo.deleteById(id);
-        return ResponseEntity.ok().build();
     }
 
     @MessageMapping("/cards/update")// /app/cards/update
@@ -82,19 +70,15 @@ public class CardController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Card> updateCardTitle(
-            @PathVariable("id") Long id,
+            @PathVariable("id") long id,
             @RequestBody Card card
     ){
-        if (id < 0 || !repo.existsById(id)) {
+        try{
+            Card saved = cardService.updateCardTitle(id, card);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
-        
-        Card cardFromRepo = repo.findById(id).get();
-
-        cardFromRepo.title = card.title;
-        Card saved = repo.save(cardFromRepo);
-
-        return ResponseEntity.ok(saved);
     }
 
     @MessageMapping("/cards/move")// /app/cards/move
@@ -115,50 +99,22 @@ public class CardController {
             @PathVariable("listId") long listId,
             @PathVariable("newPos") int newPos
     ){
-        if (id < 0 || !repo.existsById(id)) {
+        try{
+            Card saved = cardService.moveCard(id, listId, newPos);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
-
-        if (listId < 0 || !listRepo.existsById(listId)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Card card = repo.findById(id).get();
-        removeCardFromItsList(id);
-
-        CardList list = listRepo.findById(listId).get();
-        list.cards.add(newPos, card);
-        listRepo.save(list);
-
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}/list")
-    public ResponseEntity<CardList> getList(@PathVariable("id") long id){
-        if (id < 0 || !repo.existsById(id)) {
+    public ResponseEntity<CardList> getCardListById(@PathVariable("id") long id){
+        try {
+            CardList list = cardService.getCardListById(id);
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-
-        Card card = repo.findById(id).get();
-        List<CardList> allLists = listRepo.findAll();
-        for(CardList list : allLists) {
-            if(list.cards.contains(card)){
-                return ResponseEntity.ok(list);
-            }
-        }
-        return ResponseEntity.badRequest().build();
     }
 
-    private ResponseEntity removeCardFromItsList(long id) {
-        Card card = repo.findById(id).get();
-        var listResponse = getList(id);
-        if (listResponse.getStatusCode() == HttpStatus.BAD_REQUEST)
-            return ResponseEntity.badRequest().build();
-
-        CardList prevList = listResponse.getBody();
-        prevList.cards.remove(card);
-        listRepo.save(prevList);
-
-        return ResponseEntity.ok().build();
-    }
 }

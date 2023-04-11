@@ -22,7 +22,7 @@ public class TestCardRepository implements CardRepository {
     }
     @Override
     public List<Card> findAll() {
-        calledMethods.add("findAll");
+        call("findAll");
         return cards;
     }
 
@@ -48,6 +48,7 @@ public class TestCardRepository implements CardRepository {
 
     @Override
     public Optional<Card> findById(Long aLong) {
+        call("findById");
         for(int i=0; i<cards.size(); i++){
             if(cards.get(i).id == aLong){
                 return Optional.of(cards.get(i));
@@ -139,10 +140,18 @@ public class TestCardRepository implements CardRepository {
     @Override
     public <S extends Card> S save(S entity) {
         call("save");
-        entity.id = cards.size();
+
+        for (int i = 0; i < cards.size(); i++) {
+            if (cards.get(i).id == entity.id) {
+                cards.set(i, entity);
+                return entity;
+            }
+        }
+
         cards.add(entity);
         return entity;
     }
+
     @Override
     public boolean existsById(Long id) {
         call("existsById");
@@ -156,7 +165,13 @@ public class TestCardRepository implements CardRepository {
 
     @Override
     public void deleteById(Long aLong) {
-
+        call("deleteById");
+        for (int i = 0; i < cards.size(); i++) {
+            if (cards.get(i).id == aLong) {
+                cards.remove(i);
+                return;
+            }
+        }
     }
 
     @Override
