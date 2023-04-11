@@ -8,48 +8,42 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import server.database.BoardRepository;
-import server.database.CardListRepository;
+import server.services.BoardService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/boards")
 public class BoardController {
 
-    private final BoardRepository repo;
-    private final CardListRepository cardListRepo;
+    private final BoardService boardService;
     private final SimpMessagingTemplate msgs;
 
-    public BoardController(BoardRepository repo, CardListRepository cardListRepo,
-                           SimpMessagingTemplate msgs){
-        this.repo = repo;
-        this.cardListRepo = cardListRepo;
+    public BoardController(BoardService boardService,
+                           SimpMessagingTemplate msgs) {
+        this.boardService = boardService;
         this.msgs = msgs;
-    }
-
-    private static boolean isNullOrEmpty(String s) {
-        return s == null || s.isEmpty();
     }
 
     @GetMapping(path = { "", "/" })
     public List<Board> getAll() {
-        return repo.findAll();
+        return boardService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Board> getById(@PathVariable("id") long id) {
-        if (id < 0 || !repo.existsById(id)) {
+        try {
+            Board board = boardService.getById(id);
+            return ResponseEntity.ok(board);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(repo.findById(id).get());
     }
 
-    private Map<Object, Consumer<Board>> listeners = new HashMap<>();
+    private final Map<Object, Consumer<Board>> listeners = new HashMap<>();
 
     /**
      * We wrap in DeferredResult which makes this request asynchronous.
@@ -69,24 +63,22 @@ public class BoardController {
 
         // we will be notified when someone calls the consumer
         var key = new Object();
-        listeners.put(key, board ->{
-            res.setResult(ResponseEntity.ok(board));
-        });
+        listeners.put(key, board -> res.setResult(ResponseEntity.ok(board)));
 
         // once we have listener we remove it, so we would be prepared for another listener.
-        res.onCompletion(() -> {
-            listeners.remove(key);
-        });
+        res.onCompletion(() -> listeners.remove(key));
 
         return res;
     }
 
     @PostMapping(path = {"", "/" })
     public ResponseEntity<Board> add(@RequestBody Board board) {
-        if (isNullOrEmpty(board.title)) {
+        Board saved;
+        try {
+            saved = boardService.add(board);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-        Board saved = repo.save(board);
 
         listeners.forEach((key, listener) -> listener.accept(board));
 
@@ -96,7 +88,7 @@ public class BoardController {
     @MessageMapping("/boards/update")// /app/lists/update
     @SendTo("/topic/boards/update")
     public void updateBoardTitleMessage(CustomPair<Long, Board> pair) {
-        ResponseEntity responseEntity = updateBoardTitle(pair.getId(), pair.getVar());
+        ResponseEntity<Board> responseEntity = updateBoardTitle(pair.getId(), pair.getVar());
         msgs.convertAndSend("/topic/boards/update", responseEntity.getStatusCode());
     }
 
@@ -105,16 +97,14 @@ public class BoardController {
             @PathVariable("id") long id,
             @RequestBody Board board
     ){
-        if (id < 0 || !repo.existsById(id)) {
+        Board saved;
+        try {
+            saved = boardService.updateBoardTitle(id, board.title);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
 
-        Board boardFromRepo = repo.findById(id).get();
-        boardFromRepo.title = board.title;
-        Board saved = repo.save(boardFromRepo);
-
         listeners.forEach((key, listener) -> listener.accept(board));
-
         return ResponseEntity.ok(saved);
     }
 
@@ -124,62 +114,45 @@ public class BoardController {
         Long id = pair.getId();
         CardList list = pair.getVar();
 
-        ResponseEntity responseEntity = addCardList(id, list);
+        ResponseEntity<CardList> responseEntity = addCardList(id, list);
         msgs.convertAndSend("/topic/lists/update", responseEntity.getStatusCode());
     }
 
     @PostMapping("/{id}/lists")
     public ResponseEntity<CardList> addCardList(@PathVariable("id") long id,
                                                 @RequestBody CardList cardList){
-        if (id < 0 || !repo.existsById(id)) {
+        try {
+            CardList saved = boardService.addCardList(id, cardList);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-        if(isNullOrEmpty(cardList.title)){
-            return ResponseEntity.badRequest().build();
-        }
-
-        CardList saved = cardListRepo.save(cardList);
-        Board board = repo.findById(id).get();
-        board.lists = removeDuplicateLists(board.lists);
-        board.lists.add(saved);
-        Board savedBoard = repo.save(board);
-
-        return ResponseEntity.ok(saved);
     }
 
     @GetMapping("/{id}/lists")
     public ResponseEntity<List<CardList>> getCardListsById(@PathVariable("id") long id) {
-        if (id < 0 || !repo.existsById(id)) {
+        try {
+            List<CardList> lists = boardService.getCardListsById(id);
+            return ResponseEntity.ok(lists);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-
-        Board board = repo.findById(id).get();
-        List<CardList> cardList = removeDuplicateLists(board.lists);
-
-        return ResponseEntity.ok(cardList);
-    }
-
-    public List<CardList> removeDuplicateLists(List<CardList> lists) {
-        return lists
-                .stream()
-                .distinct()
-                .collect(Collectors.toList());
     }
 
     @MessageMapping("/boards/delete")
     @SendTo("/topic/boards/update")
     public void deleteBoardMessage(Long id){
-        ResponseEntity responseEntity = deleteBoard(id);
+        ResponseEntity<Boolean> responseEntity = deleteBoard(id);
         msgs.convertAndSend(("/topic/boards/update"), responseEntity.getStatusCode());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteBoard(@PathVariable("id") long id){
-        if (id < 0 || !repo.existsById(id)) {
+    public ResponseEntity<Boolean> deleteBoard(@PathVariable("id") long id){
+        try {
+            boardService.deleteBoard(id);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-
-        repo.deleteById(id);
 
         listeners.forEach((key, listener) -> listener.accept(getById(id).getBody()));
 
@@ -187,15 +160,12 @@ public class BoardController {
     }
 
     @GetMapping("/byKey/{inviteKey}")
-    public ResponseEntity<Board> getBoardbyInviteKey(@PathVariable("inviteKey") String enteredKey){
-        if(enteredKey.length() != 4){
+    public ResponseEntity<Board> getBoardByInviteKey(@PathVariable("inviteKey") String enteredKey){
+        try {
+            Board board = boardService.getBoardByInviteKey(enteredKey);
+            return ResponseEntity.ok(board);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-        for(Board board: repo.findAll()){
-            if(enteredKey.equals(board.inviteKey)){
-                return ResponseEntity.ok(board);
-            }
-        }
-        return ResponseEntity.badRequest().build();
     }
 }
